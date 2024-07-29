@@ -1,10 +1,10 @@
 pub mod common;
 
-use common::*;
 use crate::runtime::tokio_runtime;
 use crate::DiscordSet;
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
+use common::*;
 use reqwest::StatusCode;
 use std::collections::HashMap;
 use tracing::{error, trace};

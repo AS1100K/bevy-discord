@@ -91,7 +91,7 @@ pub struct DiscordEmbed {
     /// fields information, max of 25
     pub fields: Option<Vec<DiscordFieldEmbed>>,
     /// author information
-    pub author: Option<DiscordAuthorEmbed>
+    pub author: Option<DiscordAuthorEmbed>,
 }
 
 impl DiscordEmbed {
@@ -131,7 +131,7 @@ pub enum DiscordEmbedType {
     /// article embed
     Article,
     /// link embed
-    Link
+    Link,
 }
 
 #[derive(Default, Serialize, Clone)]
@@ -141,7 +141,7 @@ pub struct DiscordFooterEmbed {
     /// url of footer icon (only supports http(s) and attachments)
     pub icon_url: Option<String>,
     /// a proxied url of footer icon
-    pub proxy_icon_url: Option<String>
+    pub proxy_icon_url: Option<String>,
 }
 
 impl DiscordFooterEmbed {
@@ -158,7 +158,7 @@ pub struct DiscordFieldEmbed {
     /// value of the field
     pub value: String,
     /// whether or not this field should display inline
-    pub inline: Option<bool>
+    pub inline: Option<bool>,
 }
 
 impl DiscordFieldEmbed {
@@ -177,7 +177,7 @@ pub struct DiscordImageEmbed {
     /// height of image
     pub height: Option<i64>,
     /// width of image
-    pub width: Option<i64>
+    pub width: Option<i64>,
 }
 
 impl DiscordImageEmbed {
@@ -193,7 +193,7 @@ pub struct DiscordProviderEmbed {
     /// name of provider
     pub name: Option<String>,
     /// url of provider
-    pub url: Option<String>
+    pub url: Option<String>,
 }
 
 impl DiscordProviderEmbed {
@@ -211,7 +211,7 @@ pub struct DiscordAuthorEmbed {
     /// url of author icon (only supports http(s) and attachments)
     pub icon_url: Option<String>,
     /// a proxied url of author icon
-    pub proxy_icon_url: Option<String>
+    pub proxy_icon_url: Option<String>,
 }
 
 impl DiscordAuthorEmbed {
@@ -231,7 +231,7 @@ pub struct DiscordAllowedMentions {
     /// Array of role_ids to mention (Max size of 100)
     pub users: Option<Vec<String>>,
     /// For replies, whether to mention the author of the message being replied to (default false)
-    pub replied_user: bool
+    pub replied_user: bool,
 }
 
 impl DiscordAllowedMentions {
@@ -249,7 +249,7 @@ pub enum DiscordAllowedMentionTypes {
     /// Controls user mentions
     Users,
     /// Controls `@everyone` and `@here` mentions
-    Everyone
+    Everyone,
 }
 
 #[derive(Default, Serialize, Clone)]
@@ -260,7 +260,7 @@ pub struct DiscordMessageComponent {
     pub label: Option<String>,
     pub style: Option<String>,
     pub custom_id: Option<String>,
-    pub components: Option<Vec<DiscordMessageComponent>>
+    pub components: Option<Vec<DiscordMessageComponent>>,
 }
 
 impl DiscordMessageComponent {
@@ -294,5 +294,5 @@ pub enum DiscordMessageComponentTypes {
     /// Select menu for mentionables (users and roles)
     MentionableSelect = 7,
     /// Select menu for channels
-    ChannelSelect = 8
+    ChannelSelect = 8,
 }
