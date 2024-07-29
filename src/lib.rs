@@ -2,8 +2,10 @@
 
 use bevy_ecs::schedule::SystemSet;
 
+#[cfg(feature = "webhook")]
 pub mod webhook;
-pub mod common;
+#[cfg(feature = "bot")]
+pub mod bot;
 mod runtime;
 
 /// Bevy [`SystemSet`] that contains all system of this plugin.

@@ -10,14 +10,20 @@ publish = true
 license = "GPL-3.0-only"
 keywords = ["bevy", "plugin", "discord"]
 
+[features]
+default = ["webhook", "bot"]
+webhook = ["dep:reqwest", "dep:serde", "dep:serde_json"]
+bot = ["dep:serenity"]
+
 [dependencies]
 bevy_app = "0.13.2"
 bevy_ecs = "0.13.2"
-reqwest = { version = "0.12.5", features = ["json", "rustls-tls"]}
-serde = { version = "1.0.203", features = ["derive"] }
+serenity = { version = "^0.12.2", optional = true }
+reqwest = { version = "0.12.5", features = ["json", "rustls-tls"], optional = true }
+serde = { version = "1.0.203", features = ["derive"], optional = true }
 tracing = "0.1.40"
 tokio = { version = "1.38.0", features = ["rt-multi-thread", "rt"] }
-serde_json = { version = "1.0.117" }
+serde_json = { version = "1.0.117", optional = true }
 
 [dev-dependencies]
 anyhow = "1.0.86"

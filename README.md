@@ -8,6 +8,16 @@
 A very simple, bevy plugin that let you send messages through discord webhooks. _In Future releases, this plugin will support 
 discord applications & bots and can send & receive messages by them._
 
+## Features
+This crate using powerful cargo features.
+
+| Feature   | Information                                                                             |
+|-----------|-----------------------------------------------------------------------------------------|
+| `webhook` | Uses discord webhooks, using this you can only send messages.                           |
+| `bot`     | This uses `serenity` behind the scenes and you can create awesome discord bots with it. |
+
+_both features are comes under `default` feature, so if you want to use any specific feature you need to pass `default-features=false`._
+
 ## Example
 This example is shown inside azalea, but this plugin can be used with any bevy app.
 
