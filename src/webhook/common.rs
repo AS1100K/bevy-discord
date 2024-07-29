@@ -1,36 +1,5 @@
 use serde::Serialize;
-#[macro_export]
-macro_rules! new {
-    () => {
-        #[must_use]
-        #[doc = "Creates a new empty struct."]
-        pub fn new() -> Self {
-            Self::default()
-        }
-    };
-}
-
-#[macro_export]
-macro_rules! override_field {
-    ($name:ident, $type:ty) => {
-        #[doc = concat!("Adds `", stringify!($name), "` field.")]
-        pub fn $name(mut self, $name: $type) -> Self {
-            self.$name = Some($name);
-            self
-        }
-    };
-}
-
-#[macro_export]
-macro_rules! initialize_field {
-    ($name:ident, $type:ty) => {
-        #[doc = concat!("Adds `", stringify!($name), "` field.")]
-        pub fn $name(mut self, $name: $type) -> Self {
-            self.$name = $name;
-            self
-        }
-    };
-}
+use crate::{initialize_field, new, override_field};
 
 /// Representation of discord message
 #[derive(Default, Serialize, Clone)]
