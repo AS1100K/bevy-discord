@@ -13,18 +13,19 @@ keywords = ["bevy", "plugin", "discord"]
 [features]
 default = ["webhook", "bot"]
 webhook = ["dep:reqwest", "dep:serde", "dep:serde_json"]
-bot = ["dep:serenity"]
+bot = ["dep:serenity", "tokio/sync"]
+bot_cache = ["serenity/cache"]
 
 [dependencies]
-bevy_app = "0.13.2"
-bevy_ecs = "0.13.2"
-serenity = { version = "^0.12.2", optional = true }
-reqwest = { version = "0.12.5", features = ["json", "rustls-tls"], optional = true }
-serde = { version = "1.0.203", features = ["derive"], optional = true }
-tracing = "0.1.40"
-tokio = { version = "1.38.0", features = ["rt-multi-thread", "rt"] }
-serde_json = { version = "1.0.117", optional = true }
+bevy_app = "^0.13.2"
+bevy_ecs = "^0.13.2"
+serenity = { version = "^0.12.2", features = ["gateway", "framework", "model"], optional = true }
+reqwest = { version = "^0.12.5", features = ["json", "rustls-tls"], optional = true }
+serde = { version = "^1.0.203", features = ["derive"], optional = true }
+serde_json = { version = "^1.0.117", optional = true }
+tracing = "^0.1.40"
+tokio = { version = "^1.38.0", features = ["rt-multi-thread", "rt"] }
 
 [dev-dependencies]
 anyhow = "1.0.86"
-azalea = "0.9.1"
+azalea = { git = "https://github.com/azalea-rs/azalea.git", branch = "1.20.6" }
