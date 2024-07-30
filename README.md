@@ -18,6 +18,15 @@ This crate using powerful cargo features.
 
 _both features are comes under `default` feature, so if you want to use any specific feature you need to pass `default-features=false`._
 
+## Not Supported Features
+Currently, this crate is under development and there are features that are supported by discord and serenity
+but not supported by us.
+
+| Feature       | Module    |
+|---------------|-----------|
+| `voice`       | `bot`     |
+| `attachments` | `webhook` |
+
 ## Example
 This example is shown inside azalea, but this plugin can be used with any bevy app.
 
