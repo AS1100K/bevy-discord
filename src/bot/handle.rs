@@ -4,26 +4,17 @@ use serenity::all::*;
 use tokio::sync::mpsc::Sender;
 use tracing::error;
 
-use super::events::*;
+use crate::send_event;
 
-macro_rules! send_event {
-    ($self:expr, $event_type:ident { $($field:ident),* $(,)? }) => {
-        if let Err(_) = $self.tx.send($event_type {
-            $($field),*
-        }).await {
-            error!("Unable to send event to the channel.")
-        }
-    };
-}
+use super::{common::BEventCollection, events::*};
 
-pub(super) struct Handle<E>
-where E: bevy_ecs::prelude::Event {
-    pub tx: Sender<E>,
+
+pub(super) struct Handle  {
+    pub tx: Sender<BEventCollection>,
 }
 
 #[async_trait]
-impl<E> EventHandler for Handle<E>
-where E: bevy_ecs::prelude::Event {
+impl EventHandler for Handle {
     async fn command_permissions_update(&self, ctx: Context, permission: CommandPermissions) {
         send_event!(self, BCommandPermissionsUpdate { ctx, permission });
     }

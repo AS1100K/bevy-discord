@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
+use common::{send_events, BEventCollection};
 use serenity::all::*;
 use tokio::sync::mpsc;
 use tokio::sync::mpsc::Receiver;
@@ -15,6 +16,7 @@ use crate::runtime::tokio_runtime;
 
 mod handle;
 pub mod events;
+pub mod common;
 mod event_handlers;
 
 pub struct DiscordBotPlugin(DiscordBotConfig);
@@ -100,6 +102,7 @@ impl Plugin for DiscordBotPlugin {
             .add_event::<BPollVoteRemove>()
             .add_event::<BRateLimit>()
             .add_systems(Startup, setup_bot)
+            // Issue is coming here
             .add_systems(Update, (send_events, handle_b_ready_event).chain());
 
         #[cfg(feature = "bot_cache")]
@@ -124,29 +127,27 @@ impl DiscordBotConfig {
 }
 
 #[derive(Resource)]
-pub struct DiscordBotRes<E>
-where E: bevy_ecs::event::Event {
+pub struct DiscordBotRes {
     pub(crate) http: Option<Arc<Http>>,
-    pub(crate) recv: Receiver<E>,
+    pub(crate) recv: Receiver<BEventCollection>,
 }
 
-fn setup_bot<E>(
+fn setup_bot (
     mut commands: Commands,
-    discord_bot_res: Res<DiscordBotConfig>,
-)
-where E: bevy_ecs::event::Event {
-    let (tx, rx) = mpsc::channel::<E>(5);
+    discord_bot_config: Res<DiscordBotConfig>,
+) {
+    let (tx, rx) = mpsc::channel(5);
 
     commands.insert_resource(DiscordBotRes {
         http: None,
         recv: rx,
     });
 
-    let mut client = Client::builder(&discord_bot_res.token, discord_bot_res.gateway_intents).event_handler(Handle {
+    let mut client = Client::builder(&discord_bot_config.token, discord_bot_config.gateway_intents).event_handler(Handle {
         tx
     });
 
-    let discord_bot_res_clone = discord_bot_res.clone();
+    let discord_bot_res_clone = discord_bot_config.clone();
 
     if let Some(status) = discord_bot_res_clone.status {
         client = client.status(status);
@@ -164,13 +165,3 @@ where E: bevy_ecs::event::Event {
     });
 }
 
-// TODO: Don't use world as it affects parallelism
-fn send_events<E>(
-    mut discord_bot_res: ResMut<DiscordBotRes<E>>,
-    world: &mut World,
-)
-where E: bevy_ecs::event::Event {
-    if let Ok(event) = discord_bot_res.recv.try_recv() {
-        world.send_event(event);
-    }
-}

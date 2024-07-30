@@ -25,6 +25,7 @@ serde = { version = "^1.0.203", features = ["derive"], optional = true }
 serde_json = { version = "^1.0.117", optional = true }
 tracing = "^0.1.40"
 tokio = { version = "^1.38.0", features = ["rt-multi-thread", "rt"] }
+paste = "1.0.15"
 
 [dev-dependencies]
 anyhow = "1.0.86"

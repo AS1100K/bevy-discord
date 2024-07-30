@@ -57,3 +57,57 @@ macro_rules! initialize_field_with_doc {
         }
     };
 }
+
+#[macro_export]
+macro_rules! create_event_collection_and_handler {
+    (
+        $(
+            $(#[$meta:meta])? $variant:ident
+        ),* $(,)?
+    ) => {
+        // Define the enum with the provided variants
+        pub enum BEventCollection {
+            $(
+                $(#[$meta])?
+                $variant($variant),
+            )*
+        }
+
+        // Define the function to handle the events and send them through EventWriter
+        paste::paste! {
+            pub(crate) fn send_events(
+                mut discord_bot_res: ResMut<$crate::bot::DiscordBotRes>,
+                $(
+                    $(#[$meta])?
+                    mut [ < $variant:snake > ]: EventWriter<$variant>,
+                )*
+            ) {
+                if let Ok(event) = discord_bot_res.recv.try_recv() {
+                    match event {
+                        $(
+                            $(#[$meta])?
+                            BEventCollection::$variant(event_to_send) => {
+                                [ < $variant:snake > ].send(event_to_send);
+                            }
+                        ),*
+                    }
+                } else {
+                    tracing::error!("Unable to read event from the channel");
+                }
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! send_event {
+    ($self:ident, $event:ident { $($field:ident),* }) => {
+        if let Err(_) = $self.tx.send(
+            $crate::bot::common::BEventCollection::$event($event {
+                $($field),*
+            })
+        ).await {
+            error!("Unable to send event to the channel")
+        }
+    };
+}
