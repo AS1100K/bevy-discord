@@ -28,4 +28,3 @@ tokio = { version = "^1.38.0", features = ["rt-multi-thread", "rt"] }
 
 [dev-dependencies]
 anyhow = "1.0.86"
-azalea = { git = "https://github.com/azalea-rs/azalea.git", branch = "1.20.6" }
