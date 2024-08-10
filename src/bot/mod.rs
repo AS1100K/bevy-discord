@@ -13,10 +13,15 @@ use crate::bot::handle::Handle;
 use crate::override_field_with_doc;
 use crate::runtime::tokio_runtime;
 
-pub mod common;
+mod common;
 mod event_handlers;
 pub mod events;
 mod handle;
+
+/// Re-export serenity
+pub mod serenity {
+    pub use serenity::*;
+}
 
 pub struct DiscordBotPlugin(DiscordBotConfig);
 
