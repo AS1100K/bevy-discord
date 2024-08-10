@@ -5,7 +5,8 @@ use bevy_ecs::schedule::SystemSet;
 #[cfg(feature = "bot")]
 pub mod bot;
 mod common;
-mod runtime;
+/// Tokio runtime, use this if you want to use async code inside bevy systems
+pub mod runtime;
 #[cfg(feature = "webhook")]
 pub mod webhook;
 

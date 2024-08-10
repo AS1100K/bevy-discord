@@ -20,6 +20,7 @@ mod handle;
 
 /// Re-export serenity
 pub mod serenity {
+    #[doc(hidden)]
     pub use serenity::*;
 }
 
@@ -126,10 +127,38 @@ impl DiscordBotConfig {
     override_field_with_doc!(activity, ActivityData, "Sets the initial activity.");
 }
 
+/// A Global Resource for Discord Bot. This resource holds important things like [Http]
 #[derive(Resource)]
 pub struct DiscordBotRes {
     pub(crate) http: Option<Arc<Http>>,
     pub(crate) recv: Receiver<BEventCollection>,
+}
+
+impl DiscordBotRes {
+    /// [Http] is available once [BReadyEvent] is triggered
+    ///
+    /// NOTE: Calling this function can be expensive as it returns a clone of [Http]
+    ///
+    /// ## Example
+    ///
+    /// ```rust,no_run
+    /// # use bevy_ecs::prelude::*;
+    /// # use bevy_discord::bot::DiscordBotRes;
+    /// use bevy_discord::bot::serenity::all::*;
+    ///
+    /// fn send_message (
+    ///     discord_bot_res: Res<DiscordBotRes>
+    /// ) {
+    ///     let http: Option<Arc<Http>> = discord_bot_res.get_http();
+    ///
+    ///     if let Some(h) = http {
+    ///         // Do anything you want to do with Http
+    ///     }
+    /// }
+    /// ```
+    pub fn get_http(&self) -> Option<Arc<Http>> {
+        self.http.clone()
+    }
 }
 
 fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) {
