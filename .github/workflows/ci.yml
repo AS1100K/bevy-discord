@@ -37,6 +37,7 @@ jobs:
 
   # Run cargo clippy -- -D warnings
   clippy_check:
+    needs: test
     name: Clippy
     runs-on: ubuntu-latest
     timeout-minutes: 30
