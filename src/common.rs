@@ -66,7 +66,7 @@ macro_rules! create_event_collection_and_handler {
         ),* $(,)?
     ) => {
         // Define the enum with the provided variants
-        pub enum BEventCollection {
+        pub(crate) enum BEventCollection {
             $(
                 $(#[$meta])?
                 $variant($variant),
