@@ -149,7 +149,7 @@ impl DiscordBotRes {
     /// fn send_message (
     ///     discord_bot_res: Res<DiscordBotRes>
     /// ) {
-    ///     let http: Option<Arc<Http>> = discord_bot_res.get_http();
+    ///     let http = discord_bot_res.get_http();
     ///
     ///     if let Some(h) = http {
     ///         // Do anything you want to do with Http
