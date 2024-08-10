@@ -78,7 +78,7 @@ macro_rules! create_event_collection_and_handler {
             pub(crate) fn send_events(
                 world: &mut World
             ) {
-                let discord_bot_res = world.resource::<crate::bot::DiscordBotRes>();
+                let discord_bot_res = world.resource::<$crate::bot::DiscordBotRes>();
                 if let Ok(event) = discord_bot_res.recv.try_recv() {
                     match event {
                         $(
