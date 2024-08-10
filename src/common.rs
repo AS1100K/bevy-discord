@@ -76,7 +76,7 @@ macro_rules! create_event_collection_and_handler {
         // Define the function to handle the events and send them through EventWriter
         paste::paste! {
             pub(crate) fn send_events(
-                mut discord_bot_res: ResMut<$crate::bot::DiscordBotRes>,
+                discord_bot_res: ResMut<$crate::bot::DiscordBotRes>,
                 $(
                     $(#[$meta])?
                     mut [ < $variant:snake > ]: EventWriter<$variant>,
@@ -102,7 +102,7 @@ macro_rules! create_event_collection_and_handler {
 #[macro_export]
 macro_rules! send_event {
     ($self:ident, $event:ident { $($field:ident),* }) => {
-        if let Err(_) = $self.tx.send(
+        if let Err(_) = $self.tx.send_async(
             $crate::bot::common::BEventCollection::$event($event {
                 $($field),*
             })

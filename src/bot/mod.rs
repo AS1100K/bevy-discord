@@ -3,9 +3,8 @@ use std::sync::Arc;
 use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
 use common::{send_events, BEventCollection};
+use flume::Receiver;
 use serenity::all::*;
-use tokio::sync::mpsc;
-use tokio::sync::mpsc::Receiver;
 
 use event_handlers::*;
 use events::*;
@@ -29,6 +28,11 @@ impl DiscordBotPlugin {
 
 impl Plugin for DiscordBotPlugin {
     fn build(&self, app: &mut App) {
+        #[cfg(feature = "bot_cache")]
+        app
+            .add_event::<BCacheRead>()
+            .add_event::<BShardsReady>();
+
         app
             .insert_resource(self.0.clone())
             .add_event::<BReadyEvent>()
@@ -104,11 +108,6 @@ impl Plugin for DiscordBotPlugin {
             .add_systems(Startup, setup_bot)
             // Issue is coming here
             .add_systems(Update, (send_events, handle_b_ready_event).chain());
-
-        #[cfg(feature = "bot_cache")]
-        app
-            .add_event::<BCacheRead>()
-            .add_event::<BShardsReady>();
     }
 }
 
@@ -136,7 +135,7 @@ fn setup_bot (
     mut commands: Commands,
     discord_bot_config: Res<DiscordBotConfig>,
 ) {
-    let (tx, rx) = mpsc::channel(5);
+    let (tx, rx) = flume::unbounded();
 
     commands.insert_resource(DiscordBotRes {
         http: None,
@@ -164,4 +163,3 @@ fn setup_bot (
             .await.expect("Unable to run the discord Client");
     });
 }
-

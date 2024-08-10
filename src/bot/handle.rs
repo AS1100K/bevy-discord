@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use serenity::all::*;
-use tokio::sync::mpsc::Sender;
+use flume::Sender;
 use tracing::error;
 
 use crate::send_event;
