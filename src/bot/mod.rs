@@ -106,7 +106,6 @@ impl Plugin for DiscordBotPlugin {
             .add_event::<BPollVoteRemove>()
             .add_event::<BRateLimit>()
             .add_systems(Startup, setup_bot)
-            // Issue is coming here
             .add_systems(Update, (send_events, handle_b_ready_event).chain());
     }
 }

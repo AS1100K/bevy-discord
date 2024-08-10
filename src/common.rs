@@ -76,18 +76,15 @@ macro_rules! create_event_collection_and_handler {
         // Define the function to handle the events and send them through EventWriter
         paste::paste! {
             pub(crate) fn send_events(
-                discord_bot_res: ResMut<$crate::bot::DiscordBotRes>,
-                $(
-                    $(#[$meta])?
-                    mut [ < $variant:snake > ]: EventWriter<$variant>,
-                )*
+                world: &mut World
             ) {
+                let discord_bot_res = world.resource::<crate::bot::DiscordBotRes>();
                 if let Ok(event) = discord_bot_res.recv.try_recv() {
                     match event {
                         $(
                             $(#[$meta])?
                             BEventCollection::$variant(event_to_send) => {
-                                [ < $variant:snake > ].send(event_to_send);
+                                world.send_event(event_to_send);
                             }
                         ),*
                     }
