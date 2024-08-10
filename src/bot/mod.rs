@@ -13,10 +13,10 @@ use crate::bot::handle::Handle;
 use crate::override_field_with_doc;
 use crate::runtime::tokio_runtime;
 
-mod handle;
-pub mod events;
 pub mod common;
 mod event_handlers;
+pub mod events;
+mod handle;
 
 pub struct DiscordBotPlugin(DiscordBotConfig);
 
@@ -29,12 +29,9 @@ impl DiscordBotPlugin {
 impl Plugin for DiscordBotPlugin {
     fn build(&self, app: &mut App) {
         #[cfg(feature = "bot_cache")]
-        app
-            .add_event::<BCacheRead>()
-            .add_event::<BShardsReady>();
+        app.add_event::<BCacheRead>().add_event::<BShardsReady>();
 
-        app
-            .insert_resource(self.0.clone())
+        app.insert_resource(self.0.clone())
             .add_event::<BReadyEvent>()
             .add_event::<BCommandPermissionsUpdate>()
             .add_event::<BAutoModerationRuleCreate>()
@@ -130,10 +127,7 @@ pub struct DiscordBotRes {
     pub(crate) recv: Receiver<BEventCollection>,
 }
 
-fn setup_bot (
-    mut commands: Commands,
-    discord_bot_config: Res<DiscordBotConfig>,
-) {
+fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) {
     let (tx, rx) = flume::unbounded();
 
     commands.insert_resource(DiscordBotRes {
@@ -141,9 +135,11 @@ fn setup_bot (
         recv: rx,
     });
 
-    let mut client = Client::builder(&discord_bot_config.token, discord_bot_config.gateway_intents).event_handler(Handle {
-        tx
-    });
+    let mut client = Client::builder(
+        &discord_bot_config.token,
+        discord_bot_config.gateway_intents,
+    )
+    .event_handler(Handle { tx });
 
     let discord_bot_res_clone = discord_bot_config.clone();
 
@@ -157,8 +153,10 @@ fn setup_bot (
 
     tokio_runtime().spawn(async move {
         client
-            .await.expect("Unable to build discord Client")
+            .await
+            .expect("Unable to build discord Client")
             .start()
-            .await.expect("Unable to run the discord Client");
+            .await
+            .expect("Unable to run the discord Client");
     });
 }

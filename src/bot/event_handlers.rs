@@ -1,9 +1,9 @@
 use bevy_ecs::prelude::*;
 
-use crate::bot::DiscordBotRes;
 use crate::bot::events::*;
+use crate::bot::DiscordBotRes;
 
-pub(crate) fn handle_b_ready_event (
+pub(crate) fn handle_b_ready_event(
     mut discord_bot_res: ResMut<DiscordBotRes>,
     mut events: EventReader<BReadyEvent>,
 ) {

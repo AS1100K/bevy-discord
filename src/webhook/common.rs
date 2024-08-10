@@ -1,5 +1,5 @@
-use serde::Serialize;
 use crate::{initialize_field, new, override_field};
+use serde::Serialize;
 
 /// Representation of discord message
 #[derive(Default, Serialize, Clone)]

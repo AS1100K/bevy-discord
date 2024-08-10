@@ -2,9 +2,9 @@
 //!
 //! NOTE: Every Event has a prefix `B` to avoid confusion with `serenity` events.
 
-use std::collections::HashMap;
-use serenity::all::*;
 use bevy_ecs::prelude::*;
+use serenity::all::*;
+use std::collections::HashMap;
 
 #[derive(Event)]
 /// Dispatched upon startup.

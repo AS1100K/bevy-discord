@@ -1,6 +1,6 @@
+use super::events::*;
 use crate::create_event_collection_and_handler;
 use bevy_ecs::prelude::*;
-use super::events::*;
 
 create_event_collection_and_handler!(
     BCommandPermissionsUpdate,
