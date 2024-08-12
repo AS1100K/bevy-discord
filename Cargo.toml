@@ -11,7 +11,7 @@ license = "GPL-3.0-only"
 keywords = ["bevy", "plugin", "discord"]
 
 [features]
-default = ["webhook", "bot"]
+full = ["webhook", "bot"]
 webhook = ["dep:reqwest", "dep:serde", "dep:serde_json"]
 bot = ["dep:serenity", "tokio/sync"]
 bot_cache = ["serenity/cache"]
@@ -19,8 +19,15 @@ bot_cache = ["serenity/cache"]
 [dependencies]
 bevy_app = "^0.13.2"
 bevy_ecs = "^0.13.2"
-serenity = { version = "^0.12.2", features = ["gateway", "framework", "model"], optional = true }
-reqwest = { version = "^0.12.5", features = ["json", "rustls-tls"], optional = true }
+serenity = { version = "^0.12.2", features = [
+    "gateway",
+    "framework",
+    "model",
+], optional = true }
+reqwest = { version = "^0.12.5", features = [
+    "json",
+    "rustls-tls",
+], optional = true }
 serde = { version = "^1.0.203", features = ["derive"], optional = true }
 serde_json = { version = "^1.0.117", optional = true }
 tracing = "^0.1.40"
@@ -28,5 +35,6 @@ tokio = { version = "^1.38.0", features = ["rt-multi-thread", "rt"] }
 paste = "1.0.15"
 flume = "^0.11.0"
 
-[dev-dependencies]
-anyhow = "1.0.86"
+[package.metadata.docs.rs]
+features = ["full"]
+rustdoc-args = ["--cfg", "docsrs"]
