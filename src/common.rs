@@ -58,7 +58,6 @@ macro_rules! initialize_field_with_doc {
     };
 }
 
-#[allow(clippy::enum_variant_names)]
 #[macro_export]
 macro_rules! create_event_collection_and_handler {
     (
@@ -67,6 +66,7 @@ macro_rules! create_event_collection_and_handler {
         ),* $(,)?
     ) => {
         // Define the enum with the provided variants
+        #[allow(clippy::enum_variant_names)]
         pub(crate) enum BEventCollection {
             $(
                 $(#[$meta])?
