@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Made `runtime` module public
 - Replaced `default` feature with `full` feature
 
+### Fixed
+- Added feature on which a module is available in documentation.
+
 ## [0.2.0-beta.1] - 2024-08-10
 
 ### Added

@@ -61,6 +61,7 @@ pub struct BAutoModerationActionExecution {
 }
 
 #[cfg(feature = "bot_cache")]
+#[cfg_attr(docsrs, doc(cfg(feature = "bot_cache")))]
 #[derive(Event)]
 /// Dispatched when the cache has received and inserted all data from guilds.
 ///
@@ -74,6 +75,7 @@ pub struct BCacheRead {
 }
 
 #[cfg(feature = "bot_cache")]
+#[cfg_attr(docsrs, doc(cfg(feature = "bot_cache")))]
 #[derive(Event)]
 /// Dispatched when every shard has received a Ready event
 pub struct BShardsReady {
