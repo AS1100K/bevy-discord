@@ -2,12 +2,14 @@ on:
   push:
     # Pattern matched against refs/tags
     tags:
-      - 'v*'
+      - "v*"
+
+permissions:
+  contents: write
 
 jobs:
   publish:
     name: Publish
-    # Specify OS
     runs-on: ubuntu-latest
 
     steps:
@@ -21,3 +23,19 @@ jobs:
         run: cargo publish --token ${CRATES_TOKEN}
         env:
           CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
+
+      # These step has been taken from https://github.com/AS1100K/aether/blob/main/.github/workflows/release.yml
+      - name: Parse Changelog
+        id: parse_changelog
+        uses: ocavue/changelog-parser-action@v1
+        with:
+          filepath: "./CHANGELOG.md"
+          removemarkdown: false
+
+      - name: Create GitHub Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: ${{ format('This release is also available on [crates.io](https://crates.io/crates/bevy-discord) <br/>{0}', steps.parse_changelog.outputs.latestBody) }}
