@@ -10,8 +10,8 @@ use event_handlers::*;
 use events::*;
 
 use crate::bot::handle::Handle;
-use crate::override_field_with_doc;
 use crate::runtime::tokio_runtime;
+use crate::{override_field_with_doc, DiscordSet};
 
 mod common;
 mod event_handlers;
@@ -108,8 +108,13 @@ impl Plugin for DiscordBotPlugin {
             .add_event::<BPollVoteAdd>()
             .add_event::<BPollVoteRemove>()
             .add_event::<BRateLimit>()
-            .add_systems(Startup, setup_bot)
-            .add_systems(Update, (send_events, handle_b_ready_event).chain());
+            .add_systems(Startup, setup_bot.in_set(DiscordSet))
+            .add_systems(
+                Update,
+                (send_events, handle_b_ready_event)
+                    .chain()
+                    .in_set(DiscordSet),
+            );
     }
 }
 
