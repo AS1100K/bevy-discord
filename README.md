@@ -5,8 +5,7 @@
 ![CI](https://github.com/as1100k/bevy-discord/actions/workflows/ci.yml/badge.svg?event=push)
 
 
-A very simple, bevy plugin that let you send messages through discord webhooks. _In Future releases, this plugin will support
-discord applications & bots and can send & receive messages by them._
+A very simple, bevy plugin that let you send and receive messages through bevy events.
 
 ## Features
 This crate using powerful cargo features.
