@@ -33,9 +33,8 @@ jobs:
           removemarkdown: false
 
       - name: Create GitHub Release
-        uses: svenstaro/upload-release-action@v2
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          overwrite: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref }}
           body: ${{ format('This release is also available on [crates.io](https://crates.io/crates/bevy-discord) <br/>{0}', steps.parse_changelog.outputs.latestBody) }}
