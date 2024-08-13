@@ -37,4 +37,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref }}
-          body: ${{ format('This release is also available on [crates.io](https://crates.io/crates/bevy-discord) <br/>{0}', steps.parse_changelog.outputs.latestBody) }}
+          body: ${{ steps.parse_changelog.outputs.latestBody }}
