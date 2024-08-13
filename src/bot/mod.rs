@@ -11,7 +11,7 @@ use events::*;
 
 use crate::bot::handle::Handle;
 use crate::runtime::tokio_runtime;
-use crate::{override_field_with_doc, DiscordSet};
+use crate::{initialize_field_with_doc, override_field_with_doc, DiscordSet};
 
 mod common;
 mod event_handlers;
@@ -128,6 +128,14 @@ pub struct DiscordBotConfig {
 }
 
 impl DiscordBotConfig {
+    #[must_use]
+    initialize_field_with_doc!(token, String, "Sets the bot token.");
+    #[must_use]
+    initialize_field_with_doc!(
+        gateway_intents,
+        GatewayIntents,
+        "Sets the bot [`GatewayIntents`]."
+    );
     override_field_with_doc!(status, OnlineStatus, "Sets the initial status.");
     override_field_with_doc!(activity, ActivityData, "Sets the initial activity.");
 }
