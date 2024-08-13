@@ -89,8 +89,6 @@ macro_rules! create_event_collection_and_handler {
                             }
                         ),*
                     }
-                } else {
-                    tracing::error!("Unable to read event from the channel");
                 }
             }
         }
