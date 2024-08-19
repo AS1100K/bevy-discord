@@ -1,3 +1,4 @@
+use std::future::Future;
 use std::sync::Arc;
 
 use bevy_app::{App, Plugin, Startup, Update};
@@ -12,11 +13,15 @@ use events::*;
 use crate::bot::handle::Handle;
 use crate::runtime::tokio_runtime;
 use crate::{initialize_field_with_doc, override_field_with_doc, DiscordSet};
+use crate::bot::http::InteractHttp;
 
 mod common;
 mod event_handlers;
-pub mod events;
 mod handle;
+pub mod events;
+#[cfg(feature = "http")]
+#[cfg_attr(docsrs, doc(cfg(feature = "http")))]
+pub mod http;
 
 /// Re-export serenity
 pub mod serenity {
@@ -36,6 +41,9 @@ impl Plugin for DiscordBotPlugin {
     fn build(&self, app: &mut App) {
         #[cfg(feature = "bot_cache")]
         app.add_event::<BCacheRead>().add_event::<BShardsReady>();
+
+        #[cfg(feature = "http")]
+        app.add_event::<InteractHttp>();
 
         app.insert_resource(self.0.clone())
             .add_event::<BReadyEvent>()
@@ -150,7 +158,8 @@ pub struct DiscordBotRes {
 impl DiscordBotRes {
     /// [Http] is available once [BReadyEvent] is triggered
     ///
-    /// NOTE: Calling this function can be expensive as it returns a clone of [Http]
+    /// NOTE: Calling this function can be expensive as it returns a clone of [Http], you
+    /// may want to use [http::InteractHttp]
     ///
     /// ## Example
     ///

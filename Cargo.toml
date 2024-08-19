@@ -11,9 +11,10 @@ license = "GPL-3.0-only"
 keywords = ["bevy", "plugin", "discord"]
 
 [features]
-full = ["webhook", "bot"]
+full = ["webhook", "bot", "http"]
 webhook = ["dep:reqwest", "dep:serde", "dep:serde_json"]
 bot = ["dep:serenity", "tokio/sync"]
+http = []
 bot_cache = ["serenity/cache"]
 
 [dependencies]
