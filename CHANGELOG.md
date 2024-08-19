@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 - Removed Error when the channel is empty
 
+### Removed
+- Removed `B` Prefix from Events
+
 ## [0.2.1] - 2024-08-13
 
 ## Changed
