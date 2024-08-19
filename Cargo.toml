@@ -7,7 +7,7 @@ authors = ["Aditya Kumar <117935160+AS1100K@users.noreply.github.com>"]
 readme = "README.md"
 repository = "https://github.com/AS1100K/bevy-discord"
 publish = true
-license = "GPL-3.0-only"
+license = "MIT"
 keywords = ["bevy", "plugin", "discord"]
 
 [features]

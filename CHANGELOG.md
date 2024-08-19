@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added `InteractHttp` Event
 
+### Changed
+- Changed License from `GPL-3` to `MIT`
+
 ### Fixes
 - Removed Error when the channel is empty
 
