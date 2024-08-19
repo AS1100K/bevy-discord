@@ -11,14 +11,14 @@ use event_handlers::*;
 use events::*;
 
 use crate::bot::handle::Handle;
+use crate::bot::http::InteractHttp;
 use crate::runtime::tokio_runtime;
 use crate::{initialize_field_with_doc, override_field_with_doc, DiscordSet};
-use crate::bot::http::InteractHttp;
 
 mod common;
 mod event_handlers;
-mod handle;
 pub mod events;
+mod handle;
 #[cfg(feature = "http")]
 #[cfg_attr(docsrs, doc(cfg(feature = "http")))]
 pub mod http;
