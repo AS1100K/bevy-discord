@@ -10,7 +10,6 @@ use event_handlers::*;
 use events::*;
 
 use crate::bot::handle::Handle;
-use crate::bot::http::InteractHttp;
 use crate::runtime::tokio_runtime;
 use crate::{initialize_field_with_doc, override_field_with_doc, DiscordSet};
 
@@ -129,9 +128,7 @@ pub struct DiscordBotConfig {
 }
 
 impl DiscordBotConfig {
-    #[must_use]
     initialize_field_with_doc!(token, String, "Sets the bot token.");
-    #[must_use]
     initialize_field_with_doc!(
         gateway_intents,
         GatewayIntents,
@@ -150,28 +147,49 @@ pub struct DiscordBotRes {
 
 impl DiscordBotRes {
     /// [Http] is available once [BReadyEvent] is triggered
-    ///
-    /// NOTE: Calling this function can be expensive as it returns a clone of [Http]
+    /// 
+    /// NOTE: This function clones [Http], so it can be expensive.
     ///
     /// ## Example
     ///
     /// ```rust,no_run
-    /// # use bevy_ecs::prelude::*;
+    /// use bevy_ecs::prelude::*;
     /// # use bevy_discord::bot::DiscordBotRes;
+    /// use bevy_discord::runtime::tokio_runtime;
+    /// use serde_json::json;
     /// use bevy_discord::bot::serenity::all::*;
+    /// # use tracing::error;
     ///
     /// fn send_message (
     ///     discord_bot_res: Res<DiscordBotRes>
     /// ) {
     ///     let http = discord_bot_res.get_http();
     ///
-    ///     if let Some(h) = http {
+    ///     if let Ok(h) = http {
     ///         // Do anything you want to do with Http
+    ///         tokio_runtime().spawn(async move {
+    ///             if h.send_message(
+    ///                     ChannelId::new(123456789),
+    ///                     Vec::new(),
+    ///                     &json!({
+    ///                         "content": "Hello from bevy!"
+    ///                     }),
+    ///                 )
+    ///                 .await
+    ///                 .is_err()
+    ///             {
+    ///                 error!("Unable to send message on discord");
+    ///             }
+    ///         });
     ///     }
     /// }
     /// ```
-    pub fn get_http(&self) -> Option<Arc<Http>> {
-        self.http.clone()
+    pub fn get_http(&self) -> Result<Arc<Http>, &str> {
+        if let Some(http) = self.http.to_owned() {
+            Ok(http)
+        } else {
+            Err("Discord client hasn't started yet.")
+        }
     }
 }
 
