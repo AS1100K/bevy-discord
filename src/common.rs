@@ -66,6 +66,7 @@ macro_rules! create_event_collection_and_handler {
         ),* $(,)?
     ) => {
         // Define the enum with the provided variants
+        #[allow(clippy::enum_variant_names)]
         pub(crate) enum BEventCollection {
             $(
                 $(#[$meta])?

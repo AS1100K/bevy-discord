@@ -1,4 +1,6 @@
 //! This module contains all the bevy events that are send
+//!
+//! NOTE: Every Event has a prefix `B` to avoid confusion with `serenity` events.
 
 use bevy_ecs::prelude::*;
 use serenity::all::*;
@@ -8,7 +10,7 @@ use std::collections::HashMap;
 /// Dispatched upon startup.
 ///
 /// Provides data about the bot and the guilds it’s in.
-pub struct ReadyEvent {
+pub struct BReadyEvent {
     pub ctx: Context,
     pub data_about_bot: Ready,
 }
@@ -17,7 +19,7 @@ pub struct ReadyEvent {
 /// Dispatched when the permissions of an application command was updated.
 ///
 /// Provides said permission’s data.
-pub struct CommandPermissionsUpdate {
+pub struct BCommandPermissionsUpdate {
     pub ctx: Context,
     pub permission: CommandPermissions,
 }
@@ -26,7 +28,7 @@ pub struct CommandPermissionsUpdate {
 /// Dispatched when an auto moderation rule was created.
 ///
 /// Provides said rule’s data.
-pub struct AutoModerationRuleCreate {
+pub struct BAutoModerationRuleCreate {
     pub ctx: Context,
     pub rule: Rule,
 }
@@ -35,7 +37,7 @@ pub struct AutoModerationRuleCreate {
 /// Dispatched when an auto moderation rule was updated.
 ///
 /// Provides said rule’s data.
-pub struct AutoModerationRuleUpdate {
+pub struct BAutoModerationRuleUpdate {
     pub ctx: Context,
     pub rule: Rule,
 }
@@ -44,7 +46,7 @@ pub struct AutoModerationRuleUpdate {
 /// Dispatched when an auto moderation rule was deleted.
 ///
 /// Provides said rule’s data.
-pub struct AutoModerationRuleDelete {
+pub struct BAutoModerationRuleDelete {
     pub ctx: Context,
     pub rule: Rule,
 }
@@ -53,7 +55,7 @@ pub struct AutoModerationRuleDelete {
 /// Dispatched when an auto moderation rule was triggered and an action was executed.
 ///
 /// Provides said action execution’s data.
-pub struct AutoModerationActionExecution {
+pub struct BAutoModerationActionExecution {
     pub ctx: Context,
     pub execution: ActionExecution,
 }
@@ -67,7 +69,7 @@ pub struct AutoModerationActionExecution {
 /// performed prior this event may fail as the data could be not inserted yet.
 ///
 /// Provides the cached guilds’ ids.
-pub struct CacheRead {
+pub struct BCacheRead {
     pub ctx: Context,
     pub guilds: Vec<GuildId>,
 }
@@ -76,7 +78,7 @@ pub struct CacheRead {
 #[cfg_attr(docsrs, doc(cfg(feature = "bot_cache")))]
 #[derive(Event)]
 /// Dispatched when every shard has received a Ready event
-pub struct ShardsReady {
+pub struct BShardsReady {
     pub ctx: Context,
     pub total_shards: u32,
 }
@@ -85,7 +87,7 @@ pub struct ShardsReady {
 /// Dispatched when a channel is created.
 ///
 /// Provides said channel’s data.
-pub struct ChannelCreate {
+pub struct BChannelCreate {
     pub ctx: Context,
     pub channel: GuildChannel,
 }
@@ -94,7 +96,7 @@ pub struct ChannelCreate {
 /// Dispatched when a category is created.
 ///
 /// Provides said category’s data.
-pub struct CategoryCreate {
+pub struct BCategoryCreate {
     pub ctx: Context,
     pub category: GuildChannel,
 }
@@ -103,7 +105,7 @@ pub struct CategoryCreate {
 /// Dispatched when a category is deleted.
 ///
 /// Provides said category’s data.
-pub struct CategoryDelete {
+pub struct BCategoryDelete {
     pub ctx: Context,
     pub category: GuildChannel,
 }
@@ -112,7 +114,7 @@ pub struct CategoryDelete {
 /// Dispatched when a channel is deleted.
 ///
 /// Provides said channel’s data.
-pub struct ChannelDelete {
+pub struct BChannelDelete {
     pub ctx: Context,
     pub channel: GuildChannel,
     pub messages: Option<Vec<Message>>,
@@ -122,7 +124,7 @@ pub struct ChannelDelete {
 /// Dispatched when a pin is added, deleted.
 ///
 /// Provides said pin’s data.
-pub struct ChannelPinUpdate {
+pub struct BChannelPinUpdate {
     pub ctx: Context,
     pub pin: ChannelPinsUpdateEvent,
 }
@@ -131,7 +133,7 @@ pub struct ChannelPinUpdate {
 /// Dispatched when a channel is updated.
 ///
 /// The old channel data is only provided when the `bot_cache` feature is enabled.
-pub struct ChannelUpdate {
+pub struct BChannelUpdate {
     pub ctx: Context,
     pub old: Option<GuildChannel>,
     pub new: GuildChannel,
@@ -141,7 +143,7 @@ pub struct ChannelUpdate {
 /// Dispatched when a new audit log entry is created.
 ///
 /// Provides said entry’s data and the id of the guild where it was created.
-pub struct GuildAuditLogEntryCreate {
+pub struct BGuildAuditLogEntryCreate {
     pub ctx: Context,
     pub entry: AuditLogEntry,
     pub guild_id: GuildId,
@@ -151,7 +153,7 @@ pub struct GuildAuditLogEntryCreate {
 /// Dispatched when a user is banned from a guild.
 ///
 /// Provides the guild’s id and the banned user’s data.
-pub struct GuildBanAddition {
+pub struct BGuildBanAddition {
     pub ctx: Context,
     pub guild_id: GuildId,
     pub banned_user: User,
@@ -161,7 +163,7 @@ pub struct GuildBanAddition {
 /// Dispatched when a user’s ban is lifted from a guild.
 ///
 /// Provides the guild’s id and the lifted user’s data.
-pub struct GuildBanRemoval {
+pub struct BGuildBanRemoval {
     pub ctx: Context,
     pub guild_id: GuildId,
     pub unbanned_user: User,
@@ -171,7 +173,7 @@ pub struct GuildBanRemoval {
 /// Dispatched when a guild is created; or an existing guild’s data is sent to us.
 ///
 /// Provides the guild’s data and whether the guild is new (only when `bot_cache` feature is enabled).
-pub struct GuildCreate {
+pub struct BGuildCreate {
     pub ctx: Context,
     pub guild: Guild,
     pub is_new: Option<bool>,
@@ -186,7 +188,7 @@ pub struct GuildCreate {
 /// The [`UnavailableGuild::unavailable`] flag in the partial data determines the status of the guild. If the flag
 /// is false, the bot was removed from the guild, either by being kicked or banned. If the
 /// flag is true, the guild went offline.
-pub struct GuildDelete {
+pub struct BGuildDelete {
     pub ctx: Context,
     pub incomplete: UnavailableGuild,
     pub full: Option<Guild>,
@@ -196,7 +198,7 @@ pub struct GuildDelete {
 /// Dispatched when the emojis are updated.
 ///
 /// Provides the guild’s id and the new state of the emojis in the guild.
-pub struct GuildEmojisUpdate {
+pub struct BGuildEmojisUpdate {
     pub ctx: Context,
     pub guild_id: GuildId,
     pub current_state: HashMap<EmojiId, Emoji>,
@@ -206,7 +208,7 @@ pub struct GuildEmojisUpdate {
 /// Dispatched when a guild’s integration is added, updated or removed.
 ///
 /// Provides the guild’s id.
-pub struct GuildIntegrationsUpdate {
+pub struct BGuildIntegrationsUpdate {
     pub ctx: Context,
     pub guild_id: GuildId,
 }
@@ -218,7 +220,7 @@ pub struct GuildIntegrationsUpdate {
 ///
 /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
 /// on the bot application page.
-pub struct GuildMemberAddition {
+pub struct BGuildMemberAddition {
     pub ctx: Context,
     pub new_member: Member,
 }
@@ -231,7 +233,7 @@ pub struct GuildMemberAddition {
 ///
 /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
 /// on the bot application page.
-pub struct GuildMemberRemoval {
+pub struct BGuildMemberRemoval {
     pub ctx: Context,
     pub guild_id: GuildId,
     pub user: User,
@@ -246,7 +248,7 @@ pub struct GuildMemberRemoval {
 ///
 /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
 /// on the bot application page.
-pub struct GuildMemberUpdate {
+pub struct BGuildMemberUpdate {
     pub ctx: Context,
     pub old_if_available: Option<Member>,
     pub new: Option<Member>,
@@ -257,7 +259,7 @@ pub struct GuildMemberUpdate {
 /// Dispatched when the data for offline members was requested.
 ///
 /// Provides the guild’s id and the data.
-pub struct GuildMembersChunk {
+pub struct BGuildMembersChunk {
     pub ctx: Context,
     pub chunk: GuildMembersChunkEvent,
 }
@@ -266,7 +268,7 @@ pub struct GuildMembersChunk {
 /// Dispatched when a role is created.
 ///
 /// Provides the guild’s id and the new role’s data.
-pub struct GuildRoleCreate {
+pub struct BGuildRoleCreate {
     pub ctx: Context,
     pub new: Role,
 }
@@ -275,7 +277,7 @@ pub struct GuildRoleCreate {
 /// Dispatched when a role is deleted.
 /// Provides the guild’s id, the role’s id and its data (if `bot_cache` feature is enabled
 /// and the data is available).
-pub struct GuildRoleDelete {
+pub struct BGuildRoleDelete {
     pub ctx: Context,
     pub guild_id: GuildId,
     pub removed_role_id: RoleId,
@@ -287,7 +289,7 @@ pub struct GuildRoleDelete {
 ///
 /// Provides the guild’s id, the role’s old (if `bot_cache` feature is enabled and the data
 /// is available) and new data.
-pub struct GuildRoleUpdate {
+pub struct BGuildRoleUpdate {
     pub ctx: Context,
     pub old_data_if_available: Option<Role>,
     pub new: Role,
@@ -297,7 +299,7 @@ pub struct GuildRoleUpdate {
 /// Dispatched when the stickers are updated.
 ///
 /// Provides the guild’s id and the new state of the stickers in the guild.
-pub struct GuildStickersUpdate {
+pub struct BGuildStickersUpdate {
     pub ctx: Context,
     pub guild_id: GuildId,
     pub current_state: HashMap<StickerId, Sticker>,
@@ -308,7 +310,7 @@ pub struct GuildStickersUpdate {
 ///
 /// Provides the guild’s old data (if `bot_cache` feature is enabled and the data is
 /// available) and the new data.
-pub struct GuildUpdate {
+pub struct BGuildUpdate {
     pub ctx: Context,
     pub old_data_if_available: Option<Guild>,
     pub new_data: PartialGuild,
@@ -318,7 +320,7 @@ pub struct GuildUpdate {
 /// Dispatched when a invite is created.
 ///
 /// Provides data about the invite.
-pub struct InviteCreate {
+pub struct BInviteCreate {
     pub ctx: Context,
     pub data: InviteCreateEvent,
 }
@@ -327,7 +329,7 @@ pub struct InviteCreate {
 /// Dispatched when a invite is deleted.
 ///
 /// Provides data about the invite.
-pub struct InviteDelete {
+pub struct BInviteDelete {
     pub ctx: Context,
     pub data: InviteDeleteEvent,
 }
@@ -336,7 +338,7 @@ pub struct InviteDelete {
 /// Dispatched when a message is created.
 ///
 /// Provides the message’s data.
-pub struct Message {
+pub struct BMessage {
     pub ctx: Context,
     pub new_message: Message,
 }
@@ -345,7 +347,7 @@ pub struct Message {
 /// Dispatched when a message is deleted.
 ///
 /// Provides the guild’s id, the channel’s id and the message’s id.
-pub struct MessageDelete {
+pub struct BMessageDelete {
     pub ctx: Context,
     pub channel_id: ChannelId,
     pub deleted_message_id: MessageId,
@@ -356,7 +358,7 @@ pub struct MessageDelete {
 /// Dispatched when multiple messages were deleted at once.
 ///
 /// Provides the guild’s id, channel’s id and the deleted messages’ ids.
-pub struct MessageDeleteBulk {
+pub struct BMessageDeleteBulk {
     pub ctx: Context,
     pub channel_id: ChannelId,
     pub multiple_deleted_messages_ids: Vec<MessageId>,
@@ -368,7 +370,7 @@ pub struct MessageDeleteBulk {
 ///
 /// Provides the message update data, as well as the actual old and new message if `bot_cache`
 /// feature is enabled and the data is available.
-pub struct MessageUpdate {
+pub struct BMessageUpdate {
     pub ctx: Context,
     pub old_if_available: Option<Message>,
     pub new: Option<Message>,
@@ -379,7 +381,7 @@ pub struct MessageUpdate {
 /// Dispatched when a new reaction is attached to a message.
 ///
 /// Provides the reaction’s data.
-pub struct ReactionAdd {
+pub struct BReactionAdd {
     pub ctx: Context,
     pub add_reaction: Reaction,
 }
@@ -388,7 +390,7 @@ pub struct ReactionAdd {
 /// Dispatched when a reaction is detached from a message.
 ///
 /// Provides the reaction’s data.
-pub struct ReactionRemove {
+pub struct BReactionRemove {
     pub ctx: Context,
     pub removed_reaction: Reaction,
 }
@@ -397,7 +399,7 @@ pub struct ReactionRemove {
 /// Dispatched when all reactions of a message are detached from a message.
 ///
 /// Provides the channel’s id and the message’s id.
-pub struct ReactionRemoveAll {
+pub struct BReactionRemoveAll {
     pub ctx: Context,
     pub channel_id: ChannelId,
     pub removed_from_message_id: MessageId,
@@ -407,7 +409,7 @@ pub struct ReactionRemoveAll {
 /// Dispatched when all reactions of a message are detached from a message.
 ///
 /// Provides the channel’s id and the message’s id.
-pub struct ReactionRemoveEmoji {
+pub struct BReactionRemoveEmoji {
     pub ctx: Context,
     pub removed_reactions: Reaction,
 }
@@ -419,14 +421,14 @@ pub struct ReactionRemoveEmoji {
 ///
 /// Note: This event will not trigger unless the “guild presences” privileged intent is enabled
 /// on the bot application page.
-pub struct PresenceUpdate {
+pub struct BPresenceUpdate {
     pub ctx: Context,
     pub new_data: Presence,
 }
 
 #[derive(Event)]
 /// Dispatched upon reconnection.
-pub struct Resume {
+pub struct BResume {
     pub ctx: Context,
     pub event: ResumedEvent,
 }
@@ -435,14 +437,14 @@ pub struct Resume {
 /// Dispatched when a shard’s connection stage is updated
 ///
 /// Provides the context of the shard and the event information about the update.
-pub struct ShardStageUpdate {
+pub struct BShardStageUpdate {
     pub ctx: Context,
     pub event: ShardStageUpdateEvent,
 }
 
 #[derive(Event)]
 /// Dispatched when a user starts typing.
-pub struct TypingStart {
+pub struct BTypingStart {
     pub ctx: Context,
     pub event: TypingStartEvent,
 }
@@ -451,7 +453,7 @@ pub struct TypingStart {
 /// Dispatched when the bot’s data is updated.
 ///
 /// Provides the old (if `bot_cache` feature is enabled and the data is available) and new data.
-pub struct UserUpdate {
+pub struct BUserUpdate {
     pub ctx: Context,
     pub old_data: Option<CurrentUser>,
     pub new: CurrentUser,
@@ -461,7 +463,7 @@ pub struct UserUpdate {
 /// Dispatched when a guild’s voice server was updated (or changed to another one).
 ///
 /// Provides the voice server’s data.
-pub struct VoiceServerUpdate {
+pub struct BVoiceServerUpdate {
     pub ctx: Context,
     pub event: VoiceServerUpdateEvent,
 }
@@ -471,7 +473,7 @@ pub struct VoiceServerUpdate {
 ///
 /// Provides the guild’s id (if available) and the old state (if `bot_cache` feature is enabled
 /// and [`GatewayIntents::GUILDS`] is enabled) and the new state of the guild’s voice channels.
-pub struct VoiceStateUpdate {
+pub struct BVoiceStateUpdate {
     pub ctx: Context,
     pub old: Option<VoiceState>,
     pub new: VoiceState,
@@ -481,7 +483,7 @@ pub struct VoiceStateUpdate {
 /// Dispatched when a voice channel’s status is updated.
 ///
 /// Provides the status, channel’s id and the guild’s id.
-pub struct VoiceChannelStatusUpdate {
+pub struct BVoiceChannelStatusUpdate {
     pub ctx: Context,
     pub old: Option<String>,
     pub status: Option<String>,
@@ -493,7 +495,7 @@ pub struct VoiceChannelStatusUpdate {
 /// Dispatched when a guild’s webhook is updated.
 ///
 /// Provides the guild’s id and the channel’s id the webhook belongs in.
-pub struct WebhookUpdate {
+pub struct BWebhookUpdate {
     pub ctx: Context,
     pub guild_id: GuildId,
     pub belongs_to_channel_id: ChannelId,
@@ -504,7 +506,7 @@ pub struct WebhookUpdate {
 /// clicked).
 ///
 /// Provides the created interaction.
-pub struct InteractionCreate {
+pub struct BInteractionCreate {
     pub ctx: Context,
     pub interaction: Interaction,
 }
@@ -513,7 +515,7 @@ pub struct InteractionCreate {
 /// Dispatched when a guild integration is created.
 ///
 /// Provides the created integration.
-pub struct IntegrationCreate {
+pub struct BIntegrationCreate {
     pub ctx: Context,
     pub integration: Integration,
 }
@@ -522,7 +524,7 @@ pub struct IntegrationCreate {
 /// Dispatched when a guild integration is updated.
 ///
 /// Provides the updated integration.
-pub struct IntegrationUpdate {
+pub struct BIntegrationUpdate {
     pub ctx: Context,
     pub integration: Integration,
 }
@@ -531,7 +533,7 @@ pub struct IntegrationUpdate {
 /// Dispatched when a stage instance is created.
 ///
 /// Provides the created stage instance.
-pub struct StageInstanceCreate {
+pub struct BStageInstanceCreate {
     pub ctx: Context,
     pub stage_instance: StageInstance,
 }
@@ -540,7 +542,7 @@ pub struct StageInstanceCreate {
 /// Dispatched when a stage instance is updated.
 ///
 /// Provides the updated stage instance.
-pub struct StageInstanceUpdate {
+pub struct BStageInstanceUpdate {
     pub ctx: Context,
     pub stage_instance: StageInstance,
 }
@@ -549,7 +551,7 @@ pub struct StageInstanceUpdate {
 /// Dispatched when a stage instance is deleted.
 ///
 /// Provides the deleted stage instance.
-pub struct StageInstanceDelete {
+pub struct BStageInstanceDelete {
     pub ctx: Context,
     pub stage_instance: StageInstance,
 }
@@ -558,7 +560,7 @@ pub struct StageInstanceDelete {
 /// Dispatched when a thread is created or the current user is added to a private thread.
 ///
 /// Provides the thread.
-pub struct ThreadCreate {
+pub struct BThreadCreate {
     pub ctx: Context,
     pub thread: GuildChannel,
 }
@@ -568,7 +570,7 @@ pub struct ThreadCreate {
 ///
 /// Provides the updated thread and the old thread data, provided the thread was cached prior
 /// to dispatch.
-pub struct ThreadUpdate {
+pub struct BThreadUpdate {
     pub ctx: Context,
     pub old: Option<GuildChannel>,
     pub new: GuildChannel,
@@ -579,7 +581,7 @@ pub struct ThreadUpdate {
 ///
 /// Provides the partial data about the deleted thread and, if it was present in the cache
 /// before its deletion, its full data.
-pub struct ThreadDelete {
+pub struct BThreadDelete {
     pub ctx: Context,
     pub thread: PartialGuildChannel,
     pub full_thread_data: Option<GuildChannel>,
@@ -590,7 +592,7 @@ pub struct ThreadDelete {
 ///
 /// Provides the threads the current user can access, the thread members, the guild Id,
 /// and the channel Ids of the parent channels being synced.
-pub struct ThreadListSync {
+pub struct BThreadListSync {
     pub ctx: Context,
     pub thread_list_sync: ThreadListSyncEvent,
 }
@@ -599,7 +601,7 @@ pub struct ThreadListSync {
 /// Dispatched when the [`ThreadMember`] for the current user is updated.
 ///
 /// Provides the updated thread member.
-pub struct ThreadMemberUpdate {
+pub struct BThreadMemberUpdate {
     pub ctx: Context,
     pub thread_member: ThreadMember,
 }
@@ -611,7 +613,7 @@ pub struct ThreadMemberUpdate {
 ///
 /// Provides the added/removed members, the approximate member count of members in the thread,
 /// the thread Id and its guild Id.
-pub struct ThreadMembersUpdate {
+pub struct BThreadMembersUpdate {
     pub ctx: Context,
     pub thread_members_update: ThreadMembersUpdateEvent,
 }
@@ -620,7 +622,7 @@ pub struct ThreadMembersUpdate {
 /// Dispatched when a scheduled event is created.
 ///
 /// Provides data about the scheduled event.
-pub struct GuildScheduledEventCreate {
+pub struct BGuildScheduledEventCreate {
     pub ctx: Context,
     pub event: ScheduledEvent,
 }
@@ -629,7 +631,7 @@ pub struct GuildScheduledEventCreate {
 /// Dispatched when a scheduled event is updated.
 ///
 /// Provides data about the scheduled event.
-pub struct GuildScheduledEventUpdate {
+pub struct BGuildScheduledEventUpdate {
     pub ctx: Context,
     pub event: ScheduledEvent,
 }
@@ -638,7 +640,7 @@ pub struct GuildScheduledEventUpdate {
 /// Dispatched when a scheduled event is deleted.
 ///
 /// Provides data about the scheduled event.
-pub struct GuildScheduledEventDelete {
+pub struct BGuildScheduledEventDelete {
     pub ctx: Context,
     pub event: ScheduledEvent,
 }
@@ -647,7 +649,7 @@ pub struct GuildScheduledEventDelete {
 /// Dispatched when a guild member has subscribed to a scheduled event.
 ///
 /// Provides data about the subscription.
-pub struct GuildScheduledEventUserAdd {
+pub struct BGuildScheduledEventUserAdd {
     pub ctx: Context,
     pub subscribed: GuildScheduledEventUserAddEvent,
 }
@@ -656,7 +658,7 @@ pub struct GuildScheduledEventUserAdd {
 /// Dispatched when a guild member has unsubscribed from a scheduled event.
 ///
 /// Provides data about the cancelled subscription.
-pub struct GuildScheduledEventUserRemove {
+pub struct BGuildScheduledEventUserRemove {
     pub ctx: Context,
     pub unsubscribed: GuildScheduledEventUserRemoveEvent,
 }
@@ -665,7 +667,7 @@ pub struct GuildScheduledEventUserRemove {
 /// Dispatched when a user subscribes to a SKU.
 ///
 /// Provides data about the subscription.
-pub struct EntitlementCreate {
+pub struct BEntitlementCreate {
     pub ctx: Context,
     pub entitlement: Entitlement,
 }
@@ -676,7 +678,7 @@ pub struct EntitlementCreate {
 ///
 /// Provides data abut the updated subscription. If the entitlement is renewed, the
 /// `[Entitlement::ends_at`] field will have changed.
-pub struct EntitlementUpdate {
+pub struct BEntitlementUpdate {
     pub ctx: Context,
     pub entitlement: Entitlement,
 }
@@ -687,7 +689,7 @@ pub struct EntitlementUpdate {
 /// when they expire.
 ///
 /// Provides data about the subscription. Specifically, the Entitlement::deleted field will be set.
-pub struct EntitlementDelete {
+pub struct BEntitlementDelete {
     pub ctx: Context,
     pub entitlement: Entitlement,
 }
@@ -696,20 +698,20 @@ pub struct EntitlementDelete {
 /// Dispatched when a user votes on a message poll.
 ///
 /// This will be dispatched multiple times if multiple answers are selected.
-pub struct PollVoteAdd {
+pub struct BPollVoteAdd {
     pub ctx: Context,
     pub event: MessagePollVoteAddEvent,
 }
 
 #[derive(Event)]
 /// Dispatched when a user removes a previous vote on a poll.
-pub struct PollVoteRemove {
+pub struct BPollVoteRemove {
     pub ctx: Context,
     pub event: MessagePollVoteRemoveEvent,
 }
 
 #[derive(Event)]
 /// Dispatched when an HTTP rate limit is hit
-pub struct RateLimit {
+pub struct BRateLimit {
     pub data: RatelimitInfo,
 }
