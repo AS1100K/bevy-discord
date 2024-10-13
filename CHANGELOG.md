@@ -5,10 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 0.3.0
+## [Unreleased] - 0.2.1
+
+### Added
+- Documentation regarding crate and various modules, structs and functions
 
 ### Changed
-- Changed License from `GPL-3` to `MIT`
+- License from `GPL-3` to `MIT`
 
 ### Fixes
 - Removed Error when the channel is empty

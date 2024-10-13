@@ -1,3 +1,9 @@
+//! Uses discord webhooks, using this you can only send messages.
+//!
+//! # Warning
+//! This module is not fully documented yet. Some parts might be missing or incomplete.
+//! Use with caution.
+
 pub mod common;
 
 use crate::runtime::tokio_runtime;
@@ -9,6 +15,7 @@ use reqwest::StatusCode;
 use std::collections::HashMap;
 use tracing::{error, trace};
 
+/// A bevy plugin for Discord Webhook System
 #[derive(Clone)]
 pub struct DiscordWebhookPlugin(DiscordWebhookRes);
 

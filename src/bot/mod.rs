@@ -1,3 +1,5 @@
+//! A wrapper around serenity
+
 use std::sync::Arc;
 
 use bevy_app::{App, Plugin, Startup, Update};
@@ -24,9 +26,12 @@ pub mod serenity {
     pub use serenity::*;
 }
 
+/// A plugin for the discord bot. This plugin is responsible for adding events and starting
+/// serenity.
 pub struct DiscordBotPlugin(DiscordBotConfig);
 
 impl DiscordBotPlugin {
+    /// Creates a new instance of `DiscordBotPlugin` from [DiscordBotConfig]
     pub fn new(configuration: DiscordBotConfig) -> Self {
         Self(configuration)
     }
