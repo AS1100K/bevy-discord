@@ -20,8 +20,10 @@ Example Usage:
 use bevy_ecs::prelude::*;
 use bevy_discord::bot::{ 
     events::BMessage,
+    DiscordBotRes,
     serenity::model::id::ChannelId
 };
+use bevy_discord::runtime::tokio_runtime;
 use serde_json::json;
 
 // Make sure to add [bevy_discord::bot::DiscordBotPlugin] to the `App`
@@ -30,9 +32,11 @@ use serde_json::json;
 fn handle_chat_relay(
     // Event emitted when an message is received on discord
     mut events: EventReader<BMessage>,
+    // Discord Res
+    discord_bot_res: Res<DiscordBotRes>
 ) {
     for event in events.read() {
-        let message_content = event.new_message.content;
+        let message_content = &event.new_message.content;
         
         println!("Got a new message -> {}", message_content);
 
@@ -41,10 +45,15 @@ fn handle_chat_relay(
         // ...
         
         // Send a message to discord
-        let channel_id = ChannelId::new(7);
-        ctx.http.send_message(channel_id, Vec::new(), &json({
-            "content": "Hello from bevy-discord"
-        })).await.unwrap();
+        let http = discord_bot_res.get_http().unwrap();
+
+        tokio_runtime().spawn(async move {
+            let channel_id = ChannelId::new(7);
+
+            http.send_message(channel_id, Vec::new(), &json!({
+                "content": "Hello from bevy-discord"
+            })).await.unwrap();
+        });
     }
 }
 ```
