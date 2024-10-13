@@ -147,7 +147,7 @@ pub struct DiscordBotRes {
 
 impl DiscordBotRes {
     /// [Http] is available once [BReadyEvent] is triggered
-    /// 
+    ///
     /// NOTE: This function clones [Http], so it can be expensive.
     ///
     /// ## Example
