@@ -24,34 +24,6 @@ impl Plugin for DiscordHttpPlugin {
 }
 
 /// A Bevy Resource that holds [Http]
-///
-/// ```rust
-/// # use bevy_ecs::event::{Event, EventReader};
-/// # use bevy_ecs::system::Res;
-/// use serde_json::json;
-/// use serenity::all::Change::ChannelId;
-/// use bevy_discord::http::DiscordHttpResource;
-/// use bevy_discord::runtime::tokio_runtime;
-///
-/// # #[derive(Event)]
-/// # pub struct MessageTriggerEvent;
-/// fn handle_send_message(
-///     mut events: EventReader<MessageTriggerEvent>,
-///     discord_http_resource: Res<DiscordHttpResource>
-/// ) {
-///     for event in events.read() {
-///         tokio_runtime().spawn(async move {
-///             let channel_id = ChannelId::new(123);
-///             discord_http_resource.http
-///                 .send_message(channel_id, vec![], &json!({
-///                     "content": "Hello from bevy"
-///                 }))
-///                 .await
-///                 .unwrap()
-///         });
-///     }
-/// }
-/// ```
 #[derive(Resource)]
 pub struct DiscordHttpResource {
     pub http: Arc<Http>,
