@@ -7,6 +7,9 @@ use bevy_ecs::schedule::SystemSet;
 #[cfg_attr(docsrs, doc(cfg(feature = "bot")))]
 pub mod bot;
 mod common;
+#[cfg(feature = "http")]
+#[cfg_attr(docsrs, doc(cfg(feature = "http")))]
+pub mod http;
 /// Tokio runtime, use this if you want to use async code inside bevy systems
 pub mod runtime;
 #[deprecated = "This module is deprecated and will be removed in next major release."]

@@ -11,9 +11,10 @@ license = "MIT"
 keywords = ["bevy", "plugin", "discord"]
 
 [features]
-full = ["webhook", "bot"]
+full = ["webhook", "bot", "http"]
 webhook = ["dep:reqwest", "dep:serde", "dep:serde_json"]
-bot = ["dep:serenity", "tokio/sync"]
+bot = ["tokio/sync", "http"]
+http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]
 
 [dependencies]
