@@ -18,7 +18,7 @@ http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]
 
 [dependencies]
-bevy_app = "^0.13.2"
+bevy_app = "^0.14.2"
 bevy_ecs = "^0.13.2"
 serenity = { version = "^0.12.2", features = [
     "gateway",
