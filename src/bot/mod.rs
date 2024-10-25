@@ -4,6 +4,7 @@ use std::sync::Arc;
 
 use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
+// send_events function is created with macro expansion, so don't worry when IDE tries hard to find it
 use common::{send_events, BEventCollection};
 use flume::Receiver;
 use serenity::all::*;
