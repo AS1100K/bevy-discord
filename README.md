@@ -66,12 +66,13 @@ although it is archived now._
 
 This crate using powerful cargo features.
 
-| Feature   | Information                                                                             |
-| --------- | --------------------------------------------------------------------------------------- |
-| `webhook` | Uses discord webhooks, using this you can only send messages.                           |
-| `bot`     | This uses `serenity` behind the scenes and you can create awesome discord bots with it. |
+| Feature                                                                                                       | Information                                                                             |
+|---------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| `bot`                                                                                                         | This uses `serenity` behind the scenes and you can create awesome discord bots with it. |
+| `http`                                                                                                        | This is a wrapper around serenity `Http`. This mimics Discord API(s).                   |
+| `webhook` (👎 Deprecated [Learn Why](https://github.com/AS1100K/bevy-discord/blob/main/deprecated-reason.md)) | Uses discord webhooks, using this you can only send messages.                           |
 
-_both features are comes under `full` feature._
+_All features are comes under `full` feature._
 
 ## Not Supported Features
 
@@ -79,6 +80,15 @@ Currently, this crate is under development and there are features that are suppo
 but not supported by us.
 
 | Feature       | Module    |
-| ------------- | --------- |
+|---------------|-----------|
 | `voice`       | `bot`     |
 | `attachments` | `webhook` |
+
+## Versions
+This crate aims to track bevy's versions. It also follows the semver standard. Below is a chart which versions of this
+crate are compatible with which bevy version:
+
+| Version                          | Bevy Version |
+|----------------------------------|--------------|
+| `0.2.x`                          | `0.13.x`     |
+| `0.3.x` _(Release Planned Soon)_ | `0.14.x`     |
