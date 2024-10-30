@@ -18,23 +18,23 @@ http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]
 
 [dependencies]
-bevy_app = "^0.13.2"
-bevy_ecs = "^0.13.2"
-serenity = { version = "^0.12.2", features = [
+bevy_app = "0.13"
+bevy_ecs = "0.13"
+flume = "0.11"
+serenity = { version = "0.12", features = [
     "gateway",
     "framework",
     "model",
 ], optional = true }
-reqwest = { version = "^0.12.5", features = [
+paste = "1"
+reqwest = { version = "0.12", default-features = false, features = [
     "json",
     "rustls-tls",
 ], optional = true }
-serde = { version = "^1.0.203", features = ["derive"], optional = true }
-serde_json = { version = "^1.0.117", optional = true }
-tracing = "^0.1.40"
-tokio = { version = "^1.38.0", features = ["rt-multi-thread", "rt"] }
-paste = "1.0.15"
-flume = "^0.11.0"
+serde = { version = "1", features = ["derive"], optional = true }
+serde_json = { version = "1", optional = true }
+tracing = "0.1"
+tokio = { version = "1", features = ["rt-multi-thread", "rt"] }
 
 [package.metadata.docs.rs]
 all-features = true
