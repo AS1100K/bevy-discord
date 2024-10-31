@@ -26,5 +26,15 @@ impl Plugin for DiscordHttpPlugin {
 /// A Bevy Resource that holds [Http]
 #[derive(Resource)]
 pub struct DiscordHttpResource {
-    pub http: Arc<Http>,
+    http: Arc<Http>,
+}
+
+impl DiscordHttpResource {
+    pub fn client(&self) -> Arc<Http> {
+        self.http.clone()
+    }
+
+    pub fn client_ref(&self) -> &Http {
+        &self.http
+    }
 }
