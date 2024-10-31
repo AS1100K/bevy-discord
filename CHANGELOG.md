@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Module Http
+- New Examples
 
 ### Changed
 - Removed Explicit minor versioning of dependencies [#3](https://github.com/as1100k/bevy-discord/pull/3)
