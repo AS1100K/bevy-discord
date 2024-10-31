@@ -56,8 +56,6 @@ jobs:
           key: ${{ runner.os }}-cargo-clippy-${{ hashFiles('**/Cargo.toml') }}
       - name: Install stable toolchain
         uses: rs-workspace/rust-toolchain@v0.1.0
-        with:
-          components: clippy
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
       - name: Run clippy
@@ -73,7 +71,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Install stable toolchain
         uses: rs-workspace/rust-toolchain@v0.1.0
-        with:
-          components: rustfmt
       - name: Run cargo fmt
         run: cargo fmt --all -- --check
