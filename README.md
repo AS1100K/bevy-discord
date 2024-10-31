@@ -91,4 +91,4 @@ crate are compatible with which bevy version:
 | Version                          | Bevy Version |
 |----------------------------------|--------------|
 | `0.2.x`                          | `0.13.x`     |
-| `0.3.x` _(Release Planned Soon)_ | `0.14.x`     |
+| `0.3.x` _(Release Planned Soon)_ | `0.13.x`     |
