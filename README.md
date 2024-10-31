@@ -16,7 +16,7 @@ $ cargo add bevy-discord --features full
 
 ## Quick Start
 
-```rust
+```rust,no_run
 // examples/basic_bot.rs
 use bevy::prelude::*;
 use bevy_discord::bot::serenity::all::*;
