@@ -24,7 +24,6 @@
 //! App::new()
 //!     .add_plugins(DiscordBotPlugin::new(config))
 //!     .run();
-//! }
 //! ```
 //!
 //! # Note
@@ -79,7 +78,6 @@ mod handle;
 /// App::new()
 ///     .add_plugins(DiscordBotPlugin::new(config))
 ///     .run();
-/// }
 /// ```
 ///
 /// # Features
