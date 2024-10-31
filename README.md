@@ -94,11 +94,10 @@ Note: Remember to replace `YOUR_BOT_TOKEN` with your actual Discord bot token.
 
 This crate using powerful cargo features.
 
-| Feature                                                                                                       | Information                                                   |
-|---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
-| `bot` _(includes `http`)_                                                                                     | Discord bot integration for Bevy applications.                |
-| `http`                                                                                                        | HTTP Client functionality for Discord API interactions.       |
-| `webhook` (👎 Deprecated [Learn Why](https://github.com/AS1100K/bevy-discord/blob/main/deprecated-reason.md)) | Uses discord webhooks, using this you can only send messages. |
+| Feature                   | Information                                                   |
+|---------------------------|---------------------------------------------------------------|
+| `bot` _(includes `http`)_ | Discord bot integration for Bevy applications.                |
+| `http`                    | HTTP Client functionality for Discord API interactions.       |
 
 _All features are comes under `full` feature._
 
@@ -109,7 +108,6 @@ Currently, the following Discord/Serenity features are not supported:
 | Feature       | Module    |
 |---------------|-----------|
 | `voice`       | `bot`     |
-| `attachments` | `webhook` |
 
 ## Versions
 This crate aims to track bevy's versions. It also follows the semver standard. Below is a chart which versions of this
