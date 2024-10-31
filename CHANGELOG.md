@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Removed
 - `webhook` module
 
+## Changed
+- Add `DiscordHttpResource` once `BReadyEvent` is emitted in `DiscordBotPlugin`
+
 ## [0.3.0] - 2024-10-31
 
 ### Added

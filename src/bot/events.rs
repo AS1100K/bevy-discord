@@ -10,6 +10,9 @@ use std::collections::HashMap;
 /// Dispatched upon startup.
 ///
 /// Provides data about the bot and the guilds it’s in.
+///
+/// Once, dispatched it automatically inserts [DiscordHttpResource](crate::http::DiscordHttpResource)
+/// to the bevy app.
 pub struct BReadyEvent {
     pub ctx: Context,
     pub data_about_bot: Ready,

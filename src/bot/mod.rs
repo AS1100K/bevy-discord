@@ -30,8 +30,6 @@
 //!
 //! For HTTP interactions with Discord's API, see the [`http`](crate::http) module.
 
-use std::sync::Arc;
-
 use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
 // send_events function is created with macro expansion, so don't worry when IDE tries hard to find it
@@ -43,7 +41,6 @@ use event_handlers::*;
 use events::*;
 
 use crate::bot::handle::Handle;
-use crate::http::DiscordHttpPlugin;
 use crate::runtime::tokio_runtime;
 use crate::{initialize_field_with_doc, override_field_with_doc, DiscordSet};
 
@@ -82,7 +79,7 @@ mod handle;
 ///
 /// # Features
 ///
-/// - Automatically sets up HTTP client via [`DiscordHttpPlugin`]
+/// - Automatically makes available [DiscordHttpResource](crate::http::DiscordHttpResource)
 /// - Registers all Discord events as Bevy events
 /// - Manages bot configuration and presence
 /// - Provides asynchronous event handling
@@ -111,7 +108,6 @@ impl Plugin for DiscordBotPlugin {
         app.add_event::<BCacheRead>().add_event::<BShardsReady>();
 
         app.insert_resource(self.0.clone())
-            .add_plugins(DiscordHttpPlugin::new(self.0.token))
             .add_event::<BReadyEvent>()
             .add_event::<BCommandPermissionsUpdate>()
             .add_event::<BAutoModerationRuleCreate>()
@@ -223,69 +219,13 @@ impl DiscordBotConfig {
 /// This resource maintains the bot's internal state and event communication channel.
 #[derive(Resource)]
 pub struct DiscordBotRes {
-    pub(crate) http: Option<Arc<Http>>,
     pub(crate) recv: Receiver<BEventCollection>,
-}
-
-impl DiscordBotRes {
-    /// [Http] is available once [BReadyEvent] is triggered
-    ///
-    /// # Deprecated
-    ///
-    /// This method is deprecated. Use [`DiscordHttpResource`](crate::http::DiscordHttpResource)
-    /// from the `http` module instead for HTTP interactions.
-    ///
-    /// ## Example
-    ///
-    /// ```rust,no_run
-    /// use bevy_ecs::prelude::*;
-    /// # use bevy_discord::bot::DiscordBotRes;
-    /// use bevy_discord::runtime::tokio_runtime;
-    /// use serde_json::json;
-    /// use bevy_discord::serenity::all::*;
-    /// # use tracing::error;
-    ///
-    /// fn send_message (
-    ///     discord_bot_res: Res<DiscordBotRes>
-    /// ) {
-    ///     let http = discord_bot_res.get_http();
-    ///
-    ///     if let Ok(h) = http {
-    ///         // Do anything you want to do with Http
-    ///         tokio_runtime().spawn(async move {
-    ///             if h.send_message(
-    ///                     ChannelId::new(123456789),
-    ///                     Vec::new(),
-    ///                     &json!({
-    ///                         "content": "Hello from bevy!"
-    ///                     }),
-    ///                 )
-    ///                 .await
-    ///                 .is_err()
-    ///             {
-    ///                 error!("Unable to send message on discord");
-    ///             }
-    ///         });
-    ///     }
-    /// }
-    /// ```
-    #[deprecated(since = "0.3.0", note = "Please migrate to http module")]
-    pub fn get_http(&self) -> Result<Arc<Http>, &str> {
-        if let Some(http) = self.http.to_owned() {
-            Ok(http)
-        } else {
-            Err("Discord client hasn't started yet.")
-        }
-    }
 }
 
 fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) {
     let (tx, rx) = flume::unbounded();
 
-    commands.insert_resource(DiscordBotRes {
-        http: None,
-        recv: rx,
-    });
+    commands.insert_resource(DiscordBotRes { recv: rx });
 
     let mut client = Client::builder(discord_bot_config.token, discord_bot_config.gateway_intents)
         .event_handler(Handle { tx });

@@ -55,12 +55,20 @@ impl Plugin for DiscordHttpPlugin {
 /// This resource is automatically inserted into the Bevy app when using
 /// [`DiscordHttpPlugin`]. It wraps Serenity's [`Http`] client in an [`Arc`]
 /// for safe concurrent access.
+///
+/// When using [`DiscordBotPlugin`](crate::bot::DiscordBotPlugin) this resource is
+/// automatically inserted into the Bevy app once [BReadyEvent](crate::bot::events::BReadyEvent)
+/// is emitted.
 #[derive(Resource)]
 pub struct DiscordHttpResource {
     http: Arc<Http>,
 }
 
 impl DiscordHttpResource {
+    pub fn new(http: Arc<Http>) -> Self {
+        Self { http }
+    }
+
     /// Returns a cloned Arc reference to the HTTP client.
     ///
     /// Use this method when you need to share ownership of the client
