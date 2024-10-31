@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 - Add `DiscordHttpResource` once `BReadyEvent` is emitted in `DiscordBotPlugin`
 
+## [0.3.1] - 2024-10-31
+
+_For commit history see [https://github.com/AS1100K/bevy-discord/tree/v0.3.1](https://github.com/AS1100K/bevy-discord/tree/v0.3.1)_
+
+## Changed
+- Changed `DiscordBotConfig::token` type to `String` [#4](https://github.com/as1100k/bevy-discord/issues/4)
+
 ## [0.3.0] - 2024-10-31
 
 ### Added
