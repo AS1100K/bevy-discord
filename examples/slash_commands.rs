@@ -1,9 +1,9 @@
 // examples/slash_commands.rs
 use bevy::prelude::*;
-use bevy_discord::bot::serenity::all::*;
-use bevy_discord::bot::serenity::model::application::Interaction;
 use bevy_discord::bot::{events::*, DiscordBotConfig, DiscordBotPlugin};
 use bevy_discord::runtime::tokio_runtime;
+use bevy_discord::serenity::all::*;
+use bevy_discord::serenity::model::application::Interaction;
 
 fn main() {
     let config = DiscordBotConfig::default()

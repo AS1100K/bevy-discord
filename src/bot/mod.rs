@@ -15,7 +15,7 @@
 //! ```no_run
 //! use bevy::prelude::*;
 //! use bevy_discord::bot::{DiscordBotPlugin, DiscordBotConfig};
-//! use bevy_discord::bot::serenity::all::GatewayIntents;
+//! use bevy_discord::serenity::all::GatewayIntents;
 //!
 //! fn main() {
 //!     let config = DiscordBotConfig::default()
@@ -54,12 +54,6 @@ mod event_handlers;
 pub mod events;
 mod handle;
 
-/// Re-export serenity
-pub mod serenity {
-    #[doc(hidden)]
-    pub use serenity::*;
-}
-
 /// A plugin that integrates Discord bot functionality into a Bevy application.
 ///
 /// # Functionality
@@ -75,7 +69,7 @@ pub mod serenity {
 /// ```no_run
 /// use bevy::prelude::*;
 /// use bevy_discord::bot::{DiscordBotPlugin, DiscordBotConfig};
-/// use bevy_discord::bot::serenity::all::{GatewayIntents, ActivityData, ActivityType};
+/// use bevy_discord::serenity::all::{GatewayIntents, ActivityData, ActivityType};
 ///
 /// fn main() {
 ///     // Configure your bot
@@ -252,7 +246,7 @@ impl DiscordBotRes {
     /// # use bevy_discord::bot::DiscordBotRes;
     /// use bevy_discord::runtime::tokio_runtime;
     /// use serde_json::json;
-    /// use bevy_discord::bot::serenity::all::*;
+    /// use bevy_discord::serenity::all::*;
     /// # use tracing::error;
     ///
     /// fn send_message (

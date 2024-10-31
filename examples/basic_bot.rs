@@ -1,7 +1,7 @@
 // examples/basic_bot.rs
 use bevy::prelude::*;
-use bevy_discord::bot::serenity::all::*;
 use bevy_discord::bot::{events::BMessage, DiscordBotConfig, DiscordBotPlugin};
+use bevy_discord::serenity::all::*;
 use serde_json::json;
 
 fn main() {
