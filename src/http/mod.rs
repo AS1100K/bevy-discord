@@ -8,11 +8,9 @@
 //! use bevy::prelude::*;
 //! use bevy_discord::http::DiscordHttpPlugin;
 //!
-//! fn main() {
-//!     App::new()
-//!         .add_plugins(DiscordHttpPlugin::new("your-bot-token-here"))
-//!         .run();
-//! }
+//! App::new()
+//!     .add_plugins(DiscordHttpPlugin::new("your-bot-token-here"))
+//!     .run();
 //! ```
 
 use bevy_app::{App, Plugin};

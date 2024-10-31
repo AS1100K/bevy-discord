@@ -17,14 +17,13 @@
 //! use bevy_discord::bot::{DiscordBotPlugin, DiscordBotConfig};
 //! use bevy_discord::serenity::all::GatewayIntents;
 //!
-//! fn main() {
-//!     let config = DiscordBotConfig::default()
-//!         .token("your-bot-token")
-//!         .gateway_intents(GatewayIntents::non_privileged());
+//! let config = DiscordBotConfig::default()
+//!     .token("your-bot-token")
+//!     .gateway_intents(GatewayIntents::non_privileged());
 //!
-//!     App::new()
-//!         .add_plugins(DiscordBotPlugin::new(config))
-//!         .run();
+//! App::new()
+//!     .add_plugins(DiscordBotPlugin::new(config))
+//!     .run();
 //! }
 //! ```
 //!
@@ -71,16 +70,15 @@ mod handle;
 /// use bevy_discord::bot::{DiscordBotPlugin, DiscordBotConfig};
 /// use bevy_discord::serenity::all::{GatewayIntents, ActivityData, ActivityType};
 ///
-/// fn main() {
-///     // Configure your bot
-///     let config = DiscordBotConfig::default()
-///         .token("your-bot-token")
-///         .gateway_intents(GatewayIntents::non_privileged())
-///         .activity(ActivityData::playing("with Bevy!"));
+/// // Configure your bot
+/// let config = DiscordBotConfig::default()
+///     .token("your-bot-token")
+///     .gateway_intents(GatewayIntents::non_privileged())
+///     .activity(ActivityData::playing("with Bevy!"));
 ///
-///     App::new()
-///         .add_plugins(DiscordBotPlugin::new(config))
-///         .run();
+/// App::new()
+///     .add_plugins(DiscordBotPlugin::new(config))
+///     .run();
 /// }
 /// ```
 ///
@@ -115,7 +113,7 @@ impl Plugin for DiscordBotPlugin {
         app.add_event::<BCacheRead>().add_event::<BShardsReady>();
 
         app.insert_resource(self.0.clone())
-            .add_plugins(DiscordHttpPlugin::new(&self.0.token))
+            .add_plugins(DiscordHttpPlugin::new(self.0.token))
             .add_event::<BReadyEvent>()
             .add_event::<BCommandPermissionsUpdate>()
             .add_event::<BAutoModerationRuleCreate>()
@@ -291,11 +289,8 @@ fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) 
         recv: rx,
     });
 
-    let mut client = Client::builder(
-        &discord_bot_config.token,
-        discord_bot_config.gateway_intents,
-    )
-    .event_handler(Handle { tx });
+    let mut client = Client::builder(discord_bot_config.token, discord_bot_config.gateway_intents)
+        .event_handler(Handle { tx });
 
     let discord_bot_res_clone = discord_bot_config.clone();
 
