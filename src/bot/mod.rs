@@ -1,4 +1,36 @@
-//! A wrapper around serenity
+//! Discord bot integration for Bevy applications.
+//!
+//! This module provides a plugin system for integrating a Discord bot into your Bevy application,
+//! handling Discord events, and managing the bot's state. It wraps Serenity's client functionality
+//! while providing a Bevy-friendly interface.
+//!
+//! # Features
+//!
+//! - Complete Discord event integration with Bevy's event system
+//! - Bot configuration management (status, activity, intents)
+//! - Asynchronous event handling
+//!
+//! # Example
+//!
+//! ```no_run
+//! use bevy::prelude::*;
+//! use bevy_discord::bot::{DiscordBotPlugin, DiscordBotConfig};
+//! use bevy_discord::bot::serenity::all::GatewayIntents;
+//!
+//! fn main() {
+//!     let config = DiscordBotConfig::default()
+//!         .token("your-bot-token")
+//!         .gateway_intents(GatewayIntents::non_privileged());
+//!
+//!     App::new()
+//!         .add_plugins(DiscordBotPlugin::new(config))
+//!         .run();
+//! }
+//! ```
+//!
+//! # Note
+//!
+//! For HTTP interactions with Discord's API, see the [`http`](crate::http) module.
 
 use std::sync::Arc;
 
@@ -13,6 +45,7 @@ use event_handlers::*;
 use events::*;
 
 use crate::bot::handle::Handle;
+use crate::http::DiscordHttpPlugin;
 use crate::runtime::tokio_runtime;
 use crate::{initialize_field_with_doc, override_field_with_doc, DiscordSet};
 
@@ -27,12 +60,56 @@ pub mod serenity {
     pub use serenity::*;
 }
 
-/// A plugin for the discord bot. This plugin is responsible for adding events and starting
-/// serenity.
+/// A plugin that integrates Discord bot functionality into a Bevy application.
+///
+/// # Functionality
+///
+/// This plugin handles:
+/// - Discord client initialization and lifecycle management
+/// - Event system integration between Discord and Bevy
+/// - Bot presence and status management
+/// - Gateway connection and communication
+///
+/// # Usage
+///
+/// ```no_run
+/// use bevy::prelude::*;
+/// use bevy_discord::bot::{DiscordBotPlugin, DiscordBotConfig};
+/// use bevy_discord::bot::serenity::all::{GatewayIntents, ActivityData, ActivityType};
+///
+/// fn main() {
+///     // Configure your bot
+///     let config = DiscordBotConfig::default()
+///         .token("your-bot-token")
+///         .gateway_intents(GatewayIntents::non_privileged())
+///         .activity(ActivityData::playing("with Bevy!"));
+///
+///     App::new()
+///         .add_plugins(DiscordBotPlugin::new(config))
+///         .run();
+/// }
+/// ```
+///
+/// # Features
+///
+/// - Automatically sets up HTTP client via [`DiscordHttpPlugin`]
+/// - Registers all Discord events as Bevy events
+/// - Manages bot configuration and presence
+/// - Provides asynchronous event handling
+///
+/// # Note
+///
+/// This plugin requires a valid Discord bot token and appropriate gateway intents
+/// to function correctly. Make sure to configure the necessary intents based on
+/// your bot's requirements.
 pub struct DiscordBotPlugin(DiscordBotConfig);
 
 impl DiscordBotPlugin {
-    /// Creates a new instance of `DiscordBotPlugin` from [DiscordBotConfig]
+    /// Creates a new instance of `DiscordBotPlugin` with the specified configuration.
+    ///
+    /// # Arguments
+    ///
+    /// * `configuration` - Bot configuration including token, intents, and presence settings
     pub fn new(configuration: DiscordBotConfig) -> Self {
         Self(configuration)
     }
@@ -44,6 +121,7 @@ impl Plugin for DiscordBotPlugin {
         app.add_event::<BCacheRead>().add_event::<BShardsReady>();
 
         app.insert_resource(self.0.clone())
+            .add_plugins(DiscordHttpPlugin::new(&self.0.token))
             .add_event::<BReadyEvent>()
             .add_event::<BCommandPermissionsUpdate>()
             .add_event::<BAutoModerationRuleCreate>()
@@ -124,17 +202,23 @@ impl Plugin for DiscordBotPlugin {
     }
 }
 
-/// Configuration of discord bot
+/// Configuration settings for the Discord bot.
+///
+/// This struct allows you to configure various aspects of the bot including:
+/// - Bot token
+/// - Gateway intents
+/// - Online status
+/// - Activity status
 #[derive(Default, Resource, Clone)]
 pub struct DiscordBotConfig {
-    token: String,
+    token: &'static str,
     gateway_intents: GatewayIntents,
     status: Option<OnlineStatus>,
     activity: Option<ActivityData>,
 }
 
 impl DiscordBotConfig {
-    initialize_field_with_doc!(token, String, "Sets the bot token.");
+    initialize_field_with_doc!(token, &'static str, "Sets the bot token.");
     initialize_field_with_doc!(
         gateway_intents,
         GatewayIntents,
@@ -144,7 +228,9 @@ impl DiscordBotConfig {
     override_field_with_doc!(activity, ActivityData, "Sets the initial activity.");
 }
 
-/// A Global Resource for Discord Bot. This resource holds important things like [Http]
+/// A global resource for the Discord bot.
+///
+/// This resource maintains the bot's internal state and event communication channel.
 #[derive(Resource)]
 pub struct DiscordBotRes {
     pub(crate) http: Option<Arc<Http>>,
@@ -154,7 +240,10 @@ pub struct DiscordBotRes {
 impl DiscordBotRes {
     /// [Http] is available once [BReadyEvent] is triggered
     ///
-    /// NOTE: This function clones [Http], so it can be expensive.
+    /// # Deprecated
+    ///
+    /// This method is deprecated. Use [`DiscordHttpResource`](crate::http::DiscordHttpResource)
+    /// from the `http` module instead for HTTP interactions.
     ///
     /// ## Example
     ///
@@ -190,6 +279,7 @@ impl DiscordBotRes {
     ///     }
     /// }
     /// ```
+    #[deprecated(since = "0.3.0", note = "Please migrate to http module")]
     pub fn get_http(&self) -> Result<Arc<Http>, &str> {
         if let Some(http) = self.http.to_owned() {
             Ok(http)
