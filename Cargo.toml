@@ -11,8 +11,7 @@ license = "MIT"
 keywords = ["bevy", "plugin", "discord"]
 
 [features]
-full = ["webhook", "bot", "http"]
-webhook = ["dep:reqwest", "dep:serde", "dep:serde_json"]
+full = ["bot", "http"]
 bot = ["tokio/sync", "http"]
 http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]
@@ -27,17 +26,12 @@ serenity = { version = "0.12", features = [
     "model",
 ], optional = true }
 paste = "1"
-reqwest = { version = "0.12", default-features = false, features = [
-    "json",
-    "rustls-tls",
-], optional = true }
-serde = { version = "1", features = ["derive"], optional = true }
-serde_json = { version = "1", optional = true }
 tracing = "0.1"
 tokio = { version = "1", features = ["rt-multi-thread", "rt"] }
 
 [dev-dependencies]
 bevy = "0.13"
+serde_json = "1"
 
 [package.metadata.docs.rs]
 all-features = true
