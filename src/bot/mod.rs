@@ -111,7 +111,7 @@ impl Plugin for DiscordBotPlugin {
         app.add_event::<BCacheRead>().add_event::<BShardsReady>();
 
         app.insert_resource(self.0.clone())
-            .add_plugins(DiscordHttpPlugin::new(self.0.token))
+            .add_plugins(DiscordHttpPlugin::new(self.0.token.clone()))
             .add_event::<BReadyEvent>()
             .add_event::<BCommandPermissionsUpdate>()
             .add_event::<BAutoModerationRuleCreate>()
@@ -201,14 +201,14 @@ impl Plugin for DiscordBotPlugin {
 /// - Activity status
 #[derive(Default, Resource, Clone)]
 pub struct DiscordBotConfig {
-    token: &'static str,
+    token: String,
     gateway_intents: GatewayIntents,
     status: Option<OnlineStatus>,
     activity: Option<ActivityData>,
 }
 
 impl DiscordBotConfig {
-    initialize_field_with_doc!(token, &'static str, "Sets the bot token.");
+    initialize_field_with_doc!(token, String, "Sets the bot token.");
     initialize_field_with_doc!(
         gateway_intents,
         GatewayIntents,
@@ -287,8 +287,11 @@ fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) 
         recv: rx,
     });
 
-    let mut client = Client::builder(discord_bot_config.token, discord_bot_config.gateway_intents)
-        .event_handler(Handle { tx });
+    let mut client = Client::builder(
+        &discord_bot_config.token,
+        discord_bot_config.gateway_intents,
+    )
+    .event_handler(Handle { tx });
 
     let discord_bot_res_clone = discord_bot_config.clone();
 
