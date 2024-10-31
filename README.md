@@ -18,7 +18,7 @@ Example Usage:
 
 ```rust
 use bevy_ecs::prelude::*;
-use bevy_discord::bot::{ 
+use bevy_discord::bot::{
     events::BMessage,
     DiscordBotRes,
     serenity::model::id::ChannelId
@@ -37,13 +37,13 @@ fn handle_chat_relay(
 ) {
     for event in events.read() {
         let message_content = &event.new_message.content;
-        
+
         println!("Got a new message -> {}", message_content);
 
         // ...
         // Using this message as some sort of command
         // ...
-        
+
         // Send a message to discord
         let http = discord_bot_res.get_http().unwrap();
 
@@ -58,19 +58,19 @@ fn handle_chat_relay(
 }
 ```
 
-_If you want real examples then, it's worth checking out crate 
-[aether-core](https://github.com/AS1100K/aether/blob/main/aether-core/src/discord.rs), 
+_If you want real examples then, it's worth checking out crate
+[aether-core](https://github.com/AS1100K/aether/blob/main/aether-core/src/discord.rs),
 although it is archived now._
 
 ## Features
 
 This crate using powerful cargo features.
 
-| Feature                                                                                                       | Information                                                                             |
-|---------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| `bot`                                                                                                         | This uses `serenity` behind the scenes and you can create awesome discord bots with it. |
-| `http`                                                                                                        | This is a wrapper around serenity `Http`. This mimics Discord API(s).                   |
-| `webhook` (👎 Deprecated [Learn Why](https://github.com/AS1100K/bevy-discord/blob/main/deprecated-reason.md)) | Uses discord webhooks, using this you can only send messages.                           |
+| Feature                                                                                                       | Information                                                   |
+|---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| `bot` _(includes `http`)_                                                                                     | Discord bot integration for Bevy applications.                |
+| `http`                                                                                                        | HTTP Client functionality for Discord API interactions.       |
+| `webhook` (👎 Deprecated [Learn Why](https://github.com/AS1100K/bevy-discord/blob/main/deprecated-reason.md)) | Uses discord webhooks, using this you can only send messages. |
 
 _All features are comes under `full` feature._
 
