@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Module Http
 
+### Changed
+- Removed Explicit minor versioning of dependencies [#3](https://github.com/as1100k/bevy-discord/pull/3)
+- Disabled default features for `reqwest` [#3](https://github.com/as1100k/bevy-discord/pull/3)
+
 ### Deprecated
 - module `webhook`
 
