@@ -14,53 +14,11 @@ Add `bevy-discord` as your dependency:
 $ cargo add bevy-discord --features full
 ```
 
-Example Usage:
+## Examples
 
-```rust
-use bevy_ecs::prelude::*;
-use bevy_discord::bot::{
-    events::BMessage,
-    DiscordBotRes,
-    serenity::model::id::ChannelId
-};
-use bevy_discord::runtime::tokio_runtime;
-use serde_json::json;
+The `examples/` directory contains several example implementations:
 
-// Make sure to add [bevy_discord::bot::DiscordBotPlugin] to the `App`
-
-#[allow(clippy::complexity)]
-fn handle_chat_relay(
-    // Event emitted when an message is received on discord
-    mut events: EventReader<BMessage>,
-    // Discord Res
-    discord_bot_res: Res<DiscordBotRes>
-) {
-    for event in events.read() {
-        let message_content = &event.new_message.content;
-
-        println!("Got a new message -> {}", message_content);
-
-        // ...
-        // Using this message as some sort of command
-        // ...
-
-        // Send a message to discord
-        let http = discord_bot_res.get_http().unwrap();
-
-        tokio_runtime().spawn(async move {
-            let channel_id = ChannelId::new(7);
-
-            http.send_message(channel_id, Vec::new(), &json!({
-                "content": "Hello from bevy-discord"
-            })).await.unwrap();
-        });
-    }
-}
-```
-
-_If you want real examples then, it's worth checking out crate
-[aether-core](https://github.com/AS1100K/aether/blob/main/aether-core/src/discord.rs),
-although it is archived now._
+- [`basic_bot.rs`](https://github.com/as1100k/bevy-discord/blob/main/examples/basic_bot.rs) - Simple message handling and response
 
 ## Features
 
