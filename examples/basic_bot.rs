@@ -7,7 +7,7 @@ use serde_json::json;
 fn main() {
     // Configure the bot with necessary intents
     let config = DiscordBotConfig::default()
-        .token("YOUR_BOT_TOKEN_HERE")
+        .token("YOUR_BOT_TOKEN_HERE".to_string())
         .gateway_intents(
             GatewayIntents::GUILD_MESSAGES
                 | GatewayIntents::MESSAGE_CONTENT

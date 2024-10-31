@@ -7,7 +7,7 @@ use bevy_discord::serenity::model::application::Interaction;
 
 fn main() {
     let config = DiscordBotConfig::default()
-        .token("YOUR_BOT_TOKEN_HERE")
+        .token("YOUR_BOT_TOKEN_HERE".to_string())
         .gateway_intents(GatewayIntents::GUILDS);
 
     App::new()

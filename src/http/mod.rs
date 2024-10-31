@@ -9,7 +9,7 @@
 //! use bevy_discord::http::DiscordHttpPlugin;
 //!
 //! App::new()
-//!     .add_plugins(DiscordHttpPlugin::new("your-bot-token-here"))
+//!     .add_plugins(DiscordHttpPlugin::new("your-bot-token-here".to_string()))
 //!     .run();
 //! ```
 
@@ -22,7 +22,7 @@ use std::sync::Arc;
 ///
 /// This plugin initializes a Discord HTTP client with the provided bot token
 /// and makes it available throughout the application as a Bevy resource.
-pub struct DiscordHttpPlugin(&'static str);
+pub struct DiscordHttpPlugin(String);
 
 impl DiscordHttpPlugin {
     /// Creates a new instance of the Discord HTTP plugin.
@@ -35,16 +35,16 @@ impl DiscordHttpPlugin {
     /// ```no_run
     /// use bevy_discord::http::DiscordHttpPlugin;
     ///
-    /// let plugin = DiscordHttpPlugin::new("your-bot-token-here");
+    /// let plugin = DiscordHttpPlugin::new("your-bot-token-here".to_string());
     /// ```
-    pub fn new(token: &'static str) -> DiscordHttpPlugin {
+    pub fn new(token: String) -> DiscordHttpPlugin {
         DiscordHttpPlugin(token)
     }
 }
 
 impl Plugin for DiscordHttpPlugin {
     fn build(&self, app: &mut App) {
-        let http: Arc<Http> = Arc::new(Http::new(self.0));
+        let http: Arc<Http> = Arc::new(Http::new(&self.0));
 
         app.insert_resource(DiscordHttpResource { http });
     }

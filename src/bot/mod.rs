@@ -18,7 +18,7 @@
 //! use bevy_discord::serenity::all::GatewayIntents;
 //!
 //! let config = DiscordBotConfig::default()
-//!     .token("your-bot-token")
+//!     .token("your-bot-token".to_string())
 //!     .gateway_intents(GatewayIntents::non_privileged());
 //!
 //! App::new()
@@ -68,7 +68,7 @@ mod handle;
 ///
 /// // Configure your bot
 /// let config = DiscordBotConfig::default()
-///     .token("your-bot-token")
+///     .token("your-bot-token".to_string())
 ///     .gateway_intents(GatewayIntents::non_privileged())
 ///     .activity(ActivityData::playing("with Bevy!"));
 ///
@@ -197,14 +197,14 @@ impl Plugin for DiscordBotPlugin {
 /// - Activity status
 #[derive(Default, Resource, Clone)]
 pub struct DiscordBotConfig {
-    token: &'static str,
+    token: String,
     gateway_intents: GatewayIntents,
     status: Option<OnlineStatus>,
     activity: Option<ActivityData>,
 }
 
 impl DiscordBotConfig {
-    initialize_field_with_doc!(token, &'static str, "Sets the bot token.");
+    initialize_field_with_doc!(token, String, "Sets the bot token.");
     initialize_field_with_doc!(
         gateway_intents,
         GatewayIntents,
@@ -227,8 +227,11 @@ fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) 
 
     commands.insert_resource(DiscordBotRes { recv: rx });
 
-    let mut client = Client::builder(discord_bot_config.token, discord_bot_config.gateway_intents)
-        .event_handler(Handle { tx });
+    let mut client = Client::builder(
+        &discord_bot_config.token,
+        discord_bot_config.gateway_intents,
+    )
+    .event_handler(Handle { tx });
 
     let discord_bot_res_clone = discord_bot_config.clone();
 
