@@ -2,7 +2,7 @@
 use bevy::prelude::*;
 use bevy_discord::bot::{events::*, DiscordBotConfig, DiscordBotPlugin};
 use bevy_discord::runtime::tokio_runtime;
-use bevy_discord::serenity::all::*;
+use bevy_discord::serenity::all::{Command, CreateCommand, GatewayIntents, CreateInteractionResponse, CreateInteractionResponseMessage};
 use bevy_discord::serenity::model::application::Interaction;
 
 fn main() {
