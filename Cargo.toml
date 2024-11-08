@@ -37,3 +37,15 @@ serde_json = "1"
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+
+[[example]]
+name = "basic_bot"
+doc-scrape-examples = true
+
+[[example]]
+name = "reactions"
+doc-scrape-examples = true
+
+[[example]]
+name = "slash_commands"
+doc-scrape-examples = true
