@@ -6,6 +6,10 @@
 
 A very simple, bevy plugin that let you send and receive messages through bevy events.
 
+> !NOTE
+> This branch `bevy-0.15` is based on top of `0.15` release candidates of bevy. This branch might introduce major changes
+> and might even take some time to get merged after release of bevy `0.15.0`.
+
 ## Installation
 
 Add `bevy-discord` as your dependency:
