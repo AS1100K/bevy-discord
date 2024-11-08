@@ -113,7 +113,9 @@ Currently, the following Discord/Serenity features are not supported:
 This crate aims to track bevy's versions. It also follows the semver standard. Below is a chart which versions of this
 crate are compatible with which bevy version:
 
-| Version | Bevy Version |
-|---------|--------------|
-| `0.2.x` | `0.13.x`     |
-| `0.3.x` | `0.13.x`     |
+| Version                                                                                 | Bevy Version |
+|-----------------------------------------------------------------------------------------|--------------|
+| `0.2.x`                                                                                 | `0.13.x`     |
+| `0.3.x`                                                                                 | `0.13.x`     |
+| `0.4.x`                                                                                 | `0.14.x`     |
+| `0.5.x` [On Branch `bevy-0.15`](https://github.com/AS1100K/bevy-discord/tree/bevy-0.15) | `0.15.x`     |
