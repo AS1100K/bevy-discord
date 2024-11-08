@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Changed
 - Add `DiscordHttpResource` once `BReadyEvent` is emitted in `DiscordBotPlugin`
+- Upgraded bevy dependency from `0.13` to `0.14`
+
+### Added
+- Added Examples to `Cargo.toml`, so they can be scraped by cargo doc
 
 ## [0.3.1] - 2024-10-31
 
