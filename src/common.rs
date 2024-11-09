@@ -1,5 +1,4 @@
 /// wrapper around `Self::default()`
-#[macro_export]
 macro_rules! new {
     () => {
         #[must_use]
@@ -11,7 +10,6 @@ macro_rules! new {
 }
 
 /// Creates a function that override the field which is `Option`
-#[macro_export]
 macro_rules! override_field {
     ($name:ident, $type:ty) => {
         #[doc = concat!("Adds `", stringify!($name), "` field.")]
@@ -23,7 +21,6 @@ macro_rules! override_field {
 }
 
 /// Creates a function that override the field which is `Option` and documentation
-#[macro_export]
 macro_rules! override_field_with_doc {
     ($name:ident, $type:ty, $doc:expr) => {
         #[doc = $doc]
@@ -35,7 +32,6 @@ macro_rules! override_field_with_doc {
 }
 
 /// Creates a function that override/initialize a field
-#[macro_export]
 macro_rules! initialize_field {
     ($name:ident, $type:ty) => {
         #[doc = concat!("Adds `", stringify!($name), "` field.")]
@@ -47,7 +43,6 @@ macro_rules! initialize_field {
 }
 
 /// Creates a function that override/initialize a field with custom documentation
-#[macro_export]
 macro_rules! initialize_field_with_doc {
     ($name:ident, $type:ty, $doc:expr) => {
         #[doc = $doc]
@@ -58,7 +53,6 @@ macro_rules! initialize_field_with_doc {
     };
 }
 
-#[macro_export]
 macro_rules! create_event_collection_and_handler {
     (
         $(
@@ -95,7 +89,6 @@ macro_rules! create_event_collection_and_handler {
     };
 }
 
-#[macro_export]
 macro_rules! send_event {
     ($self:ident, $event:ident { $($field:ident),* }) => {
         if let Err(_) = $self.tx.send_async(
@@ -107,3 +100,8 @@ macro_rules! send_event {
         }
     };
 }
+
+pub(crate) use {
+    create_event_collection_and_handler, initialize_field, initialize_field_with_doc, new,
+    override_field, override_field_with_doc, send_event,
+};

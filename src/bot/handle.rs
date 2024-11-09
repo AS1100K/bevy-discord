@@ -4,7 +4,7 @@ use flume::Sender;
 use serenity::all::*;
 use tracing::error;
 
-use crate::send_event;
+use crate::common::send_event;
 
 use super::{common::BEventCollection, events::*};
 

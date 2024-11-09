@@ -41,8 +41,9 @@ use event_handlers::*;
 use events::*;
 
 use crate::bot::handle::Handle;
+use crate::common::{initialize_field_with_doc, override_field_with_doc};
 use crate::runtime::tokio_runtime;
-use crate::{initialize_field_with_doc, override_field_with_doc, DiscordSet};
+use crate::DiscordSet;
 
 mod common;
 mod event_handlers;
