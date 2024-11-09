@@ -7,15 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.5.0] - Unreleased
 
-## Changed
+### Changed
 - Upgraded bevy dependency from `0.13` to `0.15`
+- Made macros accessible to crate only - [PR #6](https://github.com/AS1100K/bevy-discord/pulls/6)
+
+### Removed
+- Unused macros
 
 ## [0.4.0] - 2024-11-08
 
-## Removed
+### Removed
 - `webhook` module and feature
 
-## Changed
+### Changed
 - Add `DiscordHttpResource` once `BReadyEvent` is emitted in `DiscordBotPlugin`
 - Upgraded bevy dependency from `0.13` to `0.14`
 
