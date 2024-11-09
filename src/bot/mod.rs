@@ -246,19 +246,21 @@ fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) 
         client_builder = client_builder.activity(activity);
     }
 
+    let discord_bot_config_clone = discord_bot_config.clone();
+
     tokio_runtime().spawn(async move {
         let mut client = client_builder
             .await
             .expect("Unable to build discord Client");
 
-        if discord_bot_config.shards == 0 {
+        if discord_bot_config_clone.shards == 0 {
             client
                 .start()
                 .await
                 .expect("Unable to run the discord Client");
         } else {
             client
-                .start_shards(discord_bot_config.shards)
+                .start_shards(discord_bot_config_clone.shards)
                 .await
                 .expect("Unable to run the discord Client with multiple shards.")
         }
