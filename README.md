@@ -1,14 +1,10 @@
 # Bevy Discord Plugin
 
 ![GitHub License](https://img.shields.io/github/license/AS1100K/bevy-discord)
-![Crates.io Version](https://img.shields.io/crates/v/bevy-discord)
+[![Crates.io Version](https://img.shields.io/crates/v/bevy-discord)](https://crates.io/crates/bevy-discord)
 ![CI](https://github.com/as1100k/bevy-discord/actions/workflows/ci.yml/badge.svg?event=push)
 
 A very simple, bevy plugin that let you send and receive messages through bevy events.
-
-> !NOTE
-> This branch `bevy-0.15` is based on top of `0.15` release candidates of bevy. This branch might introduce major changes
-> and might even take some time to get merged after release of bevy `0.15.0`.
 
 ## Installation
 
@@ -117,9 +113,9 @@ Currently, the following Discord/Serenity features are not supported:
 This crate aims to track bevy's versions. It also follows the semver standard. Below is a chart which versions of this
 crate are compatible with which bevy version:
 
-| Version                                                                                 | Bevy Version |
-|-----------------------------------------------------------------------------------------|--------------|
-| `0.2.x`                                                                                 | `0.13.x`     |
-| `0.3.x`                                                                                 | `0.13.x`     |
-| `0.4.x`                                                                                 | `0.14.x`     |
-| `0.5.x` [On Branch `bevy-0.15`](https://github.com/AS1100K/bevy-discord/tree/bevy-0.15) | `0.15.x`     |
+| Version | Bevy Version |
+|---------|--------------|
+| `0.2.x` | `0.13.x`     |
+| `0.3.x` | `0.13.x`     |
+| `0.4.x` | `0.14.x`     |
+| `0.5.x` | `0.15.x`     |
