@@ -1,5 +1,5 @@
 use super::events::*;
-use crate::create_event_collection_and_handler;
+use crate::common::create_event_collection_and_handler;
 use bevy_ecs::prelude::*;
 
 create_event_collection_and_handler!(
