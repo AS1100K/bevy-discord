@@ -202,6 +202,7 @@ pub struct DiscordBotConfig {
     gateway_intents: GatewayIntents,
     status: Option<OnlineStatus>,
     activity: Option<ActivityData>,
+    shards: u32,
 }
 
 impl DiscordBotConfig {
@@ -213,6 +214,7 @@ impl DiscordBotConfig {
     );
     override_field_with_doc!(status, OnlineStatus, "Sets the initial status.");
     override_field_with_doc!(activity, ActivityData, "Sets the initial activity.");
+    initialize_field_with_doc!(shards, u32, "The total number of shards to use.");
 }
 
 /// A global resource for the Discord bot.
@@ -228,7 +230,7 @@ fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) 
 
     commands.insert_resource(DiscordBotRes { recv: rx });
 
-    let mut client = Client::builder(
+    let mut client_builder = Client::builder(
         &discord_bot_config.token,
         discord_bot_config.gateway_intents,
     )
@@ -237,19 +239,28 @@ fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) 
     let discord_bot_res_clone = discord_bot_config.clone();
 
     if let Some(status) = discord_bot_res_clone.status {
-        client = client.status(status);
+        client_builder = client_builder.status(status);
     }
 
     if let Some(activity) = discord_bot_res_clone.activity {
-        client = client.activity(activity);
+        client_builder = client_builder.activity(activity);
     }
 
     tokio_runtime().spawn(async move {
-        client
+        let mut client = client_builder
             .await
-            .expect("Unable to build discord Client")
-            .start()
-            .await
-            .expect("Unable to run the discord Client");
+            .expect("Unable to build discord Client");
+
+        if discord_bot_config.shards == 0 {
+            client
+                .start()
+                .await
+                .expect("Unable to run the discord Client");
+        } else {
+            client
+                .start_shards(discord_bot_config.shards)
+                .await
+                .expect("Unable to run the discord Client with multiple shards.")
+        }
     });
 }
