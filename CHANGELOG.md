@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgraded bevy dependency from `0.13` to `0.15`
-- Made macros accessible to crate only - [PR #6](https://github.com/AS1100K/bevy-discord/pulls/6)
+- Made macros accessible to crate only - [60df93](https://github.com/AS1100K/bevy-discord/commit/60df9357c661a8bdc2caba39ce925f0e20b81b81)
 
 ### Removed
 - Unused macros
