@@ -1,7 +1,7 @@
 # Bevy Discord Plugin
 
 ![GitHub License](https://img.shields.io/github/license/AS1100K/bevy-discord)
-[![Crates.io Version](https://img.shields.io/crates/v/bevy-discord)](https://crates.io/crates/bevy-discord)
+[[![Crates.io Version](https://img.shields.io/crates/v/bevy-discord)](https://crates.io/crates/bevy-discord)](https://crates.io/crates/bevy-discord)
 ![CI](https://github.com/as1100k/bevy-discord/actions/workflows/ci.yml/badge.svg?event=push)
 
 A very simple, bevy plugin that let you send and receive messages through bevy events.
@@ -76,11 +76,11 @@ _Example taken from `examples/basic_bot.rs`_
 
 ## Examples
 
-The `examples/` directory contains several example implementations:
+The [`examples/`](https://github.com/AS1100K/bevy-discord/tree/main/examples) directory contains several example implementations:
 
-- [`basic_bot.rs`](https://github.com/as1100k/bevy-discord/blob/main/examples/basic_bot.rs) - Simple message handling and response
-- [`reactions.rs`](https://github.com/as1100k/bevy-discord/blob/main/examples/reactions.rs) - Handling reactions and emoji interactions
-- [`slash_commands.rs`](https://github.com/as1100k/bevy-discord/blob/main/examples/slash_commands.rs) - Creating and handling slash commands
+- [`basic_bot.rs`](./examples/basic_bot.rs) - Simple message handling and response
+- [`reactions.rs`](./examples/reactions.rs) - Handling reactions and emoji interactions
+- [`slash_commands.rs`](./examples/slash_commands.rs) - Creating and handling slash commands
 
 To run an example:
 
