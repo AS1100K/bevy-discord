@@ -1,6 +1,6 @@
 use crate::events::EventCollection;
-use bevy_ecs::prelude::Resource;
 use bevy_app::{App, Plugin};
+use bevy_ecs::prelude::Resource;
 use flume::{Receiver, Sender};
 
 pub struct ChannelPlugin;

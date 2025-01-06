@@ -1,6 +1,6 @@
-use async_trait::async_trait;
 use crate::common::{send_event, send_event_tuple};
 use crate::events::{rich_presence::*, EventCollection};
+use async_trait::async_trait;
 use discord_sdk::activity::events::{InviteEvent, JoinRequestEvent, SecretEvent};
 use discord_sdk::overlay::events::UpdateEvent as OverlayUpdateEvent;
 use discord_sdk::user::events::{ConnectEvent, UpdateEvent};

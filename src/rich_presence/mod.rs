@@ -8,11 +8,11 @@
 pub mod discord_sdk;
 mod event_handlers;
 
-use ::discord_sdk::AppId;
 use crate::channel::ChannelRes;
 use crate::events::rich_presence::*;
 use crate::rich_presence::event_handlers::EventHandler;
 use crate::DiscordSet;
+use ::discord_sdk::AppId;
 use bevy_app::{App, Plugin, Startup};
 use bevy_ecs::prelude::*;
 use discord_sdk::{Discord, Subscriptions};

@@ -73,8 +73,9 @@ impl PluginGroup for DiscordPluginGroup {
 
         #[cfg(feature = "rich_presence")]
         {
-            plugin_group =
-                plugin_group.add(DiscordRichPresencePlugin::new(self.discord_rich_presence_config));
+            plugin_group = plugin_group.add(DiscordRichPresencePlugin::new(
+                self.discord_rich_presence_config,
+            ));
         }
 
         plugin_group
