@@ -28,8 +28,9 @@ $ cargo add bevy-discord --features full
 ```rust,no_run
 // examples/basic_bot.rs
 use bevy::prelude::*;
+use bevy_discord::bot::{DiscordBotConfig, DiscordBotPlugin};
+use bevy_discord::events::bot::BMessage;
 use bevy_discord::serenity::all::*;
-use bevy_discord::bot::{events::BMessage, DiscordBotConfig, DiscordBotPlugin};
 use serde_json::json;
 
 fn main() {

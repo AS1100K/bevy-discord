@@ -1,6 +1,7 @@
 // examples/reactions.rs
 use bevy::prelude::*;
-use bevy_discord::bot::{events::*, DiscordBotConfig, DiscordBotPlugin};
+use bevy_discord::bot::{DiscordBotConfig, DiscordBotPlugin};
+use bevy_discord::events::bot::*;
 use bevy_discord::serenity::all::*;
 use serde_json::json;
 
