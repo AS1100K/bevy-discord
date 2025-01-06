@@ -11,10 +11,11 @@ license = "MIT"
 keywords = ["bevy", "plugin", "discord"]
 
 [features]
-full = ["bot", "http"]
+full = ["bot", "http", "rich_presence"]
 bot = ["tokio/sync", "http"]
 http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]
+rich_presence = ["dep:discord-sdk", "dep:async-trait"]
 
 [dependencies]
 bevy_app = "0.15"
@@ -28,6 +29,8 @@ serenity = { version = "0.12", features = [
 paste = "1"
 tracing = "0.1"
 tokio = { version = "1", features = ["rt-multi-thread", "rt"] }
+discord-sdk = { version = "0.4", optional = true }
+async-trait = { version = "0.1", optional = true }
 
 [dev-dependencies]
 bevy = "0.15.0-rc.3"

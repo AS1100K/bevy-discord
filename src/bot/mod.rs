@@ -32,22 +32,18 @@
 
 use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
-// send_events function is created with macro expansion, so don't worry when IDE tries hard to find it
-use common::{send_events, BEventCollection};
-use flume::Receiver;
 use serenity::all::*;
 
+use crate::events::bot::*;
 use event_handlers::*;
-use events::*;
 
 use crate::bot::handle::Handle;
+use crate::channel::ChannelRes;
 use crate::common::{initialize_field_with_doc, override_field_with_doc};
 use crate::runtime::tokio_runtime;
 use crate::DiscordSet;
 
-mod common;
-mod event_handlers;
-pub mod events;
+pub(crate) mod event_handlers;
 mod handle;
 
 /// A plugin that integrates Discord bot functionality into a Bevy application.
@@ -179,13 +175,13 @@ impl Plugin for DiscordBotPlugin {
             .add_event::<BPollVoteAdd>()
             .add_event::<BPollVoteRemove>()
             .add_event::<BRateLimit>()
-            .add_systems(Startup, setup_bot.in_set(DiscordSet))
             .add_systems(
-                Update,
-                (send_events, handle_b_ready_event)
-                    .chain()
-                    .in_set(DiscordSet),
-            );
+                Startup,
+                setup_bot
+                    .in_set(DiscordSet)
+                    .run_if(resource_exists::<ChannelRes>),
+            )
+            .add_systems(Update, handle_b_ready_event.in_set(DiscordSet));
     }
 }
 
@@ -217,18 +213,8 @@ impl DiscordBotConfig {
     initialize_field_with_doc!(shards, u32, "The total number of shards to use.");
 }
 
-/// A global resource for the Discord bot.
-///
-/// This resource maintains the bot's internal state and event communication channel.
-#[derive(Resource)]
-pub struct DiscordBotRes {
-    pub(crate) recv: Receiver<BEventCollection>,
-}
-
-fn setup_bot(mut commands: Commands, discord_bot_config: Res<DiscordBotConfig>) {
-    let (tx, rx) = flume::unbounded();
-
-    commands.insert_resource(DiscordBotRes { recv: rx });
+fn setup_bot(discord_bot_config: Res<DiscordBotConfig>, channel_res: Res<ChannelRes>) {
+    let tx = channel_res.tx.clone();
 
     let mut client_builder = Client::builder(
         &discord_bot_config.token,
