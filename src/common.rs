@@ -22,13 +22,14 @@ macro_rules! initialize_field_with_doc {
 
 macro_rules! create_event_collection_and_handler {
     (
+        $name:ident,
         $(
             $(#[$meta:meta])? $variant:ident
         ),* $(,)?
     ) => {
         // Define the enum with the provided variants
         #[allow(clippy::enum_variant_names)]
-        pub(crate) enum BEventCollection {
+        pub(crate) enum $name {
             $(
                 $(#[$meta])?
                 $variant($variant),
@@ -38,14 +39,14 @@ macro_rules! create_event_collection_and_handler {
         // Define the function to handle the events and send them through EventWriter
         paste::paste! {
             pub(crate) fn send_events(
-                world: &mut World
+                world: &mut bevy_ecs::world::World
             ) {
-                let discord_bot_res = world.resource::<$crate::bot::DiscordBotRes>();
-                if let Ok(event) = discord_bot_res.recv.try_recv() {
+                let discord_bot_res = world.resource::<$crate::channel::ChannelRes>();
+                if let Ok(event) = discord_bot_res.rx.try_recv() {
                     match event {
                         $(
                             $(#[$meta])?
-                            BEventCollection::$variant(event_to_send) => {
+                            $name::$variant(event_to_send) => {
                                 world.send_event(event_to_send);
                             }
                         ),*
@@ -59,7 +60,7 @@ macro_rules! create_event_collection_and_handler {
 macro_rules! send_event {
     ($self:ident, $event:ident { $($field:ident),* }) => {
         if let Err(_) = $self.tx.send_async(
-            $crate::bot::common::BEventCollection::$event($event {
+            $crate::events::EventCollection::$event($event {
                 $($field),*
             })
         ).await {
@@ -68,7 +69,17 @@ macro_rules! send_event {
     };
 }
 
+macro_rules! send_event_tuple {
+    ($self:ident, $event:ident ( $($field:ident),* )) => {
+        if let Err(_) = $self.tx.send_async(
+            $crate::events::EventCollection::$event($event ( $($field),* ))
+        ).await {
+            error!("Unable to send event to the channel")
+        }
+    };
+}
+
 pub(crate) use {
     create_event_collection_and_handler, initialize_field_with_doc, override_field_with_doc,
-    send_event,
+    send_event, send_event_tuple,
 };

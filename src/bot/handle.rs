@@ -6,10 +6,10 @@ use tracing::error;
 
 use crate::common::send_event;
 
-use super::{common::BEventCollection, events::*};
+use crate::events::{bot::*, EventCollection};
 
 pub(super) struct Handle {
-    pub tx: Sender<BEventCollection>,
+    pub tx: Sender<EventCollection>,
 }
 
 #[async_trait]
