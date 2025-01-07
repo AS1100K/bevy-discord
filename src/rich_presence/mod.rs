@@ -16,13 +16,14 @@ use ::discord_sdk::AppId;
 use bevy_app::{App, Plugin, Startup};
 use bevy_ecs::prelude::*;
 use discord_sdk::{Discord, Subscriptions};
+use std::sync::Arc;
 
 /// A global resource for the Discord bot.
 ///
 /// This resource maintains the bot's internal state and event communication channel.
 #[derive(Resource)]
 pub struct DiscordRichPresenceRes {
-    pub discord: Discord,
+    pub discord: Arc<Discord>,
 }
 
 #[derive(Resource, Clone)]
@@ -76,5 +77,7 @@ fn setup_rich_presence(
     )
     .expect("Failed to create a Discord Rich Presence Client");
 
-    commands.insert_resource(DiscordRichPresenceRes { discord });
+    commands.insert_resource(DiscordRichPresenceRes {
+        discord: Arc::new(discord),
+    });
 }
