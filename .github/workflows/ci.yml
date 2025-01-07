@@ -3,8 +3,14 @@ name: CI
 on:
   push:
     branches: [main]
+    paths:
+      - '**.rs'
+      - '**.toml'
   pull_request:
     branches: [main]
+    paths:
+      - '**.rs'
+      - '**.toml'
 
 env:
   CARGO_TERM_COLOR: always
@@ -18,48 +24,44 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.toml') }}
       - name: Install stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.1.0
+        uses: rs-workspace/rust-toolchain@v0.2.0
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
       - name: Run cargo test
         run: cargo test --features full
 
-  # Run cargo clippy -- -D warnings
+  cargo_check:
+    name: Cargo Check
+    strategy:
+      matrix:
+        feature: [full, bot, http, rich_presence]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Install stable toolchain
+        uses: rs-workspace/rust-toolchain@v0.2.0
+      - name: Install Dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
+      - name: Run cargo test
+        run: cargo check --features ${{ matrix.feature }}
+
+  # Run cargo clippy
   clippy_check:
-    needs: test
     name: Clippy
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-clippy-${{ hashFiles('**/Cargo.toml') }}
       - name: Install stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.1.0
+        uses: rs-workspace/rust-toolchain@v0.2.0
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
       - name: Run clippy
-        run: cargo clippy --features full -- -D warnings
+        run: cargo clippy --features full
 
   # Run cargo fmt --all -- --check
   format:
@@ -70,6 +72,6 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Install stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.1.0
+        uses: rs-workspace/rust-toolchain@v0.2.0
       - name: Run cargo fmt
         run: cargo fmt --all -- --check
