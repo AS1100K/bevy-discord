@@ -71,7 +71,7 @@ fn setup_rich_presence(
 
     let discord = Discord::new(
         discord_rich_presence_config.app,
-        discord_rich_presence_config.subscriptions.clone(),
+        discord_rich_presence_config.subscriptions,
         event_handler,
     )
     .expect("Failed to create a Discord Rich Presence Client");
