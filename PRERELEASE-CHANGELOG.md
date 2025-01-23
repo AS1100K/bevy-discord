@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0-alpha.2]
+
+### Changed
+- Made `setup_rich_presence` function use tokio's `block_on` function instead of spawn
+
+  _This now ensures tokio runtime is available to `discord-sdk` crate when initializing `Disocrd`_
+
+### Fixed
+- Made docs buildable [See Error](https://docs.rs/crate/bevy-discord/0.6.0-alpha.1)
+
 ## [0.6.0-alpha.1]
 
 _This release note is continued from `v0.5` release note_

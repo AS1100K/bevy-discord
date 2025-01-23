@@ -91,6 +91,7 @@ The `examples/` directory contains several example implementations:
 - [`basic_bot.rs`](https://github.com/as1100k/bevy-discord/blob/main/examples/basic_bot.rs) - Simple message handling and response
 - [`reactions.rs`](https://github.com/as1100k/bevy-discord/blob/main/examples/reactions.rs) - Handling reactions and emoji interactions
 - [`slash_commands.rs`](https://github.com/as1100k/bevy-discord/blob/main/examples/slash_commands.rs) - Creating and handling slash commands
+- [`rich_presence.rs`](https://github.com/as1100k/bevy-discord/blob/main/examples/rich_presence.rs) - Simple bevy app which has Discord Rich Presence
 
 To run an example:
 
