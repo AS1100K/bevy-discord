@@ -30,8 +30,7 @@ serenity = { version = "0.12", features = [
 paste = "1"
 tracing = "0.1"
 tokio = { version = "1", features = ["rt-multi-thread", "rt"] }
-#discord-sdk = { version = "0.4", optional = true }
-discord-sdk = { git = "https://github.com/as1100k-forks/discord-sdk.git", branch = "patch", optional = true }
+discord-sdk = { version = "0.4", optional = true }
 async-trait = { version = "0.1", optional = true }
 
 [dev-dependencies]

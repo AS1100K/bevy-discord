@@ -3,7 +3,7 @@
 
 use bevy::log::tracing_subscriber::fmt::Subscriber;
 use bevy::MinimalPlugins;
-use bevy_app::{App, Startup, Update};
+use bevy_app::{App, Update};
 use bevy_discord::events::rich_presence::RichPresenceReady;
 use bevy_discord::rich_presence::{DiscordRichPresenceConfig, DiscordRichPresenceRes};
 use bevy_discord::{DiscordPluginGroup, DiscordSet};
@@ -29,7 +29,6 @@ fn main() {
         .add_plugins(DiscordPluginGroup {
             discord_rich_presence_config: config,
         })
-        .add_systems(Startup, setup_rich_presence.after(DiscordSet))
         .add_systems(Update, rich_presence_ready.after(DiscordSet))
         .run();
 }
@@ -55,9 +54,9 @@ fn rich_presence_ready(mut events: EventReader<RichPresenceReady>) {
     for event in events.read() {
         println!(
             r#"
-        version: {},
-        user: {:?}
-        "#,
+            version: {},
+            user: {:?}
+            "#,
             event.version, event.user
         );
     }

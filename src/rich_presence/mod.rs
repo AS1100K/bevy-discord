@@ -8,10 +8,10 @@
 pub mod discord_sdk;
 mod event_handlers;
 
-use crate::channel::ChannelRes;
 use crate::events::rich_presence::*;
 use crate::rich_presence::event_handlers::EventHandler;
 use crate::DiscordSet;
+use crate::{channel::ChannelRes, runtime::tokio_runtime};
 use ::discord_sdk::AppId;
 use bevy_app::{App, Plugin, Startup};
 use bevy_ecs::prelude::*;
@@ -70,14 +70,19 @@ fn setup_rich_presence(
     let tx = channel_res.tx.clone();
     let event_handler = Box::new(EventHandler { tx });
 
-    let discord = Discord::new(
-        discord_rich_presence_config.app,
-        discord_rich_presence_config.subscriptions,
-        event_handler,
-    )
-    .expect("Failed to create a Discord Rich Presence Client");
+    let discord_rich_presence_config = discord_rich_presence_config.clone();
+    let discord_res = || {
+        commands.insert_resource(DiscordRichPresenceRes {
+            discord: Arc::new(
+                Discord::new(
+                    discord_rich_presence_config.app,
+                    discord_rich_presence_config.subscriptions,
+                    event_handler,
+                )
+                .expect("Failed to create a Discord Rich Presence Client"),
+            ),
+        });
+    };
 
-    commands.insert_resource(DiscordRichPresenceRes {
-        discord: Arc::new(discord),
-    });
+    tokio_runtime().block_on(async move { discord_res() });
 }
