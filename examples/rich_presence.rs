@@ -33,24 +33,10 @@ fn main() {
         .run();
 }
 
-fn setup_rich_presence(rich_presence: Res<DiscordRichPresenceRes>) {
-    println!("setup_rich_presence");
-    let current_date_time = OffsetDateTime::now_utc();
-    let new_activity = ActivityBuilder::new()
-        .state("bevy-discord")
-        .details("Exploring example rich_presence.rs")
-        .start_timestamp(current_date_time);
-
-    let ds = rich_presence.discord.clone();
-    bevy_discord::runtime::tokio_runtime().spawn(async move {
-        let _ = ds
-            .update_activity(new_activity)
-            .await
-            .expect("Failed to update the activity");
-    });
-}
-
-fn rich_presence_ready(mut events: EventReader<RichPresenceReady>) {
+fn rich_presence_ready(
+    mut events: EventReader<RichPresenceReady>,
+    rich_presence: Res<DiscordRichPresenceRes>,
+) {
     for event in events.read() {
         println!(
             r#"
@@ -59,5 +45,20 @@ fn rich_presence_ready(mut events: EventReader<RichPresenceReady>) {
             "#,
             event.version, event.user
         );
+
+        println!("setup_rich_presence");
+        let current_date_time = OffsetDateTime::now_utc();
+        let new_activity = ActivityBuilder::new()
+            .state("bevy-discord")
+            .details("Exploring example rich_presence.rs")
+            .start_timestamp(current_date_time);
+
+        let ds = rich_presence.discord.clone();
+        bevy_discord::runtime::tokio_runtime().spawn(async move {
+            let _ = ds
+                .update_activity(new_activity)
+                .await
+                .expect("Failed to update the activity");
+        });
     }
 }
