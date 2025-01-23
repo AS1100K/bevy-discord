@@ -16,20 +16,23 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  # Currently there are no unit tests in this repository, so ignore this job
+  # While example are tested in `check-examples.yml`
+  # 
   # Run cargo test
-  test:
-    name: Test Suite
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-      - name: Install stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.2.0
-      - name: Install Dependencies
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
-      - name: Run cargo test
-        run: cargo test --features full
+  # test:
+  #   name: Test Suite
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 30
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v4
+  #     - name: Install stable toolchain
+  #       uses: rs-workspace/rust-toolchain@v0.2.0
+  #     - name: Install Dependencies
+  #       run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
+  #     - name: Run cargo test
+  #       run: cargo test --tests --features full
 
   cargo_check:
     name: Cargo Check
