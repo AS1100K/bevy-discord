@@ -53,3 +53,7 @@ doc-scrape-examples = true
 [[example]]
 name = "slash_commands"
 doc-scrape-examples = true
+
+[[example]]
+name = "rich_presence"
+doc-scrape-examples = true
