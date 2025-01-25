@@ -6,12 +6,6 @@
 
 > [!NOTE]
 > The `main` branch is ahead working for `0.6` release
-> 
-> - [x] Add Rich Presence
-> - [ ] Minimize Dependencies _(i.e. disable default features if possible)_
-> - [ ] Update Documentation and Document `rich_presence` feature
-> - [ ] Add more examples for `rich_presence` feature
-> - [ ] Add ability to use multiple async runtime
 
 A very simple, bevy plugin that let you send and receive messages through bevy events.
 
@@ -132,6 +126,3 @@ crate are compatible with which bevy version:
 | `0.4.x` | `0.14.x`     |
 | `0.5.x` | `0.15.x`     |
 | `0.6.x` | `0.?.x`      |
-
-> [!NOTE]
-> The `bevy-discord` version `0.6` is planned to release in the mid of 2025 and will introduce major breaking changes
