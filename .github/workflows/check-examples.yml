@@ -13,9 +13,9 @@ on:
       - '**.toml'
 
 jobs:
-  # Examples that will work with features full
+  # Examples that will work with feature bot
   full_feature_check:
-    name: Full Features Example Check
+    name: bot Feature Example Check
     strategy:
       matrix:
         example: [basic_bot, reactions, slash_commands]
@@ -29,7 +29,7 @@ jobs:
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
       - name: Cargo Check ${{ matrix.example }}
-        run: cargo check --example ${{ matrix.example }} --features full
+        run: cargo check --example ${{ matrix.example }} --features bot
 
   rich_presence_check:
     name: rich_presence Feature Example Check
