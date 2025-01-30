@@ -1,8 +1,9 @@
 // examples/reactions.rs
 use bevy::prelude::*;
-use bevy_discord::bot::{DiscordBotConfig, DiscordBotPlugin};
+use bevy_discord::bot::DiscordBotConfig;
 use bevy_discord::events::bot::*;
 use bevy_discord::serenity::all::*;
+use bevy_discord::DiscordPluginGroup;
 use serde_json::json;
 
 fn main() {
@@ -17,7 +18,9 @@ fn main() {
 
     App::new()
         .add_plugins(MinimalPlugins)
-        .add_plugins(DiscordBotPlugin::new(config))
+        .add_plugins(DiscordPluginGroup {
+            discord_bot_config: config,
+        })
         .add_systems(Update, (handle_messages, handle_reactions))
         .run();
 }

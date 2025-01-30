@@ -32,6 +32,7 @@ pub struct DiscordRichPresenceConfig {
     pub subscriptions: Subscriptions,
 }
 
+/// **If you want to use this plugin, then you should probably use [DiscordPluginGroup](crate::DiscordPluginGroup) instead.**
 pub struct DiscordRichPresencePlugin(DiscordRichPresenceConfig);
 
 impl DiscordRichPresencePlugin {

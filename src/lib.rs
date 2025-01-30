@@ -52,10 +52,10 @@ pub struct DiscordSet;
 #[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
 pub struct DiscordPluginGroup {
     #[cfg(feature = "bot")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "bot")))]
+    /// _Only available in feature `bot`_
     pub discord_bot_config: DiscordBotConfig,
     #[cfg(feature = "rich_presence")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "rich_presence")))]
+    /// _Only available in feature `rich_presence`_
     pub discord_rich_presence_config: DiscordRichPresenceConfig,
 }
 

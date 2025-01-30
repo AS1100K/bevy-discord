@@ -1,6 +1,6 @@
 // examples/slash_commands.rs
 use bevy::prelude::*;
-use bevy_discord::bot::{DiscordBotConfig, DiscordBotPlugin};
+use bevy_discord::bot::DiscordBotConfig;
 use bevy_discord::events::bot::*;
 use bevy_discord::runtime::tokio_runtime;
 use bevy_discord::serenity::all::{
@@ -8,6 +8,7 @@ use bevy_discord::serenity::all::{
     GatewayIntents,
 };
 use bevy_discord::serenity::model::application::Interaction;
+use bevy_discord::DiscordPluginGroup;
 
 fn main() {
     let config = DiscordBotConfig::default()
@@ -16,7 +17,9 @@ fn main() {
 
     App::new()
         .add_plugins(MinimalPlugins)
-        .add_plugins(DiscordBotPlugin::new(config))
+        .add_plugins(DiscordPluginGroup {
+            discord_bot_config: config,
+        })
         .add_systems(Update, (handle_ready, handle_interactions))
         .run();
 }
