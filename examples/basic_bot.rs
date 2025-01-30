@@ -24,32 +24,34 @@ fn main() {
 
 fn handle_messages(
     mut messages: EventReader<BMessage>,
-    http: Res<bevy_discord::http::DiscordHttpResource>,
+    http: Option<Res<bevy_discord::http::DiscordHttpResource>>,
 ) {
     for message in messages.read() {
-        // Skip messages from bots (including our own)
-        if message.new_message.author.bot {
-            continue;
-        }
+        if let Some(http) = &http {
+            // Skip messages from bots (including our own)
+            if message.new_message.author.bot {
+                continue;
+            }
 
-        let content = &message.new_message.content;
-        let channel_id = message.new_message.channel_id;
+            let content = &message.new_message.content;
+            let channel_id = message.new_message.channel_id;
 
-        // Simple ping-pong command
-        if content == "!ping" {
-            let http = http.client();
+            // Simple ping-pong command
+            if content == "!ping" {
+                let http = http.client();
 
-            bevy_discord::runtime::tokio_runtime().spawn(async move {
-                let _ = http
-                    .send_message(
-                        channel_id,
-                        vec![],
-                        &json!({
-                            "content": "Pong! 🏓"
-                        }),
-                    )
-                    .await;
-            });
+                bevy_discord::runtime::tokio_runtime().spawn(async move {
+                    let _ = http
+                        .send_message(
+                            channel_id,
+                            vec![],
+                            &json!({
+                                "content": "Pong! 🏓"
+                            }),
+                        )
+                        .await;
+                });
+            }
         }
     }
 }
