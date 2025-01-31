@@ -139,7 +139,7 @@ impl DiscordPluginGroup {
     /// # Returns
     ///
     /// A new instance of `DiscordPluginGroup`.
-    pub fn new(rich_presence: DiscordRichPresenceConfig) -> Self {
+    pub fn new(rich_presence_config: DiscordRichPresenceConfig) -> Self {
         Self {
             rich_presence_config,
         }
