@@ -1,5 +1,5 @@
 // examples/rich_presence.rs
-// cargo run --example rich_presence --features rich_presence
+// cargo run --example rich_presence --features "full docsrs"
 
 use bevy::log::tracing_subscriber::fmt::Subscriber;
 use bevy::MinimalPlugins;
@@ -26,9 +26,9 @@ fn main() {
 
     App::new()
         .add_plugins(MinimalPlugins)
-        .add_plugins(DiscordPluginGroup {
-            discord_rich_presence_config: config,
-        })
+        // Don't use `::new_only_rich_presence` function in production code with feature `full` and `docsrs`
+        // instead use `::new` with feature `rich_presence`
+        .add_plugins(DiscordPluginGroup::new_only_rich_presence(config))
         .add_systems(Update, rich_presence_ready.after(DiscordSet))
         .run();
 }

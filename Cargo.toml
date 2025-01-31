@@ -17,6 +17,7 @@ http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]
 rich_presence = ["dep:discord-sdk", "dep:async-trait"]
 rich_presence_local_testing = ["discord-sdk/local-testing"]
+docsrs = []
 
 [dependencies]
 bevy_app = "0.15"

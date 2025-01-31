@@ -1,4 +1,6 @@
 // examples/basic_bot.rs
+// cargo run --example basic_bot --features "full docsrs"
+
 use bevy::prelude::*;
 use bevy_discord::bot::DiscordBotConfig;
 use bevy_discord::events::bot::BMessage;
@@ -21,9 +23,9 @@ fn main() {
         .add_plugins(bevy::log::LogPlugin {
             ..Default::default()
         })
-        .add_plugins(DiscordPluginGroup {
-            discord_bot_config: config,
-        })
+        // Don't use `::new_only_bot` function in production code with feature `full` and `docsrs`
+        // instead use `::new` with feature `bot`
+        .add_plugins(DiscordPluginGroup::new_only_bot(config))
         .add_systems(Update, handle_messages)
         .run();
 }
