@@ -5,7 +5,6 @@
 //! - Since, Discord Game SDK is undocumented, closed-source, publicly distributed library, it can
 //!   result in introduction to breaking changes at any time in future by discord.
 
-pub mod discord_sdk;
 mod event_handlers;
 
 use crate::events::rich_presence::*;

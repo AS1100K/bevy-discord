@@ -38,11 +38,11 @@ pub mod plugins;
 
 #[cfg(feature = "http")]
 #[cfg_attr(docsrs, doc(cfg(feature = "http")))]
-/// Re-export serenity
-pub mod serenity {
-    #[doc(hidden)]
-    pub use serenity::*;
-}
+pub use serenity;
+
+#[cfg(feature = "rich_presence")]
+#[cfg_attr(docsrs, doc(cfg(feature = "rich_presence")))]
+pub use discord_sdk;
 
 /// Bevy [`SystemSet`] that contains all system of this plugin.
 #[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
