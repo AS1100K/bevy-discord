@@ -15,10 +15,10 @@ on:
 jobs:
   # Examples that will work with feature bot
   full_feature_check:
-    name: bot Feature Example Check
+    name: Full Feature Example Check
     strategy:
       matrix:
-        example: [basic_bot, reactions, slash_commands]
+        example: [basic_bot, reactions, slash_commands, rich_presence]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -29,21 +29,4 @@ jobs:
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
       - name: Cargo Check ${{ matrix.example }}
-        run: cargo check --example ${{ matrix.example }} --features bot
-
-  rich_presence_check:
-    name: rich_presence Feature Example Check
-    strategy:
-      matrix:
-        example: [rich_presence]
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-      - name: Install Stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.2.0
-      - name: Install Dependencies
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
-      - name: Cargo Check ${{ matrix.example }}
-        run: cargo check --example ${{ matrix.example }} --features rich_presence
+        run: cargo check --example ${{ matrix.example }} --features "full docsrs"
