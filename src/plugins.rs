@@ -6,15 +6,6 @@ use {
     bevy_ecs::prelude::IntoSystemConfigs,
 };
 
-#[cfg(feature = "bot")]
-pub use crate::bot::DiscordBotPlugin;
-
-#[cfg(feature = "rich_presence")]
-pub use crate::rich_presence::DiscordRichPresencePlugin;
-
-#[cfg(feature = "http")]
-pub use crate::http::DiscordHttpPlugin;
-
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 pub struct ChannelListener;
 

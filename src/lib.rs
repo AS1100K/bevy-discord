@@ -34,7 +34,7 @@ pub(crate) mod channel;
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 #[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
 pub mod events;
-pub mod plugins;
+mod plugins;
 
 #[cfg(feature = "http")]
 #[cfg_attr(docsrs, doc(cfg(feature = "http")))]

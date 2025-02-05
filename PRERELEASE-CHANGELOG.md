@@ -5,18 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0-rc.1] - [Unreleased]
+
+### Changed
+- Hide functions available in `docsrs` feature
+- `plugins` module is now private
+
+### Fixed
+- Typos in documentation
+
+### Removed
+- Re-exports of `DiscordHttpPlugin`, `DiscordBotPlugin`, `DiscordRichPresencePlugin`
+
 ## [0.6.0-alpha.3] - 2025-01-31
 
-## Added
+### Added
 - feature `docsrs`
 - `new` function implementation in `DiscordPluginGroup`
 - `rich_presence` example in `README.md`
 
-## Changed
+### Changed
 - Moved `bevy_discord::rich_presence::discord_sdk` to `bevy_discord::discord_sdk`
 - Made Re-exports directly instead of `pub use _::*` in module
 
-## Fixed
+### Fixed
 - examples
 
 ## [0.6.0-alpha.2] - 2025-01-23
