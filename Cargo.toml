@@ -1,7 +1,7 @@
 [package]
 name = "bevy-discord"
 description = "A bevy plugin for sending and receiving discord messages."
-version = "0.6.0-alpha.3"
+version = "0.6.0-rc.1"
 edition = "2021"
 authors = ["Aditya Kumar <theadityakumardeveloper@gmail.com>"]
 readme = "README.md"
@@ -17,11 +17,13 @@ http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]
 rich_presence = ["dep:discord-sdk", "dep:async-trait"]
 rich_presence_local_testing = ["discord-sdk/local-testing"]
-docsrs = [] # Don't use this feature anywhere other than cargo doc, examples and rustdoc
+
+# Don't use this feature anywhere other than cargo doc, examples and rustdoc
+docsrs = []
 
 [dependencies]
-bevy_app = "0.15"
-bevy_ecs = "0.15"
+bevy_app = { version = "0.15", default-features = false }
+bevy_ecs = { version = "0.15", default-features = false }
 flume = "0.11"
 serenity = { version = "0.12", features = [
     "gateway",

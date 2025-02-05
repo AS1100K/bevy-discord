@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Hide functions available in `docsrs` feature
 - `plugins` module is now private
+- disabled default features of dependencies
 
 ### Fixed
 - Typos in documentation
