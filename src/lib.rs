@@ -67,7 +67,7 @@ impl DiscordPluginGroup {
     /// # Arguments
     ///
     /// * `bot_config` - Configuration for the Discord bot [_only on feature `bot`_].
-    /// * `rich_presence_config` - Configuration for Discord rich presence [_only on feature `bot`_].
+    /// * `rich_presence_config` - Configuration for Discord rich presence [_only on feature `rich_presence`_].
     ///
     /// # Returns
     ///
@@ -83,6 +83,7 @@ impl DiscordPluginGroup {
     }
 
     #[cfg(feature = "docsrs")]
+    #[doc(hidden)]
     /// Creates a new `DiscordPluginGroup` with only `bot_config` and default `rich_presence_config`
     ///
     /// **NOTE:** This is an internal function only accessible by `docsrs` feature and is used
@@ -98,6 +99,7 @@ impl DiscordPluginGroup {
     }
 
     #[cfg(feature = "docsrs")]
+    #[doc(hidden)]
     /// Creates a new `DiscordPluginGroup` with only `rich_presence_config` and default `bot_config`
     ///
     /// **NOTE:** This is an internal function only accessible by `docsrs` feature and is used
