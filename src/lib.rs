@@ -13,8 +13,7 @@ use bevy_app::{PluginGroup, PluginGroupBuilder};
 use bevy_ecs::schedule::SystemSet;
 
 #[cfg(feature = "bot")]
-#[cfg_attr(docsrs, doc(cfg(feature = "bot")))]
-pub mod bot;
+mod bot;
 
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 #[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
@@ -24,12 +23,10 @@ pub mod res;
 mod common;
 
 #[cfg(feature = "http")]
-#[cfg_attr(docsrs, doc(cfg(feature = "http")))]
-pub mod http;
+mod http;
 
 #[cfg(feature = "rich_presence")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rich_presence")))]
-pub mod rich_presence;
+mod rich_presence;
 
 /// Tokio runtime, use this if you want to use async code inside bevy systems
 pub mod runtime;
@@ -53,8 +50,11 @@ pub use discord_sdk;
 #[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
 pub struct DiscordSet;
 
-#[cfg(any(feature = "bot", feature = "rich_presence"))]
-#[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
+#[cfg(any(feature = "bot", feature = "rich_presence", feature = "http"))]
+#[cfg_attr(
+    docsrs,
+    doc(cfg(any(feature = "bot", feature = "rich_presence", feature = "http")))
+)]
 pub struct DiscordPluginGroup {
     #[cfg(feature = "bot")]
     /// _Only available in feature `bot`_
@@ -62,28 +62,57 @@ pub struct DiscordPluginGroup {
     #[cfg(feature = "rich_presence")]
     /// _Only available in feature `rich_presence`_
     pub rich_presence_config: crate::config::DiscordRichPresenceConfig,
+    #[cfg(any(all(feature = "http", not(feature = "bot")), feature = "docsrs"))]
+    /// _Only available in feature `http` and ~`bot`~_
+    pub token: String,
 }
 
 #[cfg(all(feature = "bot", feature = "rich_presence"))]
 #[cfg_attr(docsrs, doc(cfg(all(feature = "bot", feature = "rich_presence"))))]
 impl DiscordPluginGroup {
-    /// Creates a new `DiscordPluginGroup` with the specified bot and rich presence configurations.
+    #[cfg(all(feature = "docsrs", feature = "bot", feature = "rich_presence"))]
+    /// Creates a new instance of `DiscordPluginGroup`.
     ///
-    /// # Arguments
+    /// **NOTE:** This function arguments depends on the feature flag that is
+    /// enabled. See the following table:
     ///
-    /// * `bot_config` - Configuration for the Discord bot [_only on feature `bot`_].
-    /// * `rich_presence_config` - Configuration for Discord rich presence [_only on feature `rich_presence`_].
+    /// | Feature            | Arguments              |
+    /// |--------------------|------------------------|
+    /// | `bot`              | `bot_config`           |
+    /// | `rich_presence`    | `rich_presence_config` |
+    /// | `http` and ~`bot`~ | `token`                |
     ///
-    /// # Returns
+    /// _Feature `full` includes both `bot`, and `rich_presence` feature_
     ///
-    /// A new instance of `DiscordPluginGroup`.
+    /// _Feature `bot` includes `http` feature_
+    ///
+    /// ## Arguments
+    ///
+    /// - `bot_config`: [DiscordBotConfig](crate::config::DiscordBotConfig)
+    /// - `rich_presence_config`: [DiscordRichPresenceConfig](crate::config::DiscordRichPresenceConfig)
+    /// - `token`: [String], Discord Token _Can only send messages_
+    ///
+    /// ## Resources Available
+    ///
+    /// Once this plugin group is added to the App, it makes the configuration struct
+    /// i.e. `DiscordBotConfig` and `DiscorsRichPresenceConfig` available.
+    ///
+    /// The following are the resources availabe in `res` module are created after the
+    /// Startup schedule. Refer to the table below for more information.
+    ///
+    /// | Feature         | Resource                                                       |
+    /// |-----------------|----------------------------------------------------------------|
+    /// | `bot` or `http` | [`DiscordHttpResource`](crate::res::DiscordHttpResource)       |
+    /// | `rich_presence` | [`DiscordRichPresenceRes`](crate::res::DiscordRichPresenceRes) |
     pub fn new(
         bot_config: crate::config::DiscordBotConfig,
         rich_presence_config: crate::config::DiscordRichPresenceConfig,
+        token: String,
     ) -> Self {
         Self {
             bot_config,
             rich_presence_config,
+            token,
         }
     }
 
@@ -97,6 +126,7 @@ impl DiscordPluginGroup {
         Self {
             bot_config,
             rich_presence_config: crate::config::DiscordRichPresenceConfig::default(),
+            token: String::new(),
         }
     }
 
@@ -112,44 +142,42 @@ impl DiscordPluginGroup {
         Self {
             rich_presence_config,
             bot_config: Default::default(),
+            token: String::new(),
         }
     }
 }
 
-#[cfg(all(feature = "bot", not(feature = "rich_presence")))]
-#[cfg_attr(docsrs, doc(cfg(all(feature = "bot", not(feature = "rich_presence")))))]
+#[cfg(any(feature = "bot", feature = "rich_presence", feature = "http"))]
 impl DiscordPluginGroup {
-    /// Creates a new `DiscordPluginGroup` with the specified bot configurations.
-    ///
-    /// # Arguments
-    ///
-    /// * `bot_config` - Configuration for the Discord bot.
-    ///
-    /// # Returns
-    ///
-    /// A new instance of `DiscordPluginGroup`.
-    pub fn new(bot_config: crate::config::DiscordBotConfig) -> Self {
-        Self { bot_config }
-    }
-}
+    // feature only `bot`
+    #[cfg(all(feature = "bot", not(feature = "rich_presence")))]
+    common::new!(
+        "Creates a new `DiscordPluginGroup`. _Available only on `bot` feature._\n\nFor more information, please refer to https://docs.rs/bevy-discord",
+        bot_config: crate::config::DiscordBotConfig
+    );
 
-#[cfg(all(feature = "rich_presence", not(feature = "bot")))]
-#[cfg_attr(docsrs, doc(cfg(all(feature = "rich_presence", not(feature = "bot")))))]
-impl DiscordPluginGroup {
-    /// Creates a new `DiscordPluginGroup` with the specified rich_presence configurations.
-    ///
-    /// # Arguments
-    ///
-    /// * `rich_presence` - Configuration for Discord rich presence.
-    ///
-    /// # Returns
-    ///
-    /// A new instance of `DiscordPluginGroup`.
-    pub fn new(rich_presence_config: crate::config::DiscordRichPresenceConfig) -> Self {
-        Self {
-            rich_presence_config,
-        }
-    }
+    // feature only `http`
+    #[cfg(all(feature = "http", not(feature = "rich_presence"), not(feature = "bot")))]
+    common::new!(
+        "Creates a new `DiscordPluginGroup`. _Available only on `http` feature._\n\nFor more information, please refer to https://docs.rs/bevy-discord",
+        token: String
+    );
+
+    // feature `http` and `rich_presence`
+    #[cfg(all(feature = "http", feature = "rich_presence", not(feature = "bot")))]
+    common::new!(
+        "Creates a new `DiscordPluginGroup`. _Available only on `http` + `rich_presence` features._\n\nFor more information, please refer to https://docs.rs/bevy-discord",
+        token: String,
+        rich_presence_config: crate::config::DiscordRichPresenceConfig,
+    );
+
+    // feature `bot` and `rich_presence`
+    #[cfg(all(feature = "bot", feature = "rich_presence", not(feature = "docsrs")))]
+    common::new!(
+        "Creates a new `DiscordPluginGroup`. _Available only on `bot` + `rich_presence` features._\n\nFor more information, please refer to https://docs.rs/bevy-discord",
+        bot_config: crate::config::DiscordBotConfig,
+        rich_presence_config: crate::config::DiscordRichPresenceConfig,
+    );
 }
 
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
@@ -168,6 +196,11 @@ impl PluginGroup for DiscordPluginGroup {
         {
             plugin_group =
                 plugin_group.add(DiscordRichPresencePlugin::new(self.rich_presence_config));
+        }
+
+        #[cfg(all(feature = "http", not(feature = "bot")))]
+        {
+            plugin_group = plugin_group.add(http::DiscordHttpPlugin(self.token));
         }
 
         plugin_group

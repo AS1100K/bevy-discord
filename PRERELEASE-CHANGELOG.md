@@ -7,12 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0-rc.1] - [Unreleased]
 
+### Added
+- `new` method to `DiscordPluginGroup` based on feature configuration
+
 ### Changed
 - Hide functions available in `docsrs` feature
 - `plugins` module is now private
 - disabled default features of dependencies
 - Moved all resources to `res` module
 - Moved all configuration structs to `config` module
+- Make module `http`, `rich_presence` and `bot` private
 
 ### Fixed
 - Typos in documentation

@@ -1,3 +1,5 @@
+// Not Accessible Publicly
+
 //! Discord bot integration for Bevy applications.
 //!
 //! This module provides a plugin system for integrating a Discord bot into your Bevy application,

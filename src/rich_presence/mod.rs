@@ -1,3 +1,5 @@
+// // Not Accessible Publicly
+
 //! [Discord Rich Presence](https://discord.com/developers/docs/rich-presence/overview) Integration with bevy
 //!
 //! # NOTE before using
