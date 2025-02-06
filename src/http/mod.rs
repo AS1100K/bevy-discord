@@ -24,7 +24,7 @@ use std::sync::Arc;
 ///
 /// This plugin initializes a Discord HTTP client with the provided bot token
 /// and makes it available throughout the application as a Bevy resource.
-pub struct DiscordHttpPlugin(String);
+pub struct DiscordHttpPlugin(pub String);
 
 impl Plugin for DiscordHttpPlugin {
     fn build(&self, app: &mut App) {

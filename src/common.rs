@@ -1,6 +1,6 @@
 macro_rules! new {
     ($doc:expr $(, $field:ident : $type:ty)*) => {
-        #[doc = concat!($doc)]
+        #[doc = $doc]
         pub fn new($($field: $type),*) -> Self {
             Self {
                 $($field),*
