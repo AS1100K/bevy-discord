@@ -13,8 +13,8 @@
 //!     .run();
 //! ```
 
+use crate::res::DiscordHttpResource;
 use bevy_app::{App, Plugin};
-use bevy_ecs::prelude::Resource;
 use serenity::http::Http;
 use std::sync::Arc;
 
@@ -46,50 +46,6 @@ impl Plugin for DiscordHttpPlugin {
     fn build(&self, app: &mut App) {
         let http: Arc<Http> = Arc::new(Http::new(&self.0));
 
-        app.insert_resource(DiscordHttpResource { http });
-    }
-}
-
-/// A Bevy resource that provides access to the Discord HTTP client.
-///
-/// This resource is automatically inserted into the Bevy app when using
-/// [`DiscordHttpPlugin`]. It wraps Serenity's [`Http`] client in an [`Arc`]
-/// for safe concurrent access.
-///
-/// When using [`DiscordBotPlugin`](crate::bot::DiscordBotPlugin) this resource is
-/// automatically inserted into the Bevy app once [BReadyEvent](crate::bot::events::BReadyEvent)
-/// is emitted.
-#[derive(Resource)]
-pub struct DiscordHttpResource {
-    http: Arc<Http>,
-}
-
-impl DiscordHttpResource {
-    pub fn new(http: Arc<Http>) -> Self {
-        Self { http }
-    }
-
-    /// Returns a cloned Arc reference to the HTTP client.
-    ///
-    /// Use this method when you need to share ownership of the client
-    /// across multiple systems or threads.
-    ///
-    /// # Returns
-    ///
-    /// An [`Arc`]<[`Http`]> instance that can be safely cloned and shared.
-    pub fn client(&self) -> Arc<Http> {
-        self.http.clone()
-    }
-
-    /// Returns a reference to the underlying HTTP client.
-    ///
-    /// Use this method when you only need temporary access to the client
-    /// and don't need to share ownership.
-    ///
-    /// # Returns
-    ///
-    /// A reference to the [`Http`] client.
-    pub fn client_ref(&self) -> &Http {
-        &self.http
+        app.insert_resource(DiscordHttpResource::new(http));
     }
 }

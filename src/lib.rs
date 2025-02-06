@@ -16,6 +16,8 @@ use bevy_ecs::schedule::SystemSet;
 #[cfg_attr(docsrs, doc(cfg(feature = "bot")))]
 pub mod bot;
 
+pub mod res;
+
 mod common;
 
 #[cfg(feature = "http")]

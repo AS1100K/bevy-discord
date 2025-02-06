@@ -1,7 +1,7 @@
 use bevy_ecs::prelude::*;
 
 use crate::events::bot::*;
-use crate::http::DiscordHttpResource;
+use crate::res::DiscordHttpResource;
 
 pub(crate) fn handle_b_ready_event(mut events: EventReader<BReadyEvent>, mut commands: Commands) {
     for event in events.read() {

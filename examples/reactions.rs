@@ -29,7 +29,7 @@ fn main() {
 
 fn handle_messages(
     mut messages: EventReader<BMessage>,
-    http: Option<Res<bevy_discord::http::DiscordHttpResource>>,
+    http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for message in messages.read() {
         if let Some(http) = &http {
@@ -59,7 +59,7 @@ fn handle_messages(
 
 fn handle_reactions(
     mut reaction_add: EventReader<BReactionAdd>,
-    http: Option<Res<bevy_discord::http::DiscordHttpResource>>,
+    http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for reaction in reaction_add.read() {
         if let Some(http) = &http {

@@ -17,14 +17,6 @@ use bevy_ecs::prelude::*;
 use discord_sdk::{Discord, Subscriptions};
 use std::sync::Arc;
 
-/// A global resource for the Discord bot.
-///
-/// This resource maintains the bot's internal state and event communication channel.
-#[derive(Resource)]
-pub struct DiscordRichPresenceRes {
-    pub discord: Arc<Discord>,
-}
-
 #[derive(Resource, Clone)]
 pub struct DiscordRichPresenceConfig {
     pub app: AppId,
@@ -72,16 +64,14 @@ fn setup_rich_presence(
 
     let discord_rich_presence_config = discord_rich_presence_config.clone();
     let discord_res = || {
-        commands.insert_resource(DiscordRichPresenceRes {
-            discord: Arc::new(
-                Discord::new(
-                    discord_rich_presence_config.app,
-                    discord_rich_presence_config.subscriptions,
-                    event_handler,
-                )
-                .expect("Failed to create a Discord Rich Presence Client"),
-            ),
-        });
+        commands.insert_resource(crate::res::DiscordRichPresenceRes::new(Arc::new(
+            Discord::new(
+                discord_rich_presence_config.app,
+                discord_rich_presence_config.subscriptions,
+                event_handler,
+            )
+            .expect("Failed to create a Discord Rich Presence Client"),
+        )))
     };
 
     tokio_runtime().block_on(async move { discord_res() });
