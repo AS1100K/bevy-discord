@@ -45,14 +45,16 @@ fn main() {
         .add_plugins(bevy::log::LogPlugin {
             ..Default::default()
         })
-        .add_plugins(DiscordPluginGroup::new(config))
+        // Don't use `::new_only_bot` function in production code with feature `full` and `docsrs`
+        // instead use `::new` with feature `bot`
+        .add_plugins(DiscordPluginGroup::new_only_bot(config))
         .add_systems(Update, handle_messages)
         .run();
 }
 
 fn handle_messages(
     mut messages: EventReader<BMessage>,
-    http: Option<Res<bevy_discord::http::DiscordHttpResource>>,
+    http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for message in messages.read() {
         if let Some(http) = &http {
@@ -96,7 +98,8 @@ use bevy::log::tracing_subscriber::fmt::Subscriber;
 use bevy::MinimalPlugins;
 use bevy_app::{App, Update};
 use bevy_discord::events::rich_presence::RichPresenceReady;
-use bevy_discord::rich_presence::{DiscordRichPresenceConfig, DiscordRichPresenceRes};
+use bevy_discord::res::DiscordRichPresenceRes;
+use bevy_discord::rich_presence::DiscordRichPresenceConfig;
 use bevy_discord::{DiscordPluginGroup, DiscordSet};
 use bevy_ecs::event::EventReader;
 use bevy_ecs::prelude::{IntoSystemConfigs, Res};
@@ -154,6 +157,7 @@ fn rich_presence_ready(
     }
 }
 ```
+_Example taken from `examples/rich_presence.rs`_
 
 </details>
 
