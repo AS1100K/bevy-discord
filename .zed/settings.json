@@ -1,0 +1,16 @@
+{
+  "languages": {
+    "Markdown": {
+      "formatter": "prettier"
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "cargo": {
+          "features": ["full", "docsrs"]
+        }
+      }
+    }
+  }
+}
