@@ -2,7 +2,7 @@
 // cargo run --example basic_bot --features "full docsrs"
 
 use bevy::prelude::*;
-use bevy_discord::bot::DiscordBotConfig;
+use bevy_discord::config::DiscordBotConfig;
 use bevy_discord::events::bot::BMessage;
 use bevy_discord::serenity::all::*;
 use bevy_discord::DiscordPluginGroup;

@@ -39,7 +39,6 @@ use event_handlers::*;
 
 use crate::bot::handle::Handle;
 use crate::channel::ChannelRes;
-use crate::common::{initialize_field_with_doc, override_field_with_doc};
 use crate::runtime::tokio_runtime;
 use crate::DiscordSet;
 
@@ -88,7 +87,7 @@ mod handle;
 /// your bot's requirements.
 ///
 /// **If you want to use this plugin, then you should probably use [DiscordPluginGroup](crate::DiscordPluginGroup) instead.**
-pub struct DiscordBotPlugin(DiscordBotConfig);
+pub struct DiscordBotPlugin(crate::config::DiscordBotConfig);
 
 impl DiscordBotPlugin {
     /// Creates a new instance of `DiscordBotPlugin` with the specified configuration.
@@ -96,7 +95,7 @@ impl DiscordBotPlugin {
     /// # Arguments
     ///
     /// * `configuration` - Bot configuration including token, intents, and presence settings
-    pub fn new(configuration: DiscordBotConfig) -> Self {
+    pub fn new(configuration: crate::config::DiscordBotConfig) -> Self {
         Self(configuration)
     }
 }
@@ -187,35 +186,10 @@ impl Plugin for DiscordBotPlugin {
     }
 }
 
-/// Configuration settings for the Discord bot.
-///
-/// This struct allows you to configure various aspects of the bot including:
-/// - Bot token
-/// - Gateway intents
-/// - Online status
-/// - Activity status
-#[derive(Default, Resource, Clone)]
-pub struct DiscordBotConfig {
-    token: String,
-    gateway_intents: GatewayIntents,
-    status: Option<OnlineStatus>,
-    activity: Option<ActivityData>,
-    shards: u32,
-}
-
-impl DiscordBotConfig {
-    initialize_field_with_doc!(token, String, "Sets the bot token.");
-    initialize_field_with_doc!(
-        gateway_intents,
-        GatewayIntents,
-        "Sets the bot [`GatewayIntents`]."
-    );
-    override_field_with_doc!(status, OnlineStatus, "Sets the initial status.");
-    override_field_with_doc!(activity, ActivityData, "Sets the initial activity.");
-    initialize_field_with_doc!(shards, u32, "The total number of shards to use.");
-}
-
-fn setup_bot(discord_bot_config: Res<DiscordBotConfig>, channel_res: Res<ChannelRes>) {
+fn setup_bot(
+    discord_bot_config: Res<crate::config::DiscordBotConfig>,
+    channel_res: Res<ChannelRes>,
+) {
     let tx = channel_res.tx.clone();
 
     let mut client_builder = Client::builder(

@@ -2,13 +2,13 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "bot")]
-use crate::bot::{DiscordBotConfig, DiscordBotPlugin};
+use crate::bot::DiscordBotPlugin;
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 use crate::channel::ChannelPlugin;
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 use crate::plugins::ChannelListener;
 #[cfg(feature = "rich_presence")]
-use crate::rich_presence::{DiscordRichPresenceConfig, DiscordRichPresencePlugin};
+use crate::rich_presence::DiscordRichPresencePlugin;
 use bevy_app::{PluginGroup, PluginGroupBuilder};
 use bevy_ecs::schedule::SystemSet;
 
@@ -16,6 +16,9 @@ use bevy_ecs::schedule::SystemSet;
 #[cfg_attr(docsrs, doc(cfg(feature = "bot")))]
 pub mod bot;
 
+#[cfg(any(feature = "bot", feature = "rich_presence"))]
+#[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
+pub mod config;
 pub mod res;
 
 mod common;
@@ -55,10 +58,10 @@ pub struct DiscordSet;
 pub struct DiscordPluginGroup {
     #[cfg(feature = "bot")]
     /// _Only available in feature `bot`_
-    pub bot_config: DiscordBotConfig,
+    pub bot_config: crate::config::DiscordBotConfig,
     #[cfg(feature = "rich_presence")]
     /// _Only available in feature `rich_presence`_
-    pub rich_presence_config: DiscordRichPresenceConfig,
+    pub rich_presence_config: crate::config::DiscordRichPresenceConfig,
 }
 
 #[cfg(all(feature = "bot", feature = "rich_presence"))]
@@ -75,8 +78,8 @@ impl DiscordPluginGroup {
     ///
     /// A new instance of `DiscordPluginGroup`.
     pub fn new(
-        bot_config: DiscordBotConfig,
-        rich_presence_config: DiscordRichPresenceConfig,
+        bot_config: crate::config::DiscordBotConfig,
+        rich_presence_config: crate::config::DiscordRichPresenceConfig,
     ) -> Self {
         Self {
             bot_config,
@@ -90,13 +93,10 @@ impl DiscordPluginGroup {
     ///
     /// **NOTE:** This is an internal function only accessible by `docsrs` feature and is used
     /// for examples, don't use this feature in production code.
-    pub fn new_only_bot(bot_config: DiscordBotConfig) -> Self {
+    pub fn new_only_bot(bot_config: crate::config::DiscordBotConfig) -> Self {
         Self {
             bot_config,
-            rich_presence_config: DiscordRichPresenceConfig {
-                app: 0,
-                subscriptions: discord_sdk::Subscriptions::all(),
-            },
+            rich_presence_config: crate::config::DiscordRichPresenceConfig::default(),
         }
     }
 
@@ -106,7 +106,9 @@ impl DiscordPluginGroup {
     ///
     /// **NOTE:** This is an internal function only accessible by `docsrs` feature and is used
     /// for examples, don't use this feature in production code.
-    pub fn new_only_rich_presence(rich_presence_config: DiscordRichPresenceConfig) -> Self {
+    pub fn new_only_rich_presence(
+        rich_presence_config: crate::config::DiscordRichPresenceConfig,
+    ) -> Self {
         Self {
             rich_presence_config,
             bot_config: Default::default(),
@@ -126,7 +128,7 @@ impl DiscordPluginGroup {
     /// # Returns
     ///
     /// A new instance of `DiscordPluginGroup`.
-    pub fn new(bot_config: DiscordBotConfig) -> Self {
+    pub fn new(bot_config: crate::config::DiscordBotConfig) -> Self {
         Self { bot_config }
     }
 }
@@ -143,7 +145,7 @@ impl DiscordPluginGroup {
     /// # Returns
     ///
     /// A new instance of `DiscordPluginGroup`.
-    pub fn new(rich_presence_config: DiscordRichPresenceConfig) -> Self {
+    pub fn new(rich_presence_config: crate::config::DiscordRichPresenceConfig) -> Self {
         Self {
             rich_presence_config,
         }

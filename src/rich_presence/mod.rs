@@ -11,23 +11,16 @@ use crate::events::rich_presence::*;
 use crate::rich_presence::event_handlers::EventHandler;
 use crate::DiscordSet;
 use crate::{channel::ChannelRes, runtime::tokio_runtime};
-use ::discord_sdk::AppId;
 use bevy_app::{App, Plugin, Startup};
 use bevy_ecs::prelude::*;
-use discord_sdk::{Discord, Subscriptions};
+use discord_sdk::Discord;
 use std::sync::Arc;
 
-#[derive(Resource, Clone)]
-pub struct DiscordRichPresenceConfig {
-    pub app: AppId,
-    pub subscriptions: Subscriptions,
-}
-
 /// **If you want to use this plugin, then you should probably use [DiscordPluginGroup](crate::DiscordPluginGroup) instead.**
-pub struct DiscordRichPresencePlugin(DiscordRichPresenceConfig);
+pub struct DiscordRichPresencePlugin(crate::config::DiscordRichPresenceConfig);
 
 impl DiscordRichPresencePlugin {
-    pub fn new(discord_rich_presence_config: DiscordRichPresenceConfig) -> Self {
+    pub fn new(discord_rich_presence_config: crate::config::DiscordRichPresenceConfig) -> Self {
         Self(discord_rich_presence_config)
     }
 }
@@ -56,7 +49,7 @@ impl Plugin for DiscordRichPresencePlugin {
 
 fn setup_rich_presence(
     mut commands: Commands,
-    discord_rich_presence_config: Res<DiscordRichPresenceConfig>,
+    discord_rich_presence_config: Res<crate::config::DiscordRichPresenceConfig>,
     channel_res: Res<ChannelRes>,
 ) {
     let tx = channel_res.tx.clone();

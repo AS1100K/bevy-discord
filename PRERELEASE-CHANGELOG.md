@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `plugins` module is now private
 - disabled default features of dependencies
 - Moved all resources to `res` module
+- Moved all configuration structs to `config` module
 
 ### Fixed
 - Typos in documentation

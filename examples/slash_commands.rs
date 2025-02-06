@@ -2,7 +2,7 @@
 // cargo run --example slash_command --features "full docsrs"
 
 use bevy::prelude::*;
-use bevy_discord::bot::DiscordBotConfig;
+use bevy_discord::config::DiscordBotConfig;
 use bevy_discord::events::bot::*;
 use bevy_discord::runtime::tokio_runtime;
 use bevy_discord::serenity::all::{

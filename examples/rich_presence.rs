@@ -4,14 +4,14 @@
 use bevy::log::tracing_subscriber::fmt::Subscriber;
 use bevy::MinimalPlugins;
 use bevy_app::{App, Update};
+use bevy_discord::config::DiscordRichPresenceConfig;
 use bevy_discord::events::rich_presence::RichPresenceReady;
 use bevy_discord::res::DiscordRichPresenceRes;
-use bevy_discord::rich_presence::DiscordRichPresenceConfig;
 use bevy_discord::{DiscordPluginGroup, DiscordSet};
 use bevy_ecs::event::EventReader;
 use bevy_ecs::prelude::{IntoSystemConfigs, Res};
 use discord_sdk::activity::ActivityBuilder;
-use discord_sdk::{OffsetDateTime, Subscriptions};
+use discord_sdk::OffsetDateTime;
 
 fn main() {
     // Initialize tracing subscriber
@@ -20,10 +20,7 @@ fn main() {
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
-    let config = DiscordRichPresenceConfig {
-        app: 1326097363395411968,
-        subscriptions: Subscriptions::all(),
-    };
+    let config = DiscordRichPresenceConfig::default().app(1326097363395411968);
 
     App::new()
         .add_plugins(MinimalPlugins)
