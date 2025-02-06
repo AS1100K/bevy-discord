@@ -1,5 +1,6 @@
 use crate::common::{initialize_field_with_doc, override_field_with_doc};
 use bevy_ecs::prelude::*;
+#[cfg(feature = "bot")]
 use serenity::all::*;
 
 /// Configuration settings for the Discord bot.
