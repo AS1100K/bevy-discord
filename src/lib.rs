@@ -168,7 +168,7 @@ impl DiscordPluginGroup {
     common::new!(
         "Creates a new `DiscordPluginGroup`. _Available only on `http` + `rich_presence` features._\n\nFor more information, please refer to https://docs.rs/bevy-discord",
         token: String,
-        rich_presence_config: crate::config::DiscordRichPresenceConfig,
+        rich_presence_config: crate::config::DiscordRichPresenceConfig
     );
 
     // feature `bot` and `rich_presence`
@@ -176,7 +176,7 @@ impl DiscordPluginGroup {
     common::new!(
         "Creates a new `DiscordPluginGroup`. _Available only on `bot` + `rich_presence` features._\n\nFor more information, please refer to https://docs.rs/bevy-discord",
         bot_config: crate::config::DiscordBotConfig,
-        rich_presence_config: crate::config::DiscordRichPresenceConfig,
+        rich_presence_config: crate::config::DiscordRichPresenceConfig
     );
 }
 
