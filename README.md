@@ -209,3 +209,6 @@ crate are compatible with which bevy version:
 | `0.4.x` | `0.14.x`     |
 | `0.5.x` | `0.15.x`     |
 | `0.6.x` | `0.?.x`      |
+
+## Contributing
+If you are planning to contribute to `bevy-discord` in any manner, please refer to [`CONTRIBUTING.md`](https://github.com/AS1100K/bevy-discord/blob/main/CONTRIBUTING.md)
