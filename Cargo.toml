@@ -40,6 +40,10 @@ async-trait = { version = "0.1", optional = true }
 bevy = "0.15"
 serde_json = "1"
 
+[package.metadata.cargo-feature-combinations]
+skip_feature_sets = [["bot", "docsrs"]]
+denylist = ["default", "full", "bot_cache", "rich_presence_local_testing"]
+
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
