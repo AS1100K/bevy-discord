@@ -1,3 +1,11 @@
+//! Configuration types for Discord bot and Rich Presence integration.
+//!
+//! This module provides configuration structures for both Discord bot functionality
+//! and Rich Presence integration. The configurations are split into two main components:
+//!
+//! - [`DiscordBotConfig`]: Configuration for the Discord bot (available with `bot` feature)
+//! - [`DiscordRichPresenceConfig`]: Configuration for Rich Presence integration (available with `rich_presence` feature)
+
 use crate::common::{initialize_field_with_doc, override_field_with_doc};
 use bevy_ecs::prelude::*;
 #[cfg(feature = "bot")]

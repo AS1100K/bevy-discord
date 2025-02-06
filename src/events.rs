@@ -1,3 +1,10 @@
+//! Contains all the Bevy events that can be emitted by the Discord integration.
+//!
+//! This module is split into two main feature-gated submodules:
+//!
+//! - [`bot`] - Events related to Discord bot functionality (requires `bot` feature)
+//! - [`rich_presence`] - Events related to Discord Rich Presence integration (requires `rich_presence` feature)
+
 use crate::common::create_event_collection_and_handler;
 
 #[cfg(feature = "bot")]
@@ -16,7 +23,7 @@ pub mod bot {
     ///
     /// Provides data about the bot and the guilds it’s in.
     ///
-    /// Once, dispatched it automatically inserts [DiscordHttpResource](crate::http::DiscordHttpResource)
+    /// Once, dispatched it automatically inserts [DiscordHttpResource](crate::res::DiscordHttpResource)
     /// to the bevy app.
     pub struct BReadyEvent {
         pub ctx: Context,
