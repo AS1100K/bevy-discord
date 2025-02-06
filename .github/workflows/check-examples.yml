@@ -4,13 +4,10 @@ on:
   push:
     branches: [main]
     paths:
-      - '**.rs'
-      - '**.toml'
+      - "**.rs"
+      - "**.toml"
   pull_request:
     branches: [main]
-    paths:
-      - '**.rs'
-      - '**.toml'
 
 jobs:
   # Examples that will work with feature bot
