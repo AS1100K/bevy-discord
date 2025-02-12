@@ -23,18 +23,3 @@ jobs:
         run: cargo publish --token ${CRATES_TOKEN}
         env:
           CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
-
-      # These step has been taken from https://github.com/AS1100K/aether/blob/main/.github/workflows/release.yml
-      - name: Parse Changelog
-        id: parse_changelog
-        uses: ocavue/changelog-parser-action@v1
-        with:
-          filepath: "./CHANGELOG.md"
-          removemarkdown: false
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ github.ref }}
-          body: ${{ steps.parse_changelog.outputs.latestBody }}
