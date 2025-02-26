@@ -42,7 +42,7 @@ fn handle_messages(
                 let message_id = message.new_message.id;
                 let channel_id = message.new_message.channel_id;
 
-                bevy_discord::runtime::tokio_runtime().spawn(async move {
+                bevy_discord::runtime::runtime().spawn(async move {
                     // Add a thumbs up reaction
                     let _ = http
                         .create_reaction(
@@ -71,7 +71,7 @@ fn handle_reactions(
             let http = http.client();
             let channel_id = reaction.add_reaction.channel_id;
 
-            bevy_discord::runtime::tokio_runtime().spawn(async move {
+            bevy_discord::runtime::runtime().spawn(async move {
                 let _ = http
                     .send_message(
                         channel_id,

@@ -11,12 +11,18 @@ license = "MIT"
 keywords = ["bevy", "plugin", "discord"]
 
 [features]
+default = ["bevy_tasks_runtime"]
 full = ["bot", "http", "rich_presence"]
 bot = ["tokio/sync", "http"]
 http = ["dep:serenity"]
+
 bot_cache = ["serenity/cache"]
+
 rich_presence = ["dep:discord-sdk", "dep:async-trait"]
 rich_presence_local_testing = ["discord-sdk/local-testing"]
+
+tokio_runtime = ["dep:tokio"]
+bevy_tasks_runtime = ["dep:bevy_tasks"]
 
 # Don't use this feature anywhere other than cargo doc, examples and rustdoc
 docsrs = []
@@ -24,6 +30,7 @@ docsrs = []
 [dependencies]
 bevy_app = { version = "0.15", default-features = false }
 bevy_ecs = { version = "0.15", default-features = false }
+bevy_tasks = { version = "0.15", features = ["multi_threaded"], optional = true }
 flume = "0.11"
 serenity = { version = "0.12", features = [
     "gateway",
@@ -32,7 +39,7 @@ serenity = { version = "0.12", features = [
 ], optional = true }
 paste = "1"
 tracing = "0.1"
-tokio = { version = "1", features = ["rt-multi-thread", "rt"] }
+tokio = { version = "1", features = ["rt-multi-thread", "rt"], optional = true }
 discord-sdk = { version = "0.4", optional = true }
 async-trait = { version = "0.1", optional = true }
 

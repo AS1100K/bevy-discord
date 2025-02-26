@@ -48,7 +48,7 @@ fn handle_messages(
             if content == "!ping" {
                 let http = http.client();
 
-                bevy_discord::runtime::tokio_runtime().spawn(async move {
+                bevy_discord::runtime::runtime().spawn(async move {
                     let _ = http
                         .send_message(
                             channel_id,
