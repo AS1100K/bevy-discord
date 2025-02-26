@@ -41,7 +41,7 @@ use event_handlers::*;
 
 use crate::bot::handle::Handle;
 use crate::channel::ChannelRes;
-use crate::runtime::tokio_runtime;
+use crate::runtime::runtime;
 use crate::DiscordSet;
 
 pub(crate) mod event_handlers;
@@ -212,7 +212,7 @@ fn setup_bot(
 
     let discord_bot_config_clone = discord_bot_config.clone();
 
-    tokio_runtime().spawn(async move {
+    runtime().spawn(async move {
         let mut client = client_builder
             .await
             .expect("Unable to build discord Client");

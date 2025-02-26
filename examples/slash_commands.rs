@@ -4,7 +4,7 @@
 use bevy::prelude::*;
 use bevy_discord::config::DiscordBotConfig;
 use bevy_discord::events::bot::*;
-use bevy_discord::runtime::tokio_runtime;
+use bevy_discord::runtime::runtime;
 use bevy_discord::serenity::all::{
     Command, CreateCommand, CreateInteractionResponse, CreateInteractionResponseMessage,
     GatewayIntents,
@@ -31,7 +31,7 @@ fn handle_ready(mut ready_events: EventReader<BReadyEvent>) {
         let http = event.ctx.http.clone();
 
         // Register global slash command
-        tokio_runtime().spawn(async move {
+        runtime().spawn(async move {
             let command = Command::create_global_command(
                 &http,
                 CreateCommand::new("ping").description("A simple ping command"),
@@ -52,7 +52,7 @@ fn handle_interactions(mut interaction_events: EventReader<BInteractionCreate>) 
                 let http = event.ctx.http.clone();
                 let command = command.clone();
 
-                tokio_runtime().spawn(async move {
+                runtime().spawn(async move {
                     let _ = command
                         .create_response(
                             &http,

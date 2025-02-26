@@ -52,7 +52,7 @@ fn rich_presence_ready(
             .start_timestamp(current_date_time);
 
         let ds = rich_presence.discord.clone();
-        bevy_discord::runtime::tokio_runtime().spawn(async move {
+        bevy_discord::runtime::runtime().spawn(async move {
             let _ = ds
                 .update_activity(new_activity)
                 .await

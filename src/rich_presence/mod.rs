@@ -12,7 +12,7 @@ mod event_handlers;
 use crate::events::rich_presence::*;
 use crate::rich_presence::event_handlers::EventHandler;
 use crate::DiscordSet;
-use crate::{channel::ChannelRes, runtime::tokio_runtime};
+use crate::{channel::ChannelRes, runtime::runtime};
 use bevy_app::{App, Plugin, Startup};
 use bevy_ecs::prelude::*;
 use discord_sdk::Discord;
@@ -69,5 +69,5 @@ fn setup_rich_presence(
         )))
     };
 
-    tokio_runtime().block_on(async move { discord_res() });
+    runtime().block_on(async move { discord_res() });
 }
