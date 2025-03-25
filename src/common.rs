@@ -48,7 +48,7 @@ macro_rules! create_event_collection_and_handler {
         }
 
         // Define the function to handle the events and send them through EventWriter
-        paste::paste! {
+        pastey::paste! {
             pub(crate) fn send_events(
                 world: &mut bevy_ecs::world::World
             ) {

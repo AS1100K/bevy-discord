@@ -1,3 +1,5 @@
+//! Internal Channel Listener Plugin
+
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 use {
     crate::events::send_events,

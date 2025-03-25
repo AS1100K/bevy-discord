@@ -1,3 +1,6 @@
+//! Internal Channel Plugin, that just add
+//! channel resource
+
 use crate::events::EventCollection;
 use bevy_app::{App, Plugin};
 use bevy_ecs::prelude::Resource;

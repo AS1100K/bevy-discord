@@ -18,7 +18,7 @@ use bevy_ecs::prelude::*;
 use discord_sdk::Discord;
 use std::sync::Arc;
 
-/// **If you want to use this plugin, then you should probably use [DiscordPluginGroup](crate::DiscordPluginGroup) instead.**
+/// TODO
 pub struct DiscordRichPresencePlugin(crate::config::DiscordRichPresenceConfig);
 
 impl DiscordRichPresencePlugin {
@@ -29,6 +29,18 @@ impl DiscordRichPresencePlugin {
 
 impl Plugin for DiscordRichPresencePlugin {
     fn build(&self, app: &mut App) {
+        // Check if internal plugins are added
+        // If you are adding new internal plugins, make sure to also update DiscordBotPlugin
+        if app
+            .get_added_plugins::<super::channel::ChannelPlugin>()
+            .is_empty()
+        {
+            app.add_plugins(super::channel::ChannelPlugin);
+        }
+        if app.get_added_plugins::<super::ChannelListener>().is_empty() {
+            app.add_plugins(super::ChannelListener);
+        }
+
         app.insert_resource(self.0.clone())
             .add_event::<RichPresenceError>()
             .add_event::<RichPresenceReady>()

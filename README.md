@@ -14,7 +14,7 @@ A very simple, bevy plugin that let you send and receive messages through bevy e
 Add `bevy-discord` as your dependency:
 
 ```bash
-$ cargo add bevy-discord --features full
+cargo add bevy-discord --features full
 ```
 
 ## Quick Start
@@ -24,10 +24,10 @@ $ cargo add bevy-discord --features full
 
 ```rust,no_run
 use bevy::prelude::*;
-use bevy_discord::bot::DiscordBotConfig;
+use bevy_discord::config::DiscordBotConfig;
 use bevy_discord::events::bot::BMessage;
 use bevy_discord::serenity::all::*;
-use bevy_discord::DiscordPluginGroup;
+use bevy_discord::DiscordBotPlugin;
 use serde_json::json;
 
 fn main() {
@@ -45,9 +45,7 @@ fn main() {
         .add_plugins(bevy::log::LogPlugin {
             ..Default::default()
         })
-        // Don't use `::new_only_bot` function in production code with feature `full` and `docsrs`
-        // instead use `::new` with feature `bot`
-        .add_plugins(DiscordPluginGroup::new_only_bot(config))
+        .add_plugins(DiscordBotPlugin::new(config))
         .add_systems(Update, handle_messages)
         .run();
 }
@@ -86,6 +84,7 @@ fn handle_messages(
     }
 }
 ```
+
 _Example taken from `examples/basic_bot.rs`_
 
 </details>
@@ -97,14 +96,14 @@ _Example taken from `examples/basic_bot.rs`_
 use bevy::log::tracing_subscriber::fmt::Subscriber;
 use bevy::MinimalPlugins;
 use bevy_app::{App, Update};
+use bevy_discord::config::DiscordRichPresenceConfig;
 use bevy_discord::events::rich_presence::RichPresenceReady;
 use bevy_discord::res::DiscordRichPresenceRes;
-use bevy_discord::rich_presence::DiscordRichPresenceConfig;
-use bevy_discord::{DiscordPluginGroup, DiscordSet};
+use bevy_discord::{DiscordRichPresencePlugin, DiscordSet};
 use bevy_ecs::event::EventReader;
 use bevy_ecs::prelude::{IntoSystemConfigs, Res};
 use discord_sdk::activity::ActivityBuilder;
-use discord_sdk::{OffsetDateTime, Subscriptions};
+use discord_sdk::OffsetDateTime;
 
 fn main() {
     // Initialize tracing subscriber
@@ -113,16 +112,11 @@ fn main() {
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
-    let config = DiscordRichPresenceConfig {
-        app: 1326097363395411968,
-        subscriptions: Subscriptions::all(),
-    };
+    let config = DiscordRichPresenceConfig::default().app(1326097363395411968);
 
     App::new()
         .add_plugins(MinimalPlugins)
-        // Don't use `::new_only_rich_presence` function in production code with feature `full` and `docsrs`
-        // instead use `::new` with feature `rich_presence`
-        .add_plugins(DiscordPluginGroup::new_only_rich_presence(config))
+        .add_plugins(DiscordRichPresencePlugin::new(config))
         .add_systems(Update, rich_presence_ready.after(DiscordSet))
         .run();
 }
@@ -157,6 +151,7 @@ fn rich_presence_ready(
     }
 }
 ```
+
 _Example taken from `examples/rich_presence.rs`_
 
 </details>
@@ -173,7 +168,7 @@ The `examples/` directory contains several example implementations:
 To run an example:
 
 ```bash
-$ cargo run --example <EXAMPLE_NAME> --features "full docsrs"
+cargo run --example <EXAMPLE_NAME> --features "full docsrs"
 ```
 
 Note: Remember to replace `YOUR_BOT_TOKEN` with your actual Discord bot token.
@@ -199,6 +194,7 @@ Currently, the following Discord/Serenity features are not supported:
 | `voice`       | `bot`     |
 
 ## Versions
+
 This crate aims to track bevy's versions. It also follows the semver standard. Below is a chart which versions of this
 crate are compatible with which bevy version:
 
@@ -211,4 +207,5 @@ crate are compatible with which bevy version:
 | `0.6.x` | `0.?.x`      |
 
 ## Contributing
+
 If you are planning to contribute to `bevy-discord` in any manner, please refer to [`CONTRIBUTING.md`](https://github.com/AS1100K/bevy-discord/blob/main/CONTRIBUTING.md)

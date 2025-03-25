@@ -1,11 +1,11 @@
 // examples/reactions.rs
-// cargo run --example reactions --features "full docsrs"
+// cargo run --example reactions --features full
 
 use bevy::prelude::*;
 use bevy_discord::config::DiscordBotConfig;
 use bevy_discord::events::bot::*;
 use bevy_discord::serenity::all::*;
-use bevy_discord::DiscordPluginGroup;
+use bevy_discord::DiscordBotPlugin;
 use serde_json::json;
 
 fn main() {
@@ -20,9 +20,7 @@ fn main() {
 
     App::new()
         .add_plugins(MinimalPlugins)
-        // Don't use `::new_only_bot` function in production code with feature `full` and `docsrs`
-        // instead use `::new` with feature `bot`
-        .add_plugins(DiscordPluginGroup::new_only_bot(config))
+        .add_plugins(DiscordBotPlugin::new(config))
         .add_systems(Update, (handle_messages, handle_reactions))
         .run();
 }

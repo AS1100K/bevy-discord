@@ -77,7 +77,7 @@ mod handle;
 ///
 /// # Features
 ///
-/// - Automatically makes available [DiscordHttpResource](crate::http::DiscordHttpResource)
+/// - Automatically makes available [DiscordHttpResource](crate::res::DiscordHttpResource)
 /// - Registers all Discord events as Bevy events
 /// - Manages bot configuration and presence
 /// - Provides asynchronous event handling
@@ -87,8 +87,6 @@ mod handle;
 /// This plugin requires a valid Discord bot token and appropriate gateway intents
 /// to function correctly. Make sure to configure the necessary intents based on
 /// your bot's requirements.
-///
-/// **If you want to use this plugin, then you should probably use [DiscordPluginGroup](crate::DiscordPluginGroup) instead.**
 pub struct DiscordBotPlugin(crate::config::DiscordBotConfig);
 
 impl DiscordBotPlugin {
@@ -104,6 +102,18 @@ impl DiscordBotPlugin {
 
 impl Plugin for DiscordBotPlugin {
     fn build(&self, app: &mut App) {
+        // Check if internal plugins are added
+        // If you are adding new internal plugins, make sure to also update DiscordRichPresencePlugin
+        if app
+            .get_added_plugins::<super::channel::ChannelPlugin>()
+            .is_empty()
+        {
+            app.add_plugins(super::channel::ChannelPlugin);
+        }
+        if app.get_added_plugins::<super::ChannelListener>().is_empty() {
+            app.add_plugins(super::ChannelListener);
+        }
+
         #[cfg(feature = "bot_cache")]
         app.add_event::<BCacheRead>().add_event::<BShardsReady>();
 
