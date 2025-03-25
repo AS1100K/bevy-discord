@@ -18,7 +18,7 @@ use bevy_ecs::prelude::*;
 use discord_sdk::Discord;
 use std::sync::Arc;
 
-/// TODO
+/// A plugin for integrating Discord Rich Presence with the Bevy game engine.
 pub struct DiscordRichPresencePlugin(crate::config::DiscordRichPresenceConfig);
 
 impl DiscordRichPresencePlugin {
