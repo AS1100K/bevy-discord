@@ -48,20 +48,18 @@ macro_rules! create_event_collection_and_handler {
         }
 
         // Define the function to handle the events and send them through EventWriter
-        pastey::paste! {
-            pub(crate) fn send_events(
-                world: &mut bevy_ecs::world::World
-            ) {
-                let discord_bot_res = world.resource::<$crate::channel::ChannelRes>();
-                if let Ok(event) = discord_bot_res.rx.try_recv() {
-                    match event {
-                        $(
-                            $(#[$meta])?
-                            $name::$variant(event_to_send) => {
-                                world.send_event(event_to_send);
-                            }
-                        ),*
-                    }
+        pub(crate) fn send_events(
+            world: &mut bevy_ecs::world::World
+        ) {
+            let discord_bot_res = world.resource::<$crate::channel::ChannelRes>();
+            if let Ok(event) = discord_bot_res.rx.try_recv() {
+                match event {
+                    $(
+                        $(#[$meta])?
+                        $name::$variant(event_to_send) => {
+                            world.send_event(event_to_send);
+                        }
+                    ),*
                 }
             }
         }
