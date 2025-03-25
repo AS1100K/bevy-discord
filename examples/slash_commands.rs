@@ -1,5 +1,5 @@
 // examples/slash_commands.rs
-// cargo run --example slash_command --features "full docsrs"
+// cargo run --example slash_command --features full
 
 use bevy::prelude::*;
 use bevy_discord::config::DiscordBotConfig;
@@ -10,7 +10,7 @@ use bevy_discord::serenity::all::{
     GatewayIntents,
 };
 use bevy_discord::serenity::model::application::Interaction;
-use bevy_discord::DiscordPluginGroup;
+use bevy_discord::DiscordBotPlugin;
 
 fn main() {
     let config = DiscordBotConfig::default()
@@ -19,9 +19,7 @@ fn main() {
 
     App::new()
         .add_plugins(MinimalPlugins)
-        // Don't use `::new_only_bot` function in production code with feature `full` and `docsrs`
-        // instead use `::new` with feature `bot`
-        .add_plugins(DiscordPluginGroup::new_only_bot(config))
+        .add_plugins(DiscordBotPlugin::new(config))
         .add_systems(Update, (handle_ready, handle_interactions))
         .run();
 }
