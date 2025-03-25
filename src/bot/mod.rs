@@ -110,8 +110,11 @@ impl Plugin for DiscordBotPlugin {
         {
             app.add_plugins(super::channel::ChannelPlugin);
         }
-        if app.get_added_plugins::<super::ChannelListener>().is_empty() {
-            app.add_plugins(super::ChannelListener);
+        if app
+            .get_added_plugins::<super::channel::ChannelListener>()
+            .is_empty()
+        {
+            app.add_plugins(super::channel::ChannelListener);
         }
 
         #[cfg(feature = "bot_cache")]

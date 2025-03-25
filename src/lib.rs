@@ -1,8 +1,6 @@
 #![doc = include_str!("../README.md")]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-#[cfg(feature = "bot")]
-use crate::plugins::ChannelListener;
 use bevy_ecs::schedule::SystemSet;
 
 #[cfg(feature = "bot")]
@@ -35,7 +33,6 @@ pub(crate) mod channel;
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 #[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
 pub mod events;
-mod plugins;
 
 #[cfg(feature = "http")]
 #[cfg_attr(docsrs, doc(cfg(feature = "http")))]

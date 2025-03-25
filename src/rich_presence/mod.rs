@@ -37,8 +37,11 @@ impl Plugin for DiscordRichPresencePlugin {
         {
             app.add_plugins(super::channel::ChannelPlugin);
         }
-        if app.get_added_plugins::<super::ChannelListener>().is_empty() {
-            app.add_plugins(super::ChannelListener);
+        if app
+            .get_added_plugins::<super::channel::ChannelListener>()
+            .is_empty()
+        {
+            app.add_plugins(super::channel::ChannelListener);
         }
 
         app.insert_resource(self.0.clone())
