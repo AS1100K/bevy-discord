@@ -47,19 +47,29 @@ macro_rules! create_event_collection_and_handler {
             )*
         }
 
-        // Define the function to handle the events and send them through EventWriter
-        pub(crate) fn send_events(
-            world: &mut bevy_ecs::world::World
-        ) {
-            let discord_bot_res = world.resource::<$crate::channel::ChannelRes>();
-            if let Ok(event) = discord_bot_res.rx.try_recv() {
-                match event {
-                    $(
-                        $(#[$meta])?
-                        $name::$variant(event_to_send) => {
-                            world.send_event(event_to_send);
-                        }
-                    ),*
+        pastey::paste! {
+            #[derive(bevy_ecs::system::SystemParam)]
+            pub(crate) struct [< $name SystemParam >]<'w> {
+                $(
+                    $(#[$meta])?
+                    pub(crate) [< $variant:snake >]: bevy_ecs::event::EventWriter<'w, $variant>,
+                )*
+            }
+
+            // Define the function to handle the events and send them through EventWriter
+            pub(crate) fn send_events(
+                channel: bevy_ecs::prelude::Res<$crate::channel::ChannelRes>,
+                mut events_system_param: [< $name SystemParam >]
+            ) {
+                if let Ok(event) = channel.rx.try_recv() {
+                    match event {
+                        $(
+                            $(#[$meta])?
+                            $name::$variant(event_to_send) => {
+                                events_system_param.[< $variant:snake >].send(event_to_send);
+                            }
+                        ),*
+                    }
                 }
             }
         }
