@@ -6,18 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.6.0-rc.1] - 2025-02-12
-### Changed
-- Move all configuration structs to `config` module
-
-### Fixes
-- Disabled unwanted default features for dependencies
-
-### Removed
-- `http`, `rich_presence`, `bot`, `plugin` module
-
-
-
-## [0.6.0-rc.1] - [Unreleased]
 
 ### Added
 - `new` method to `DiscordPluginGroup` based on feature configuration
@@ -30,11 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved all configuration structs to `config` module
 - Make module `http`, `rich_presence` and `bot` private
 
-### Fixed
+### Fixes
+- Disabled unwanted default features for dependencies
 - Typos in documentation
 
 ### Removed
-- Re-exports of `DiscordHttpPlugin`, `DiscordBotPlugin`, `DiscordRichPresencePlugin`
+- `http`, `rich_presence`, `bot`, `plugin` module
 
 ## [0.6.0-alpha.3] - 2025-01-31
 
