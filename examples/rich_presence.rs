@@ -20,7 +20,13 @@ fn main() {
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
-    let config = DiscordRichPresenceConfig::default().app(1326097363395411968);
+    let config = DiscordRichPresenceConfig::default()
+        .app(1326097363395411968)
+        .subscriptions(
+            bevy_discord::discord_sdk::Subscriptions::ACTIVITY
+                | bevy_discord::discord_sdk::Subscriptions::USER
+                | bevy_discord::discord_sdk::Subscriptions::OVERLAY,
+        );
 
     App::new()
         .add_plugins(MinimalPlugins)
@@ -47,7 +53,8 @@ fn rich_presence_ready(
         let new_activity = ActivityBuilder::new()
             .state("bevy-discord")
             .details("Exploring example rich_presence.rs")
-            .start_timestamp(current_date_time);
+            .start_timestamp(current_date_time)
+            .kind(bevy_discord::discord_sdk::activity::ActivityKind::Playing);
 
         let ds = rich_presence.discord.clone();
         bevy_discord::runtime::tokio_runtime().spawn(async move {

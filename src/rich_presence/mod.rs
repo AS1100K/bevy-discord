@@ -18,7 +18,15 @@ use bevy_ecs::prelude::*;
 use discord_sdk::Discord;
 use std::sync::Arc;
 
-/// A plugin for integrating Discord Rich Presence with the Bevy game engine.
+/// A plugin for integrating Discord Rich Presence with the Bevy game engine. You
+/// can do anything that you can do with [Game SDK](https://discord.com/developers/docs/developer-tools/game-sdk).
+///
+/// # Development
+///
+/// For development following the following guides:
+/// - [How can users discover and play my activity](https://support-dev.discord.com/hc/en-us/articles/21204493235991-How-Can-Users-Discover-and-Play-My-Activity)
+///
+/// and make sure you have enabled sharing your activities with others.
 pub struct DiscordRichPresencePlugin(crate::config::DiscordRichPresenceConfig);
 
 impl DiscordRichPresencePlugin {
