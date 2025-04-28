@@ -824,173 +824,98 @@ use bot::*;
 #[cfg(feature = "rich_presence")]
 use rich_presence::*;
 
+#[cfg(feature = "bot")]
 create_event_collection_and_handler!(
-    EventCollection,
-    #[cfg(feature = "bot")]
+    EventCollectionBot,
+    bot,
     BCommandPermissionsUpdate,
-    #[cfg(feature = "bot")]
     BAutoModerationRuleCreate,
-    #[cfg(feature = "bot")]
     BAutoModerationRuleUpdate,
-    #[cfg(feature = "bot")]
     BAutoModerationRuleDelete,
-    #[cfg(feature = "bot")]
     BAutoModerationActionExecution,
     #[cfg(all(feature = "bot_cache", feature = "bot_cache"))]
     BCacheRead,
     #[cfg(all(feature = "bot_cache", feature = "bot_cache"))]
     BShardsReady,
-    #[cfg(feature = "bot")]
     BChannelCreate,
-    #[cfg(feature = "bot")]
     BCategoryCreate,
-    #[cfg(feature = "bot")]
     BCategoryDelete,
-    #[cfg(feature = "bot")]
     BChannelDelete,
-    #[cfg(feature = "bot")]
     BChannelPinUpdate,
-    #[cfg(feature = "bot")]
     BChannelUpdate,
-    #[cfg(feature = "bot")]
     BGuildAuditLogEntryCreate,
-    #[cfg(feature = "bot")]
     BGuildBanAddition,
-    #[cfg(feature = "bot")]
     BGuildBanRemoval,
-    #[cfg(feature = "bot")]
     BGuildCreate,
-    #[cfg(feature = "bot")]
     BGuildDelete,
-    #[cfg(feature = "bot")]
     BGuildEmojisUpdate,
-    #[cfg(feature = "bot")]
     BGuildIntegrationsUpdate,
-    #[cfg(feature = "bot")]
     BGuildMemberAddition,
-    #[cfg(feature = "bot")]
     BGuildMemberRemoval,
-    #[cfg(feature = "bot")]
     BGuildMemberUpdate,
-    #[cfg(feature = "bot")]
     BGuildMembersChunk,
-    #[cfg(feature = "bot")]
     BGuildRoleCreate,
-    #[cfg(feature = "bot")]
     BGuildRoleDelete,
-    #[cfg(feature = "bot")]
     BGuildRoleUpdate,
-    #[cfg(feature = "bot")]
     BGuildStickersUpdate,
-    #[cfg(feature = "bot")]
     BGuildUpdate,
-    #[cfg(feature = "bot")]
     BInviteCreate,
-    #[cfg(feature = "bot")]
     BInviteDelete,
-    #[cfg(feature = "bot")]
     BMessage,
-    #[cfg(feature = "bot")]
     BMessageDelete,
-    #[cfg(feature = "bot")]
     BMessageDeleteBulk,
-    #[cfg(feature = "bot")]
     BMessageUpdate,
-    #[cfg(feature = "bot")]
     BReactionAdd,
-    #[cfg(feature = "bot")]
     BReactionRemove,
-    #[cfg(feature = "bot")]
     BReactionRemoveAll,
-    #[cfg(feature = "bot")]
     BReactionRemoveEmoji,
-    #[cfg(feature = "bot")]
     BPresenceUpdate,
-    #[cfg(feature = "bot")]
     BReadyEvent,
-    #[cfg(feature = "bot")]
     BResume,
-    #[cfg(feature = "bot")]
     BShardStageUpdate,
-    #[cfg(feature = "bot")]
     BTypingStart,
-    #[cfg(feature = "bot")]
     BUserUpdate,
-    #[cfg(feature = "bot")]
     BVoiceServerUpdate,
-    #[cfg(feature = "bot")]
     BVoiceStateUpdate,
-    #[cfg(feature = "bot")]
     BVoiceChannelStatusUpdate,
-    #[cfg(feature = "bot")]
     BWebhookUpdate,
-    #[cfg(feature = "bot")]
     BInteractionCreate,
-    #[cfg(feature = "bot")]
     BIntegrationCreate,
-    #[cfg(feature = "bot")]
     BIntegrationUpdate,
-    #[cfg(feature = "bot")]
     BStageInstanceCreate,
-    #[cfg(feature = "bot")]
     BStageInstanceUpdate,
-    #[cfg(feature = "bot")]
     BStageInstanceDelete,
-    #[cfg(feature = "bot")]
     BThreadCreate,
-    #[cfg(feature = "bot")]
     BThreadUpdate,
-    #[cfg(feature = "bot")]
     BThreadDelete,
-    #[cfg(feature = "bot")]
     BThreadListSync,
-    #[cfg(feature = "bot")]
     BThreadMemberUpdate,
-    #[cfg(feature = "bot")]
     BThreadMembersUpdate,
-    #[cfg(feature = "bot")]
     BGuildScheduledEventCreate,
-    #[cfg(feature = "bot")]
     BGuildScheduledEventUpdate,
-    #[cfg(feature = "bot")]
     BGuildScheduledEventDelete,
-    #[cfg(feature = "bot")]
     BGuildScheduledEventUserAdd,
-    #[cfg(feature = "bot")]
     BGuildScheduledEventUserRemove,
-    #[cfg(feature = "bot")]
     BEntitlementCreate,
-    #[cfg(feature = "bot")]
     BEntitlementUpdate,
-    #[cfg(feature = "bot")]
     BEntitlementDelete,
-    #[cfg(feature = "bot")]
     BPollVoteAdd,
-    #[cfg(feature = "bot")]
     BPollVoteRemove,
-    #[cfg(feature = "bot")]
     BRateLimit,
-    // -------------
-    // Rich Presence
-    // -------------
-    #[cfg(feature = "rich_presence")]
+);
+
+#[cfg(feature = "rich_presence")]
+create_event_collection_and_handler!(
+    EventCollectionRichPresence,
+    rich_presence,
     RichPresenceError,
-    #[cfg(feature = "rich_presence")]
     RichPresenceReady,
-    #[cfg(feature = "rich_presence")]
     RichPresenceDisconnected,
-    #[cfg(feature = "rich_presence")]
     RichPresenceCurrentUserUpdate,
-    #[cfg(feature = "rich_presence")]
     RichPresenceActivityJoin,
-    #[cfg(feature = "rich_presence")]
     RichPresenceActivitySpectate,
-    #[cfg(feature = "rich_presence")]
     RichPresenceActivityJoinRequest,
-    #[cfg(feature = "rich_presence")]
     RichPresenceActivityInvite,
-    #[cfg(feature = "rich_presence")]
     RichPresenceOverlayUpdate,
-    #[cfg(feature = "rich_presence")]
     RichPresenceRelationshipUpdate
 );

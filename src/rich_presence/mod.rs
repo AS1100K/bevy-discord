@@ -9,11 +9,11 @@
 
 mod event_handlers;
 
-use crate::events::rich_presence::*;
+use crate::events::{rich_presence::*, send_events_rich_presence, EventCollectionRichPresence};
 use crate::rich_presence::event_handlers::EventHandler;
 use crate::DiscordSet;
 use crate::{channel::ChannelRes, runtime::tokio_runtime};
-use bevy_app::{App, Plugin, Startup};
+use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
 use discord_sdk::Discord;
 use std::sync::Arc;
@@ -29,20 +29,9 @@ impl DiscordRichPresencePlugin {
 
 impl Plugin for DiscordRichPresencePlugin {
     fn build(&self, app: &mut App) {
-        // Check if internal plugins are added
-        // If you are adding new internal plugins, make sure to also update DiscordBotPlugin
-        if app
-            .get_added_plugins::<super::channel::ChannelPlugin>()
-            .is_empty()
-        {
-            app.add_plugins(super::channel::ChannelPlugin);
-        }
-        if app
-            .get_added_plugins::<super::channel::ChannelListener>()
-            .is_empty()
-        {
-            app.add_plugins(super::channel::ChannelListener);
-        }
+        let (tx, rx) = flume::unbounded::<EventCollectionRichPresence>();
+        let channel_res = ChannelRes { tx, rx };
+        app.insert_resource(channel_res);
 
         app.insert_resource(self.0.clone())
             .add_event::<RichPresenceError>()
@@ -55,19 +44,15 @@ impl Plugin for DiscordRichPresencePlugin {
             .add_event::<RichPresenceActivityInvite>()
             .add_event::<RichPresenceOverlayUpdate>()
             .add_event::<RichPresenceRelationshipUpdate>()
-            .add_systems(
-                Startup,
-                setup_rich_presence
-                    .in_set(DiscordSet)
-                    .run_if(resource_exists::<ChannelRes>),
-            );
+            .add_systems(Startup, setup_rich_presence)
+            .add_systems(Update, send_events_rich_presence.in_set(DiscordSet));
     }
 }
 
 fn setup_rich_presence(
     mut commands: Commands,
     discord_rich_presence_config: Res<crate::config::DiscordRichPresenceConfig>,
-    channel_res: Res<ChannelRes>,
+    channel_res: Res<ChannelRes<EventCollectionRichPresence>>,
 ) {
     let tx = channel_res.tx.clone();
     let event_handler = Box::new(EventHandler { tx });

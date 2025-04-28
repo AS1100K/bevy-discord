@@ -36,7 +36,7 @@ use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
 use serenity::all::*;
 
-use crate::events::bot::*;
+use crate::events::{bot::*, send_events_bot, EventCollectionBot};
 use event_handlers::*;
 
 use crate::bot::handle::Handle;
@@ -102,20 +102,9 @@ impl DiscordBotPlugin {
 
 impl Plugin for DiscordBotPlugin {
     fn build(&self, app: &mut App) {
-        // Check if internal plugins are added
-        // If you are adding new internal plugins, make sure to also update DiscordRichPresencePlugin
-        if app
-            .get_added_plugins::<super::channel::ChannelPlugin>()
-            .is_empty()
-        {
-            app.add_plugins(super::channel::ChannelPlugin);
-        }
-        if app
-            .get_added_plugins::<super::channel::ChannelListener>()
-            .is_empty()
-        {
-            app.add_plugins(super::channel::ChannelListener);
-        }
+        let (tx, rx) = flume::unbounded::<EventCollectionBot>();
+        let channel_res = ChannelRes { tx, rx };
+        app.insert_resource(channel_res);
 
         #[cfg(feature = "bot_cache")]
         app.add_event::<BCacheRead>().add_event::<BShardsReady>();
@@ -191,19 +180,19 @@ impl Plugin for DiscordBotPlugin {
             .add_event::<BPollVoteAdd>()
             .add_event::<BPollVoteRemove>()
             .add_event::<BRateLimit>()
+            .add_systems(Startup, setup_bot.in_set(DiscordSet))
             .add_systems(
-                Startup,
-                setup_bot
-                    .in_set(DiscordSet)
-                    .run_if(resource_exists::<ChannelRes>),
-            )
-            .add_systems(Update, handle_b_ready_event.in_set(DiscordSet));
+                Update,
+                (handle_b_ready_event, send_events_bot)
+                    .chain()
+                    .in_set(DiscordSet),
+            );
     }
 }
 
 fn setup_bot(
     discord_bot_config: Res<crate::config::DiscordBotConfig>,
-    channel_res: Res<ChannelRes>,
+    channel_res: Res<ChannelRes<EventCollectionBot>>,
 ) {
     let tx = channel_res.tx.clone();
 
