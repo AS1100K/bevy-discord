@@ -8,7 +8,7 @@
     "rust-analyzer": {
       "initialization_options": {
         "cargo": {
-          "features": ["full", "docsrs"]
+          "features": ["full"]
         }
       }
     }
