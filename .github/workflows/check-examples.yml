@@ -22,7 +22,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Install Stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.2.0
+        run: rustup install stable
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
       - name: Cargo Check ${{ matrix.example }}
