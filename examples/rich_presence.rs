@@ -2,14 +2,11 @@
 // cargo run --example rich_presence --features full
 
 use bevy::log::tracing_subscriber::fmt::Subscriber;
-use bevy::MinimalPlugins;
-use bevy_app::{App, Update};
+use bevy::prelude::*;
 use bevy_discord::config::DiscordRichPresenceConfig;
 use bevy_discord::events::rich_presence::RichPresenceReady;
 use bevy_discord::res::DiscordRichPresenceRes;
 use bevy_discord::{DiscordRichPresencePlugin, DiscordSet};
-use bevy_ecs::event::EventReader;
-use bevy_ecs::prelude::{IntoSystemConfigs, Res};
 use discord_sdk::activity::ActivityBuilder;
 use discord_sdk::OffsetDateTime;
 
