@@ -4,9 +4,6 @@
 [![Crates.io Version](https://img.shields.io/crates/v/bevy-discord)](https://crates.io/crates/bevy-discord)
 ![CI](https://github.com/as1100k/bevy-discord/actions/workflows/ci.yml/badge.svg?event=push)
 
-> [!NOTE]
-> The `main` branch is ahead working for `0.6` release
-
 A very simple, bevy plugin that let you send and receive messages through bevy events.
 
 ## Installation
@@ -177,11 +174,11 @@ Note: Remember to replace `YOUR_BOT_TOKEN` with your actual Discord bot token.
 
 This crate using powerful cargo features.
 
-| Feature                   | Information                                             |
-|---------------------------|---------------------------------------------------------|
-| `bot` _(includes `http`)_ | Discord bot integration for Bevy applications.          |
-| `http`                    | HTTP Client functionality for Discord API interactions. |
-| `rich_presence`           | Discord Rich Presence Integration with Bevy. _`(v0.6)`_ |
+| Feature                   | Information                                                         |
+|---------------------------|---------------------------------------------------------------------|
+| `bot` _(includes `http`)_ | Discord bot integration for Bevy applications.                      |
+| `http`                    | HTTP Client functionality for Discord API interactions.             |
+| `rich_presence`           | Discord Rich Presence Integration with Bevy. _`(v0.6 and greater)`_ |
 
 _All features are comes under `full` feature._
 
