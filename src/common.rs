@@ -34,6 +34,7 @@ macro_rules! initialize_field_with_doc {
 macro_rules! create_event_collection_and_handler {
     (
         $name:ident,
+        $fn_name:ident,
         $(
             $(#[$meta:meta])? $variant:ident
         ),* $(,)?
@@ -57,8 +58,8 @@ macro_rules! create_event_collection_and_handler {
             }
 
             // Define the function to handle the events and send them through EventWriter
-            pub(crate) fn send_events(
-                channel: bevy_ecs::prelude::Res<$crate::channel::ChannelRes>,
+            pub(crate) fn [<send_events_ $fn_name>](
+                channel: bevy_ecs::prelude::Res<$crate::channel::ChannelRes<$name>>,
                 mut events_system_param: [< $name SystemParam >]
             ) {
                 if let Ok(event) = channel.rx.try_recv() {
@@ -77,9 +78,9 @@ macro_rules! create_event_collection_and_handler {
 }
 
 macro_rules! send_event {
-    ($self:ident, $event:ident { $($field:ident),* }) => {
+    ($self:ident, $collection: ident, $event:ident { $($field:ident),* }) => {
         if let Err(_) = $self.tx.send_async(
-            $crate::events::EventCollection::$event($event {
+            $crate::events::$collection::$event($event {
                 $($field),*
             })
         ).await {
@@ -89,9 +90,9 @@ macro_rules! send_event {
 }
 
 macro_rules! send_event_tuple {
-    ($self:ident, $event:ident ( $($field:ident),* )) => {
+    ($self:ident, $collection: ident, $event:ident ( $($field:ident),* )) => {
         if let Err(_) = $self.tx.send_async(
-            $crate::events::EventCollection::$event($event ( $($field),* ))
+            $crate::events::$collection::$event($event ( $($field),* ))
         ).await {
             error!("Unable to send event to the channel")
         }
