@@ -1,14 +1,3 @@
-macro_rules! new {
-    ($doc:expr $(, $field:ident : $type:ty)*) => {
-        #[doc = $doc]
-        pub fn new($($field: $type),*) -> Self {
-            Self {
-                $($field),*
-            }
-        }
-    };
-}
-
 /// Creates a function that override the field which is `Option` and documentation
 macro_rules! override_field_with_doc {
     ($name:ident, $type:ty, $doc:expr) => {
@@ -67,7 +56,7 @@ macro_rules! create_event_collection_and_handler {
                         $(
                             $(#[$meta])?
                             $name::$variant(event_to_send) => {
-                                events_system_param.[< $variant:snake >].send(event_to_send);
+                                events_system_param.[< $variant:snake >].write(event_to_send);
                             }
                         ),*
                     }
@@ -100,6 +89,6 @@ macro_rules! send_event_tuple {
 }
 
 pub(crate) use {
-    create_event_collection_and_handler, initialize_field_with_doc, new, override_field_with_doc,
+    create_event_collection_and_handler, initialize_field_with_doc, override_field_with_doc,
     send_event, send_event_tuple,
 };
