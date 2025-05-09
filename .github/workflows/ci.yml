@@ -38,7 +38,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Install stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.2.0
+        run: rustup install stable
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
       - name: Install cargo-feature-combinations
@@ -55,7 +55,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Install stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.2.0
+        run: rustup install stable
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
       - name: Run clippy
@@ -70,6 +70,6 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Install stable toolchain
-        uses: rs-workspace/rust-toolchain@v0.2.0
+        run: rustup install stable
       - name: Run cargo fmt
         run: cargo fmt --all -- --check
