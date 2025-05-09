@@ -4,9 +4,6 @@
 [![Crates.io Version](https://img.shields.io/crates/v/bevy-discord)](https://crates.io/crates/bevy-discord)
 ![CI](https://github.com/as1100k/bevy-discord/actions/workflows/ci.yml/badge.svg?event=push)
 
-> [!NOTE]
-> The `main` branch is ahead working for `0.6` release
-
 A very simple, bevy plugin that let you send and receive messages through bevy events.
 
 ## Installation
@@ -94,14 +91,11 @@ _Example taken from `examples/basic_bot.rs`_
 
 ```rust,no_run
 use bevy::log::tracing_subscriber::fmt::Subscriber;
-use bevy::MinimalPlugins;
-use bevy_app::{App, Update};
+use bevy::prelude::*;
 use bevy_discord::config::DiscordRichPresenceConfig;
 use bevy_discord::events::rich_presence::RichPresenceReady;
 use bevy_discord::res::DiscordRichPresenceRes;
 use bevy_discord::{DiscordRichPresencePlugin, DiscordSet};
-use bevy_ecs::event::EventReader;
-use bevy_ecs::prelude::{IntoSystemConfigs, Res};
 use discord_sdk::activity::ActivityBuilder;
 use discord_sdk::OffsetDateTime;
 
@@ -112,7 +106,13 @@ fn main() {
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
-    let config = DiscordRichPresenceConfig::default().app(1326097363395411968);
+    let config = DiscordRichPresenceConfig::default()
+        .app(1326097363395411968)
+        .subscriptions(
+            bevy_discord::discord_sdk::Subscriptions::ACTIVITY
+                | bevy_discord::discord_sdk::Subscriptions::USER
+                | bevy_discord::discord_sdk::Subscriptions::OVERLAY,
+        );
 
     App::new()
         .add_plugins(MinimalPlugins)
@@ -139,7 +139,8 @@ fn rich_presence_ready(
         let new_activity = ActivityBuilder::new()
             .state("bevy-discord")
             .details("Exploring example rich_presence.rs")
-            .start_timestamp(current_date_time);
+            .start_timestamp(current_date_time)
+            .kind(bevy_discord::discord_sdk::activity::ActivityKind::Playing);
 
         let ds = rich_presence.discord.clone();
         bevy_discord::runtime::tokio_runtime().spawn(async move {
@@ -177,11 +178,11 @@ Note: Remember to replace `YOUR_BOT_TOKEN` with your actual Discord bot token.
 
 This crate using powerful cargo features.
 
-| Feature                   | Information                                             |
-|---------------------------|---------------------------------------------------------|
-| `bot` _(includes `http`)_ | Discord bot integration for Bevy applications.          |
-| `http`                    | HTTP Client functionality for Discord API interactions. |
-| `rich_presence`           | Discord Rich Presence Integration with Bevy. _`(v0.6)`_ |
+| Feature                   | Information                                                         |
+|---------------------------|---------------------------------------------------------------------|
+| `bot` _(includes `http`)_ | Discord bot integration for Bevy applications.                      |
+| `http`                    | HTTP Client functionality for Discord API interactions.             |
+| `rich_presence`           | Discord Rich Presence Integration with Bevy. _`(v0.6 and greater)`_ |
 
 _All features are comes under `full` feature._
 
@@ -204,7 +205,7 @@ crate are compatible with which bevy version:
 | `0.3.x` | `0.13.x`     |
 | `0.4.x` | `0.14.x`     |
 | `0.5.x` | `0.15.x`     |
-| `0.6.x` | `0.?.x`      |
+| `0.6.x` | `0.16.x`      |
 
 ## Contributing
 
