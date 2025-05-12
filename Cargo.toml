@@ -1,7 +1,7 @@
 [package]
 name = "bevy-discord"
 description = "A bevy plugin for sending and receiving discord messages."
-version = "0.6.0-rc.1"
+version = "0.6.0"
 edition = "2021"
 authors = ["Aditya Kumar <theadityakumardeveloper@gmail.com>"]
 readme = "README.md"
