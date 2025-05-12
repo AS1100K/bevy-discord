@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2025-05-12
+### Added
+- Discord Rich Presence i.e. `DiscordRichPresencePlugin`, `bevy_discord::config::DiscordRichPresenceConfig`, `bevy_discord::events::rich_presence`
+- Re-export `discord_sdk`
+- `rich_presence` example
+
+### Changed
+- Update `send_events` system to not use `World` directly [#25](https://github.com/AS1100K/bevy-discord/pull/25)
+- Upgrade to bevy 0.16 [#29](https://github.com/AS1100K/bevy-discord/pull/29)
+- Move `DiscordBotConfig` to `config` module
+- Move `DiscordHttpResource` to `res` module
+- Move plugins `DiscordBotPlugin`, `DiscordHttpPlugin` to root of the crate
+- Move `bevy_discord::bot::events` to `bevy_discord::events::bot`
+- Update the examples
+
+### Removed
+- `bot` and `http` module
+
 ## [0.5.0] - 2024-11-30
 
 ### Added
