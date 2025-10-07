@@ -9,7 +9,7 @@
 
 mod event_handlers;
 
-use crate::DiscordSet;
+use crate::DiscordSystems;
 use crate::messages::{MessageCollectionRichPresence, rich_presence::*, send_events_rich_presence};
 use crate::rich_presence::event_handlers::EventHandler;
 use crate::{channel::ChannelRes, runtime::tokio_runtime};
@@ -53,7 +53,7 @@ impl Plugin for DiscordRichPresencePlugin {
             .add_message::<OverlayUpdateMessage>()
             .add_message::<RelationshipUpdateMessage>()
             .add_systems(Startup, setup_rich_presence)
-            .add_systems(Update, send_events_rich_presence.in_set(DiscordSet));
+            .add_systems(Update, send_events_rich_presence.in_set(DiscordSystems));
     }
 }
 

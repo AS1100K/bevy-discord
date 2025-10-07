@@ -6,7 +6,7 @@ use bevy::prelude::*;
 use bevy_discord::config::DiscordRichPresenceConfig;
 use bevy_discord::messages::rich_presence::RpReadyMessage;
 use bevy_discord::res::DiscordRichPresenceRes;
-use bevy_discord::{DiscordRichPresencePlugin, DiscordSet};
+use bevy_discord::{DiscordRichPresencePlugin, DiscordSystems};
 use discord_sdk::OffsetDateTime;
 use discord_sdk::activity::ActivityBuilder;
 
@@ -28,7 +28,7 @@ fn main() {
     App::new()
         .add_plugins(MinimalPlugins)
         .add_plugins(DiscordRichPresencePlugin::new(config))
-        .add_systems(Update, rich_presence_ready.after(DiscordSet))
+        .add_systems(Update, rich_presence_ready.after(DiscordSystems))
         .run();
 }
 

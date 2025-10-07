@@ -39,7 +39,7 @@ use serenity::all::*;
 use crate::messages::{MessageCollectionBot, bot::*, send_events_bot};
 use event_handlers::*;
 
-use crate::DiscordSet;
+use crate::DiscordSystems;
 use crate::bot::handle::Handle;
 use crate::channel::ChannelRes;
 use crate::runtime::tokio_runtime;
@@ -181,12 +181,12 @@ impl Plugin for DiscordBotPlugin {
             .add_message::<PollVoteAddMessage>()
             .add_message::<PollVoteRemoveMessage>()
             .add_message::<RateLimitMessage>()
-            .add_systems(Startup, setup_bot.in_set(DiscordSet))
+            .add_systems(Startup, setup_bot.in_set(DiscordSystems))
             .add_systems(
                 Update,
                 (handle_b_ready_event, send_events_bot)
                     .chain()
-                    .in_set(DiscordSet),
+                    .in_set(DiscordSystems),
             );
     }
 }
