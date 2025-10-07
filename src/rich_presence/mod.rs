@@ -30,6 +30,7 @@ use std::sync::Arc;
 pub struct DiscordRichPresencePlugin(crate::config::DiscordRichPresenceConfig);
 
 impl DiscordRichPresencePlugin {
+    /// Creates a new `DiscordRichPresencePlugin` with the given configuration.
     pub fn new(discord_rich_presence_config: crate::config::DiscordRichPresenceConfig) -> Self {
         Self(discord_rich_presence_config)
     }
