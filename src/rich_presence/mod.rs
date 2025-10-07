@@ -11,7 +11,7 @@ mod event_handlers;
 
 use crate::DiscordSystems;
 use crate::messages::{MessageCollectionRichPresence, rich_presence::*, send_events_rich_presence};
-use crate::rich_presence::event_handlers::EventHandler;
+use crate::rich_presence::event_handlers::MessageHandler;
 use crate::{channel::ChannelRes, runtime::tokio_runtime};
 use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
@@ -63,7 +63,7 @@ fn setup_rich_presence(
     channel_res: Res<ChannelRes<MessageCollectionRichPresence>>,
 ) {
     let tx = channel_res.tx.clone();
-    let event_handler = Box::new(EventHandler { tx });
+    let event_handler = Box::new(MessageHandler { tx });
 
     let discord_rich_presence_config = discord_rich_presence_config.clone();
     let discord_res = || {

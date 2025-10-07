@@ -184,7 +184,7 @@ impl Plugin for DiscordBotPlugin {
             .add_systems(Startup, setup_bot.in_set(DiscordSystems))
             .add_systems(
                 Update,
-                (handle_b_ready_event, send_events_bot)
+                (handle_b_ready_message, send_events_bot)
                     .chain()
                     .in_set(DiscordSystems),
             );

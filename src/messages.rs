@@ -1,4 +1,4 @@
-//! Contains all the Bevy events that can be emitted by the Discord integration.
+//! Contains all the Bevy messages that can be emitted by the Discord integration.
 //!
 //! This module is split into two main feature-gated submodules:
 //!
@@ -10,11 +10,9 @@ use crate::common::create_message_collection_and_handler;
 #[cfg(feature = "bot")]
 #[cfg_attr(docsrs, doc(cfg(feature = "bot")))]
 pub mod bot {
-    //! This module contains all the bevy events that are send by `bot` feature
-    //!
-    //! NOTE: Every Event has a prefix `B` to avoid confusion with `serenity` events.
+    //! This module contains all the bevy [Message] that are send by `bot` feature
 
-    use bevy_ecs::prelude::*;
+    use bevy_ecs::prelude::Message;
     use serenity::all::*;
     use serenity::model::channel::Message as SMessage;
     use std::collections::HashMap;
@@ -740,11 +738,9 @@ pub mod bot {
 #[cfg(feature = "rich_presence")]
 #[cfg_attr(docsrs, doc(cfg(feature = "rich_presence")))]
 pub mod rich_presence {
-    //! This module contains all the events thrown by `rich_presence` feature
-    //!
-    //! NOTE: Every Event has a prefix `RichPresence`
+    //! This module contains all the bevy [Message] thrown by `rich_presence` feature
 
-    use bevy_ecs::prelude::*;
+    use bevy_ecs::prelude::Message;
     use discord_sdk::activity::ActivityInvite;
     use discord_sdk::overlay::Visibility;
     use discord_sdk::relations::Relationship;

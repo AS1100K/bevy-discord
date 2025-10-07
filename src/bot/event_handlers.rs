@@ -3,7 +3,7 @@ use bevy_ecs::prelude::*;
 use crate::messages::bot::*;
 use crate::res::DiscordHttpResource;
 
-pub(crate) fn handle_b_ready_event(
+pub(crate) fn handle_b_ready_message(
     mut events: MessageReader<BotReadyMessage>,
     mut commands: Commands,
 ) {

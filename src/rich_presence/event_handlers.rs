@@ -8,12 +8,12 @@ use discord_sdk::{DiscordHandler, DiscordMsg, Event};
 use flume::Sender;
 use tracing::error;
 
-pub struct EventHandler {
+pub struct MessageHandler {
     pub tx: Sender<MessageCollectionRichPresence>,
 }
 
 #[async_trait]
-impl DiscordHandler for EventHandler {
+impl DiscordHandler for MessageHandler {
     async fn on_message(&self, msg: DiscordMsg) {
         match msg {
             DiscordMsg::Error(err) => error!(
