@@ -21,10 +21,10 @@ cargo add bevy-discord --features full
 
 ```rust,no_run
 use bevy::prelude::*;
+use bevy_discord::DiscordBotPlugin;
 use bevy_discord::config::DiscordBotConfig;
 use bevy_discord::events::bot::BMessage;
 use bevy_discord::serenity::all::*;
-use bevy_discord::DiscordBotPlugin;
 use serde_json::json;
 
 fn main() {
@@ -43,12 +43,12 @@ fn main() {
             ..Default::default()
         })
         .add_plugins(DiscordBotPlugin::new(config))
-        .add_systems(Update, handle_messages)
+        .add_systems(Update, handle_discord_message)
         .run();
 }
 
-fn handle_messages(
-    mut messages: EventReader<BMessage>,
+fn handle_discord_message(
+    mut messages: MessageReader<BMessage>,
     http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for message in messages.read() {
@@ -96,8 +96,8 @@ use bevy_discord::config::DiscordRichPresenceConfig;
 use bevy_discord::events::rich_presence::RichPresenceReady;
 use bevy_discord::res::DiscordRichPresenceRes;
 use bevy_discord::{DiscordRichPresencePlugin, DiscordSet};
-use discord_sdk::activity::ActivityBuilder;
 use discord_sdk::OffsetDateTime;
+use discord_sdk::activity::ActivityBuilder;
 
 fn main() {
     // Initialize tracing subscriber
@@ -122,7 +122,7 @@ fn main() {
 }
 
 fn rich_presence_ready(
-    mut events: EventReader<RichPresenceReady>,
+    mut events: MessageReader<RichPresenceReady>,
     rich_presence: Res<DiscordRichPresenceRes>,
 ) {
     for event in events.read() {
@@ -196,8 +196,8 @@ Currently, the following Discord/Serenity features are not supported:
 
 ## Versions
 
-This crate aims to track bevy's versions. It also follows the semver standard. Below is a chart which versions of this
-crate are compatible with which bevy version:
+This crate aims to track bevy's versions. It also follows the semver standard.
+Below is a chart which versions of this crate are compatible with which bevy version:
 
 | Version | Bevy Version |
 |---------|--------------|
@@ -205,8 +205,10 @@ crate are compatible with which bevy version:
 | `0.3.x` | `0.13.x`     |
 | `0.4.x` | `0.14.x`     |
 | `0.5.x` | `0.15.x`     |
-| `0.6.x` | `0.16.x`      |
+| `0.6.x` | `0.16.x`     |
+| `0.7.x` | `0.17.x`     |
 
 ## Contributing
 
-If you are planning to contribute to `bevy-discord` in any manner, please refer to [`CONTRIBUTING.md`](https://github.com/AS1100K/bevy-discord/blob/main/CONTRIBUTING.md)
+If you are planning to contribute to `bevy-discord` in any manner, please refer
+to [`CONTRIBUTING.md`](https://github.com/AS1100K/bevy-discord/blob/main/CONTRIBUTING.md)

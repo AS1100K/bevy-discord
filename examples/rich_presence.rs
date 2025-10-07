@@ -7,8 +7,8 @@ use bevy_discord::config::DiscordRichPresenceConfig;
 use bevy_discord::events::rich_presence::RichPresenceReady;
 use bevy_discord::res::DiscordRichPresenceRes;
 use bevy_discord::{DiscordRichPresencePlugin, DiscordSet};
-use discord_sdk::activity::ActivityBuilder;
 use discord_sdk::OffsetDateTime;
+use discord_sdk::activity::ActivityBuilder;
 
 fn main() {
     // Initialize tracing subscriber
@@ -33,7 +33,7 @@ fn main() {
 }
 
 fn rich_presence_ready(
-    mut events: EventReader<RichPresenceReady>,
+    mut events: MessageReader<RichPresenceReady>,
     rich_presence: Res<DiscordRichPresenceRes>,
 ) {
     for event in events.read() {

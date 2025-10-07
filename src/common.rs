@@ -42,7 +42,7 @@ macro_rules! create_event_collection_and_handler {
             pub(crate) struct [< $name SystemParam >]<'w> {
                 $(
                     $(#[$meta])?
-                    pub(crate) [< $variant:snake >]: bevy_ecs::event::EventWriter<'w, $variant>,
+                    pub(crate) [< $variant:snake >]: bevy_ecs::message::MessageWriter<'w, $variant>,
                 )*
             }
 

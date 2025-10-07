@@ -2,10 +2,10 @@
 // cargo run --example reactions --features full
 
 use bevy::prelude::*;
+use bevy_discord::DiscordBotPlugin;
 use bevy_discord::config::DiscordBotConfig;
 use bevy_discord::events::bot::*;
 use bevy_discord::serenity::all::*;
-use bevy_discord::DiscordBotPlugin;
 use serde_json::json;
 
 fn main() {
@@ -21,12 +21,12 @@ fn main() {
     App::new()
         .add_plugins(MinimalPlugins)
         .add_plugins(DiscordBotPlugin::new(config))
-        .add_systems(Update, (handle_messages, handle_reactions))
+        .add_systems(Update, (handle_discord_messages, handle_discord_reactions))
         .run();
 }
 
-fn handle_messages(
-    mut messages: EventReader<BMessage>,
+fn handle_discord_messages(
+    mut messages: MessageReader<BMessage>,
     http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for message in messages.read() {
@@ -55,8 +55,8 @@ fn handle_messages(
     }
 }
 
-fn handle_reactions(
-    mut reaction_add: EventReader<BReactionAdd>,
+fn handle_discord_reactions(
+    mut reaction_add: MessageReader<BReactionAdd>,
     http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for reaction in reaction_add.read() {

@@ -9,9 +9,9 @@
 
 mod event_handlers;
 
-use crate::events::{rich_presence::*, send_events_rich_presence, EventCollectionRichPresence};
-use crate::rich_presence::event_handlers::EventHandler;
 use crate::DiscordSet;
+use crate::events::{EventCollectionRichPresence, rich_presence::*, send_events_rich_presence};
+use crate::rich_presence::event_handlers::EventHandler;
 use crate::{channel::ChannelRes, runtime::tokio_runtime};
 use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
@@ -42,16 +42,16 @@ impl Plugin for DiscordRichPresencePlugin {
         app.insert_resource(channel_res);
 
         app.insert_resource(self.0.clone())
-            .add_event::<RichPresenceError>()
-            .add_event::<RichPresenceReady>()
-            .add_event::<RichPresenceDisconnected>()
-            .add_event::<RichPresenceCurrentUserUpdate>()
-            .add_event::<RichPresenceActivityJoin>()
-            .add_event::<RichPresenceActivitySpectate>()
-            .add_event::<RichPresenceActivityJoinRequest>()
-            .add_event::<RichPresenceActivityInvite>()
-            .add_event::<RichPresenceOverlayUpdate>()
-            .add_event::<RichPresenceRelationshipUpdate>()
+            .add_message::<RichPresenceError>()
+            .add_message::<RichPresenceReady>()
+            .add_message::<RichPresenceDisconnected>()
+            .add_message::<RichPresenceCurrentUserUpdate>()
+            .add_message::<RichPresenceActivityJoin>()
+            .add_message::<RichPresenceActivitySpectate>()
+            .add_message::<RichPresenceActivityJoinRequest>()
+            .add_message::<RichPresenceActivityInvite>()
+            .add_message::<RichPresenceOverlayUpdate>()
+            .add_message::<RichPresenceRelationshipUpdate>()
             .add_systems(Startup, setup_rich_presence)
             .add_systems(Update, send_events_rich_presence.in_set(DiscordSet));
     }
