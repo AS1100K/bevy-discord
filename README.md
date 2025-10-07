@@ -23,7 +23,7 @@ cargo add bevy-discord --features full
 use bevy::prelude::*;
 use bevy_discord::DiscordBotPlugin;
 use bevy_discord::config::DiscordBotConfig;
-use bevy_discord::events::bot::BMessage;
+use bevy_discord::messages::bot::DiscordMessage;
 use bevy_discord::serenity::all::*;
 use serde_json::json;
 
@@ -48,7 +48,7 @@ fn main() {
 }
 
 fn handle_discord_message(
-    mut messages: MessageReader<BMessage>,
+    mut messages: MessageReader<DiscordMessage>,
     http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for message in messages.read() {
@@ -93,7 +93,7 @@ _Example taken from `examples/basic_bot.rs`_
 use bevy::log::tracing_subscriber::fmt::Subscriber;
 use bevy::prelude::*;
 use bevy_discord::config::DiscordRichPresenceConfig;
-use bevy_discord::events::rich_presence::RichPresenceReady;
+use bevy_discord::messages::rich_presence::RpReadyMessage;
 use bevy_discord::res::DiscordRichPresenceRes;
 use bevy_discord::{DiscordRichPresencePlugin, DiscordSet};
 use discord_sdk::OffsetDateTime;
@@ -122,7 +122,7 @@ fn main() {
 }
 
 fn rich_presence_ready(
-    mut events: MessageReader<RichPresenceReady>,
+    mut events: MessageReader<RpReadyMessage>,
     rich_presence: Res<DiscordRichPresenceRes>,
 ) {
     for event in events.read() {

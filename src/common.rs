@@ -20,7 +20,7 @@ macro_rules! initialize_field_with_doc {
     };
 }
 
-macro_rules! create_event_collection_and_handler {
+macro_rules! create_message_collection_and_handler {
     (
         $name:ident,
         $fn_name:ident,
@@ -66,10 +66,10 @@ macro_rules! create_event_collection_and_handler {
     };
 }
 
-macro_rules! send_event {
+macro_rules! send_message {
     ($self:ident, $collection: ident, $event:ident { $($field:ident),* }) => {
         if let Err(_) = $self.tx.send_async(
-            $crate::events::$collection::$event($event {
+            $crate::messages::$collection::$event($event {
                 $($field),*
             })
         ).await {
@@ -78,10 +78,10 @@ macro_rules! send_event {
     };
 }
 
-macro_rules! send_event_tuple {
+macro_rules! send_message_tuple {
     ($self:ident, $collection: ident, $event:ident ( $($field:ident),* )) => {
         if let Err(_) = $self.tx.send_async(
-            $crate::events::$collection::$event($event ( $($field),* ))
+            $crate::messages::$collection::$event($event ( $($field),* ))
         ).await {
             error!("Unable to send event to the channel")
         }
@@ -89,6 +89,6 @@ macro_rules! send_event_tuple {
 }
 
 pub(crate) use {
-    create_event_collection_and_handler, initialize_field_with_doc, override_field_with_doc,
-    send_event, send_event_tuple,
+    create_message_collection_and_handler, initialize_field_with_doc, override_field_with_doc,
+    send_message, send_message_tuple,
 };

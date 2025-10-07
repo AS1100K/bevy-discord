@@ -4,7 +4,7 @@
 use bevy::prelude::*;
 use bevy_discord::DiscordBotPlugin;
 use bevy_discord::config::DiscordBotConfig;
-use bevy_discord::events::bot::*;
+use bevy_discord::messages::bot::*;
 use bevy_discord::runtime::tokio_runtime;
 use bevy_discord::serenity::all::{
     Command, CreateCommand, CreateInteractionResponse, CreateInteractionResponseMessage,
@@ -24,7 +24,7 @@ fn main() {
         .run();
 }
 
-fn handle_ready(mut ready_events: MessageReader<BReadyEvent>) {
+fn handle_ready(mut ready_events: MessageReader<BotReadyMessage>) {
     for event in ready_events.read() {
         let http = event.ctx.http.clone();
 
@@ -43,7 +43,7 @@ fn handle_ready(mut ready_events: MessageReader<BReadyEvent>) {
     }
 }
 
-fn handle_interactions(mut interaction_events: MessageReader<BInteractionCreate>) {
+fn handle_interactions(mut interaction_events: MessageReader<InteractionCreateMessage>) {
     for event in interaction_events.read() {
         if let Interaction::Command(command) = &event.interaction {
             if command.data.name.as_str() == "ping" {

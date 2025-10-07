@@ -11,7 +11,7 @@ license = "MIT"
 keywords = ["bevy", "plugin", "discord"]
 
 [features]
-full = ["bot", "http", "rich_presence"]
+full = ["bot", "http", "rich_presence", "bot_cache"]
 bot = ["tokio/sync", "http"]
 http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]

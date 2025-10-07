@@ -1,9 +1,12 @@
 use bevy_ecs::prelude::*;
 
-use crate::events::bot::*;
+use crate::messages::bot::*;
 use crate::res::DiscordHttpResource;
 
-pub(crate) fn handle_b_ready_event(mut events: MessageReader<BReadyEvent>, mut commands: Commands) {
+pub(crate) fn handle_b_ready_event(
+    mut events: MessageReader<BotReadyMessage>,
+    mut commands: Commands,
+) {
     for event in events.read() {
         let http_clone = event.ctx.http.clone();
 

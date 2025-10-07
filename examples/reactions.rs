@@ -4,7 +4,7 @@
 use bevy::prelude::*;
 use bevy_discord::DiscordBotPlugin;
 use bevy_discord::config::DiscordBotConfig;
-use bevy_discord::events::bot::*;
+use bevy_discord::messages::bot::*;
 use bevy_discord::serenity::all::*;
 use serde_json::json;
 
@@ -26,7 +26,7 @@ fn main() {
 }
 
 fn handle_discord_messages(
-    mut messages: MessageReader<BMessage>,
+    mut messages: MessageReader<DiscordMessage>,
     http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for message in messages.read() {
@@ -56,7 +56,7 @@ fn handle_discord_messages(
 }
 
 fn handle_discord_reactions(
-    mut reaction_add: MessageReader<BReactionAdd>,
+    mut reaction_add: MessageReader<ReactionAddMessage>,
     http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for reaction in reaction_add.read() {

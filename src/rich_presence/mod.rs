@@ -10,7 +10,7 @@
 mod event_handlers;
 
 use crate::DiscordSet;
-use crate::events::{EventCollectionRichPresence, rich_presence::*, send_events_rich_presence};
+use crate::messages::{MessageCollectionRichPresence, rich_presence::*, send_events_rich_presence};
 use crate::rich_presence::event_handlers::EventHandler;
 use crate::{channel::ChannelRes, runtime::tokio_runtime};
 use bevy_app::{App, Plugin, Startup, Update};
@@ -37,21 +37,21 @@ impl DiscordRichPresencePlugin {
 
 impl Plugin for DiscordRichPresencePlugin {
     fn build(&self, app: &mut App) {
-        let (tx, rx) = flume::unbounded::<EventCollectionRichPresence>();
+        let (tx, rx) = flume::unbounded::<MessageCollectionRichPresence>();
         let channel_res = ChannelRes { tx, rx };
         app.insert_resource(channel_res);
 
         app.insert_resource(self.0.clone())
-            .add_message::<RichPresenceError>()
-            .add_message::<RichPresenceReady>()
-            .add_message::<RichPresenceDisconnected>()
-            .add_message::<RichPresenceCurrentUserUpdate>()
-            .add_message::<RichPresenceActivityJoin>()
-            .add_message::<RichPresenceActivitySpectate>()
-            .add_message::<RichPresenceActivityJoinRequest>()
-            .add_message::<RichPresenceActivityInvite>()
-            .add_message::<RichPresenceOverlayUpdate>()
-            .add_message::<RichPresenceRelationshipUpdate>()
+            .add_message::<ErrorMessage>()
+            .add_message::<RpReadyMessage>()
+            .add_message::<DisconnectedMessage>()
+            .add_message::<CurrentUserUpdateMessage>()
+            .add_message::<ActivityJoinMessage>()
+            .add_message::<ActivitySpectateMessage>()
+            .add_message::<ActivityJoinRequestMessage>()
+            .add_message::<ActivityInviteMessage>()
+            .add_message::<OverlayUpdateMessage>()
+            .add_message::<RelationshipUpdateMessage>()
             .add_systems(Startup, setup_rich_presence)
             .add_systems(Update, send_events_rich_presence.in_set(DiscordSet));
     }
@@ -60,7 +60,7 @@ impl Plugin for DiscordRichPresencePlugin {
 fn setup_rich_presence(
     mut commands: Commands,
     discord_rich_presence_config: Res<crate::config::DiscordRichPresenceConfig>,
-    channel_res: Res<ChannelRes<EventCollectionRichPresence>>,
+    channel_res: Res<ChannelRes<MessageCollectionRichPresence>>,
 ) {
     let tx = channel_res.tx.clone();
     let event_handler = Box::new(EventHandler { tx });

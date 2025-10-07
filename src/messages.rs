@@ -5,7 +5,7 @@
 //! - [`bot`] - Events related to Discord bot functionality (requires `bot` feature)
 //! - [`rich_presence`] - Events related to Discord Rich Presence integration (requires `rich_presence` feature)
 
-use crate::common::create_event_collection_and_handler;
+use crate::common::create_message_collection_and_handler;
 
 #[cfg(feature = "bot")]
 #[cfg_attr(docsrs, doc(cfg(feature = "bot")))]
@@ -26,7 +26,7 @@ pub mod bot {
     /// Once, dispatched it automatically inserts [DiscordHttpResource](crate::res::DiscordHttpResource)
     /// to the bevy app.
     #[derive(Message)]
-    pub struct BReadyEvent {
+    pub struct BotReadyMessage {
         pub ctx: Context,
         pub data_about_bot: Ready,
     }
@@ -35,7 +35,7 @@ pub mod bot {
     ///
     /// Provides said permission’s data.
     #[derive(Message)]
-    pub struct BCommandPermissionsUpdate {
+    pub struct CommandPermissionsUpdateMessage {
         pub ctx: Context,
         pub permission: CommandPermissions,
     }
@@ -44,7 +44,7 @@ pub mod bot {
     ///
     /// Provides said rule’s data.
     #[derive(Message)]
-    pub struct BAutoModerationRuleCreate {
+    pub struct AutoModerationRuleCreateMessage {
         pub ctx: Context,
         pub rule: Rule,
     }
@@ -53,7 +53,7 @@ pub mod bot {
     ///
     /// Provides said rule’s data.
     #[derive(Message)]
-    pub struct BAutoModerationRuleUpdate {
+    pub struct AutoModerationRuleUpdateMessage {
         pub ctx: Context,
         pub rule: Rule,
     }
@@ -62,7 +62,7 @@ pub mod bot {
     ///
     /// Provides said rule’s data.
     #[derive(Message)]
-    pub struct BAutoModerationRuleDelete {
+    pub struct AutoModerationRuleDeleteMessage {
         pub ctx: Context,
         pub rule: Rule,
     }
@@ -71,7 +71,7 @@ pub mod bot {
     ///
     /// Provides said action execution’s data.
     #[derive(Message)]
-    pub struct BAutoModerationActionExecution {
+    pub struct AutoModerationActionExecutionMessage {
         pub ctx: Context,
         pub execution: ActionExecution,
     }
@@ -85,7 +85,7 @@ pub mod bot {
     #[cfg(feature = "bot_cache")]
     #[cfg_attr(docsrs, doc(cfg(feature = "bot_cache")))]
     #[derive(Message)]
-    pub struct BCacheRead {
+    pub struct CacheReadMessage {
         pub ctx: Context,
         pub guilds: Vec<GuildId>,
     }
@@ -94,7 +94,7 @@ pub mod bot {
     #[cfg(feature = "bot_cache")]
     #[cfg_attr(docsrs, doc(cfg(feature = "bot_cache")))]
     #[derive(Message)]
-    pub struct BShardsReady {
+    pub struct ShardsReadyMessage {
         pub ctx: Context,
         pub total_shards: u32,
     }
@@ -103,7 +103,7 @@ pub mod bot {
     ///
     /// Provides said channel’s data.
     #[derive(Message)]
-    pub struct BChannelCreate {
+    pub struct ChannelCreateMessage {
         pub ctx: Context,
         pub channel: GuildChannel,
     }
@@ -112,7 +112,7 @@ pub mod bot {
     ///
     /// Provides said category’s data.
     #[derive(Message)]
-    pub struct BCategoryCreate {
+    pub struct CategoryCreateMessage {
         pub ctx: Context,
         pub category: GuildChannel,
     }
@@ -121,7 +121,7 @@ pub mod bot {
     ///
     /// Provides said category’s data.
     #[derive(Message)]
-    pub struct BCategoryDelete {
+    pub struct CategoryDeleteMessage {
         pub ctx: Context,
         pub category: GuildChannel,
     }
@@ -130,7 +130,7 @@ pub mod bot {
     ///
     /// Provides said channel’s data.
     #[derive(Message)]
-    pub struct BChannelDelete {
+    pub struct ChannelDeleteMessage {
         pub ctx: Context,
         pub channel: GuildChannel,
         pub messages: Option<Vec<SMessage>>,
@@ -140,7 +140,7 @@ pub mod bot {
     ///
     /// Provides said pin’s data.
     #[derive(Message)]
-    pub struct BChannelPinUpdate {
+    pub struct ChannelPinUpdateMessage {
         pub ctx: Context,
         pub pin: ChannelPinsUpdateEvent,
     }
@@ -149,7 +149,7 @@ pub mod bot {
     ///
     /// The old channel data is only provided when the `bot_cache` feature is enabled.
     #[derive(Message)]
-    pub struct BChannelUpdate {
+    pub struct ChannelUpdateMessage {
         pub ctx: Context,
         pub old: Option<GuildChannel>,
         pub new: GuildChannel,
@@ -159,7 +159,7 @@ pub mod bot {
     ///
     /// Provides said entry’s data and the id of the guild where it was created.
     #[derive(Message)]
-    pub struct BGuildAuditLogEntryCreate {
+    pub struct GuildAuditLogEntryCreateMessage {
         pub ctx: Context,
         pub entry: AuditLogEntry,
         pub guild_id: GuildId,
@@ -169,7 +169,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id and the banned user’s data.
     #[derive(Message)]
-    pub struct BGuildBanAddition {
+    pub struct GuildBanAdditionMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
         pub banned_user: User,
@@ -179,7 +179,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id and the lifted user’s data.
     #[derive(Message)]
-    pub struct BGuildBanRemoval {
+    pub struct GuildBanRemovalMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
         pub unbanned_user: User,
@@ -189,7 +189,7 @@ pub mod bot {
     ///
     /// Provides the guild’s data and whether the guild is new (only when `bot_cache` feature is enabled).
     #[derive(Message)]
-    pub struct BGuildCreate {
+    pub struct GuildCreateMessage {
         pub ctx: Context,
         pub guild: Guild,
         pub is_new: Option<bool>,
@@ -204,7 +204,7 @@ pub mod bot {
     /// is false, the bot was removed from the guild, either by being kicked or banned. If the
     /// flag is true, the guild went offline.
     #[derive(Message)]
-    pub struct BGuildDelete {
+    pub struct GuildDeleteMessage {
         pub ctx: Context,
         pub incomplete: UnavailableGuild,
         pub full: Option<Guild>,
@@ -214,7 +214,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id and the new state of the emojis in the guild.
     #[derive(Message)]
-    pub struct BGuildEmojisUpdate {
+    pub struct GuildEmojisUpdateMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
         pub current_state: HashMap<EmojiId, Emoji>,
@@ -224,7 +224,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id.
     #[derive(Message)]
-    pub struct BGuildIntegrationsUpdate {
+    pub struct GuildIntegrationsUpdateMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
     }
@@ -236,7 +236,7 @@ pub mod bot {
     /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
     /// on the bot application page.
     #[derive(Message)]
-    pub struct BGuildMemberAddition {
+    pub struct GuildMemberAdditionMessage {
         pub ctx: Context,
         pub new_member: Member,
     }
@@ -249,7 +249,7 @@ pub mod bot {
     /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
     /// on the bot application page.
     #[derive(Message)]
-    pub struct BGuildMemberRemoval {
+    pub struct GuildMemberRemovalMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
         pub user: User,
@@ -264,7 +264,7 @@ pub mod bot {
     /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
     /// on the bot application page.
     #[derive(Message)]
-    pub struct BGuildMemberUpdate {
+    pub struct GuildMemberUpdateMessage {
         pub ctx: Context,
         pub old_if_available: Option<Member>,
         pub new: Option<Member>,
@@ -275,7 +275,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id and the data.
     #[derive(Message)]
-    pub struct BGuildMembersChunk {
+    pub struct GuildMembersChunkMessage {
         pub ctx: Context,
         pub chunk: GuildMembersChunkEvent,
     }
@@ -284,7 +284,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id and the new role’s data.
     #[derive(Message)]
-    pub struct BGuildRoleCreate {
+    pub struct GuildRoleCreateMessage {
         pub ctx: Context,
         pub new: Role,
     }
@@ -293,7 +293,7 @@ pub mod bot {
     /// Provides the guild’s id, the role’s id and its data (if `bot_cache` feature is enabled
     /// and the data is available).
     #[derive(Message)]
-    pub struct BGuildRoleDelete {
+    pub struct GuildRoleDeleteMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
         pub removed_role_id: RoleId,
@@ -305,7 +305,7 @@ pub mod bot {
     /// Provides the guild’s id, the role’s old (if `bot_cache` feature is enabled and the data
     /// is available) and new data.
     #[derive(Message)]
-    pub struct BGuildRoleUpdate {
+    pub struct GuildRoleUpdateMessage {
         pub ctx: Context,
         pub old_data_if_available: Option<Role>,
         pub new: Role,
@@ -315,7 +315,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id and the new state of the stickers in the guild.
     #[derive(Message)]
-    pub struct BGuildStickersUpdate {
+    pub struct GuildStickersUpdateMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
         pub current_state: HashMap<StickerId, Sticker>,
@@ -326,7 +326,7 @@ pub mod bot {
     /// Provides the guild’s old data (if `bot_cache` feature is enabled and the data is
     /// available) and the new data.
     #[derive(Message)]
-    pub struct BGuildUpdate {
+    pub struct GuildUpdateMessage {
         pub ctx: Context,
         pub old_data_if_available: Option<Guild>,
         pub new_data: PartialGuild,
@@ -336,7 +336,7 @@ pub mod bot {
     ///
     /// Provides data about the invite.
     #[derive(Message)]
-    pub struct BInviteCreate {
+    pub struct InviteCreateMessage {
         pub ctx: Context,
         pub data: InviteCreateEvent,
     }
@@ -345,7 +345,7 @@ pub mod bot {
     ///
     /// Provides data about the invite.
     #[derive(Message)]
-    pub struct BInviteDelete {
+    pub struct InviteDeleteMessage {
         pub ctx: Context,
         pub data: InviteDeleteEvent,
     }
@@ -353,8 +353,9 @@ pub mod bot {
     /// Dispatched when a message is created.
     ///
     /// Provides the message’s data.
+    // TODO: Is the name good??
     #[derive(Message)]
-    pub struct BMessage {
+    pub struct DiscordMessage {
         pub ctx: Context,
         pub new_message: SMessage,
     }
@@ -362,8 +363,9 @@ pub mod bot {
     /// Dispatched when a message is deleted.
     ///
     /// Provides the guild’s id, the channel’s id and the message’s id.
+    // TODO: Is the name good??
     #[derive(Message)]
-    pub struct BMessageDelete {
+    pub struct DiscordMessageDeleteMessage {
         pub ctx: Context,
         pub channel_id: ChannelId,
         pub deleted_message_id: MessageId,
@@ -373,8 +375,9 @@ pub mod bot {
     /// Dispatched when multiple messages were deleted at once.
     ///
     /// Provides the guild’s id, channel’s id and the deleted messages’ ids.
+    // TODO: Is the name good??
     #[derive(Message)]
-    pub struct BMessageDeleteBulk {
+    pub struct DiscordMessageDeleteBulkMessage {
         pub ctx: Context,
         pub channel_id: ChannelId,
         pub multiple_deleted_messages_ids: Vec<MessageId>,
@@ -385,8 +388,9 @@ pub mod bot {
     ///
     /// Provides the message update data, as well as the actual old and new message if `bot_cache`
     /// feature is enabled and the data is available.
+    // TODO: Is the name good??
     #[derive(Message)]
-    pub struct BMessageUpdate {
+    pub struct DiscordMessageUpdateMessage {
         pub ctx: Context,
         pub old_if_available: Option<SMessage>,
         pub new: Option<SMessage>,
@@ -397,7 +401,7 @@ pub mod bot {
     ///
     /// Provides the reaction’s data.
     #[derive(Message)]
-    pub struct BReactionAdd {
+    pub struct ReactionAddMessage {
         pub ctx: Context,
         pub add_reaction: Reaction,
     }
@@ -406,7 +410,7 @@ pub mod bot {
     ///
     /// Provides the reaction’s data.
     #[derive(Message)]
-    pub struct BReactionRemove {
+    pub struct ReactionRemoveMessage {
         pub ctx: Context,
         pub removed_reaction: Reaction,
     }
@@ -415,7 +419,7 @@ pub mod bot {
     ///
     /// Provides the channel’s id and the message’s id.
     #[derive(Message)]
-    pub struct BReactionRemoveAll {
+    pub struct ReactionRemoveAllMessage {
         pub ctx: Context,
         pub channel_id: ChannelId,
         pub removed_from_message_id: MessageId,
@@ -425,7 +429,7 @@ pub mod bot {
     ///
     /// Provides the channel’s id and the message’s id.
     #[derive(Message)]
-    pub struct BReactionRemoveEmoji {
+    pub struct ReactionRemoveEmojiMessage {
         pub ctx: Context,
         pub removed_reactions: Reaction,
     }
@@ -437,14 +441,14 @@ pub mod bot {
     /// Note: This event will not trigger unless the “guild presences” privileged intent is enabled
     /// on the bot application page.
     #[derive(Message)]
-    pub struct BPresenceUpdate {
+    pub struct PresenceUpdateMessage {
         pub ctx: Context,
         pub new_data: Presence,
     }
 
     /// Dispatched upon reconnection.
     #[derive(Message)]
-    pub struct BResume {
+    pub struct ResumeMessage {
         pub ctx: Context,
         pub event: ResumedEvent,
     }
@@ -453,14 +457,14 @@ pub mod bot {
     ///
     /// Provides the context of the shard and the event information about the update.
     #[derive(Message)]
-    pub struct BShardStageUpdate {
+    pub struct ShardStageUpdateMessage {
         pub ctx: Context,
         pub event: ShardStageUpdateEvent,
     }
 
     /// Dispatched when a user starts typing.
     #[derive(Message)]
-    pub struct BTypingStart {
+    pub struct TypingStartMessage {
         pub ctx: Context,
         pub event: TypingStartEvent,
     }
@@ -469,7 +473,7 @@ pub mod bot {
     ///
     /// Provides the old (if `bot_cache` feature is enabled and the data is available) and new data.
     #[derive(Message)]
-    pub struct BUserUpdate {
+    pub struct UserUpdateMessage {
         pub ctx: Context,
         pub old_data: Option<CurrentUser>,
         pub new: CurrentUser,
@@ -479,7 +483,7 @@ pub mod bot {
     ///
     /// Provides the voice server’s data.
     #[derive(Message)]
-    pub struct BVoiceServerUpdate {
+    pub struct VoiceServerUpdateMessage {
         pub ctx: Context,
         pub event: VoiceServerUpdateEvent,
     }
@@ -489,7 +493,7 @@ pub mod bot {
     /// Provides the guild’s id (if available) and the old state (if `bot_cache` feature is enabled
     /// and [`GatewayIntents::GUILDS`] is enabled) and the new state of the guild’s voice channels.
     #[derive(Message)]
-    pub struct BVoiceStateUpdate {
+    pub struct VoiceStateUpdateMessage {
         pub ctx: Context,
         pub old: Option<VoiceState>,
         pub new: VoiceState,
@@ -499,7 +503,7 @@ pub mod bot {
     ///
     /// Provides the status, channel’s id and the guild’s id.
     #[derive(Message)]
-    pub struct BVoiceChannelStatusUpdate {
+    pub struct VoiceChannelStatusUpdateMessage {
         pub ctx: Context,
         pub old: Option<String>,
         pub status: Option<String>,
@@ -511,7 +515,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id and the channel’s id the webhook belongs in.
     #[derive(Message)]
-    pub struct BWebhookUpdate {
+    pub struct WebhookUpdateMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
         pub belongs_to_channel_id: ChannelId,
@@ -522,7 +526,7 @@ pub mod bot {
     ///
     /// Provides the created interaction.
     #[derive(Message)]
-    pub struct BInteractionCreate {
+    pub struct InteractionCreateMessage {
         pub ctx: Context,
         pub interaction: Interaction,
     }
@@ -531,7 +535,7 @@ pub mod bot {
     ///
     /// Provides the created integration.
     #[derive(Message)]
-    pub struct BIntegrationCreate {
+    pub struct IntegrationCreateMessage {
         pub ctx: Context,
         pub integration: Integration,
     }
@@ -540,7 +544,7 @@ pub mod bot {
     ///
     /// Provides the updated integration.
     #[derive(Message)]
-    pub struct BIntegrationUpdate {
+    pub struct IntegrationUpdateMessage {
         pub ctx: Context,
         pub integration: Integration,
     }
@@ -549,7 +553,7 @@ pub mod bot {
     ///
     /// Provides the created stage instance.
     #[derive(Message)]
-    pub struct BStageInstanceCreate {
+    pub struct StageInstanceCreateMessage {
         pub ctx: Context,
         pub stage_instance: StageInstance,
     }
@@ -558,7 +562,7 @@ pub mod bot {
     ///
     /// Provides the updated stage instance.
     #[derive(Message)]
-    pub struct BStageInstanceUpdate {
+    pub struct StageInstanceUpdateMessage {
         pub ctx: Context,
         pub stage_instance: StageInstance,
     }
@@ -567,7 +571,7 @@ pub mod bot {
     ///
     /// Provides the deleted stage instance.
     #[derive(Message)]
-    pub struct BStageInstanceDelete {
+    pub struct StageInstanceDeleteMessage {
         pub ctx: Context,
         pub stage_instance: StageInstance,
     }
@@ -576,7 +580,7 @@ pub mod bot {
     ///
     /// Provides the thread.
     #[derive(Message)]
-    pub struct BThreadCreate {
+    pub struct ThreadCreateMessage {
         pub ctx: Context,
         pub thread: GuildChannel,
     }
@@ -586,7 +590,7 @@ pub mod bot {
     /// Provides the updated thread and the old thread data, provided the thread was cached prior
     /// to dispatch.
     #[derive(Message)]
-    pub struct BThreadUpdate {
+    pub struct ThreadUpdateMessage {
         pub ctx: Context,
         pub old: Option<GuildChannel>,
         pub new: GuildChannel,
@@ -597,7 +601,7 @@ pub mod bot {
     /// Provides the partial data about the deleted thread and, if it was present in the cache
     /// before its deletion, its full data.
     #[derive(Message)]
-    pub struct BThreadDelete {
+    pub struct ThreadDeleteMessage {
         pub ctx: Context,
         pub thread: PartialGuildChannel,
         pub full_thread_data: Option<GuildChannel>,
@@ -608,7 +612,7 @@ pub mod bot {
     /// Provides the threads the current user can access, the thread members, the guild Id,
     /// and the channel Ids of the parent channels being synced.
     #[derive(Message)]
-    pub struct BThreadListSync {
+    pub struct ThreadListSyncMessage {
         pub ctx: Context,
         pub thread_list_sync: ThreadListSyncEvent,
     }
@@ -617,7 +621,7 @@ pub mod bot {
     ///
     /// Provides the updated thread member.
     #[derive(Message)]
-    pub struct BThreadMemberUpdate {
+    pub struct ThreadMemberUpdateMessage {
         pub ctx: Context,
         pub thread_member: ThreadMember,
     }
@@ -629,7 +633,7 @@ pub mod bot {
     /// Provides the added/removed members, the approximate member count of members in the thread,
     /// the thread Id and its guild Id.
     #[derive(Message)]
-    pub struct BThreadMembersUpdate {
+    pub struct ThreadMembersUpdateMessage {
         pub ctx: Context,
         pub thread_members_update: ThreadMembersUpdateEvent,
     }
@@ -638,7 +642,7 @@ pub mod bot {
     ///
     /// Provides data about the scheduled event.
     #[derive(Message)]
-    pub struct BGuildScheduledEventCreate {
+    pub struct GuildScheduledEventCreateMessage {
         pub ctx: Context,
         pub event: ScheduledEvent,
     }
@@ -647,7 +651,7 @@ pub mod bot {
     ///
     /// Provides data about the scheduled event.
     #[derive(Message)]
-    pub struct BGuildScheduledEventUpdate {
+    pub struct GuildScheduledEventUpdateMessage {
         pub ctx: Context,
         pub event: ScheduledEvent,
     }
@@ -656,7 +660,7 @@ pub mod bot {
     ///
     /// Provides data about the scheduled event.
     #[derive(Message)]
-    pub struct BGuildScheduledEventDelete {
+    pub struct GuildScheduledEventDeleteMessage {
         pub ctx: Context,
         pub event: ScheduledEvent,
     }
@@ -665,7 +669,7 @@ pub mod bot {
     ///
     /// Provides data about the subscription.
     #[derive(Message)]
-    pub struct BGuildScheduledEventUserAdd {
+    pub struct GuildScheduledEventUserAddMessage {
         pub ctx: Context,
         pub subscribed: GuildScheduledEventUserAddEvent,
     }
@@ -674,7 +678,7 @@ pub mod bot {
     ///
     /// Provides data about the cancelled subscription.
     #[derive(Message)]
-    pub struct BGuildScheduledEventUserRemove {
+    pub struct GuildScheduledEventUserRemoveMessage {
         pub ctx: Context,
         pub unsubscribed: GuildScheduledEventUserRemoveEvent,
     }
@@ -683,7 +687,7 @@ pub mod bot {
     ///
     /// Provides data about the subscription.
     #[derive(Message)]
-    pub struct BEntitlementCreate {
+    pub struct EntitlementCreateMessage {
         pub ctx: Context,
         pub entitlement: Entitlement,
     }
@@ -694,7 +698,7 @@ pub mod bot {
     /// Provides data abut the updated subscription. If the entitlement is renewed, the
     /// `[Entitlement::ends_at`] field will have changed.
     #[derive(Message)]
-    pub struct BEntitlementUpdate {
+    pub struct EntitlementUpdateMessage {
         pub ctx: Context,
         pub entitlement: Entitlement,
     }
@@ -705,7 +709,7 @@ pub mod bot {
     ///
     /// Provides data about the subscription. Specifically, the Entitlement::deleted field will be set.
     #[derive(Message)]
-    pub struct BEntitlementDelete {
+    pub struct EntitlementDeleteMessage {
         pub ctx: Context,
         pub entitlement: Entitlement,
     }
@@ -714,21 +718,21 @@ pub mod bot {
     ///
     /// This will be dispatched multiple times if multiple answers are selected.
     #[derive(Message)]
-    pub struct BPollVoteAdd {
+    pub struct PollVoteAddMessage {
         pub ctx: Context,
         pub event: MessagePollVoteAddEvent,
     }
 
     /// Dispatched when a user removes a previous vote on a poll.
     #[derive(Message)]
-    pub struct BPollVoteRemove {
+    pub struct PollVoteRemoveMessage {
         pub ctx: Context,
         pub event: MessagePollVoteRemoveEvent,
     }
 
-    #[derive(Message)]
     /// Dispatched when an HTTP rate limit is hit
-    pub struct BRateLimit {
+    #[derive(Message)]
+    pub struct RateLimitMessage {
         pub data: RatelimitInfo,
     }
 }
@@ -752,12 +756,12 @@ pub mod rich_presence {
     ///
     /// The [Event] will always be of type [Event::Error]
     #[derive(Message)]
-    pub struct RichPresenceError(pub Event);
+    pub struct ErrorMessage(pub Event);
 
     /// Sent by Discord upon receipt of our Handshake message, the user is the current user logged
     /// in to the Discord we connected to.
     #[derive(Message)]
-    pub struct RichPresenceReady {
+    pub struct RpReadyMessage {
         /// The protocol version, we only support v1, which is fine since that is (currently) the only version
         pub version: u32,
         // `DiscordConfig` is private in `ConnectEvent`
@@ -770,43 +774,43 @@ pub mod rich_presence {
     /// event as there are can be numerous reasons on the client side for this to happen, in
     /// addition to Discord itself being closed, etc.
     #[derive(Message)]
-    pub struct RichPresenceDisconnected {
+    pub struct DisconnectedMessage {
         pub reason: Error,
     }
 
     /// Fired when any details on the current logged in user are changed.
     #[derive(Message)]
-    pub struct RichPresenceCurrentUserUpdate {
+    pub struct CurrentUserUpdateMessage {
         /// The user that is logged into the Discord application we connected to
         pub user: User,
     }
 
     /// Sent by Discord when the local user has requested to join a game, and the remote user has accepted their request.
     #[derive(Message)]
-    pub struct RichPresenceActivityJoin {
+    pub struct ActivityJoinMessage {
         pub secret: String,
     }
 
     /// Sent by Discord when the local user has chosen to spectate another user’s game session.
     #[derive(Message)]
-    pub struct RichPresenceActivitySpectate {
+    pub struct ActivitySpectateMessage {
         pub secret: String,
     }
 
     /// Fires when a user asks to join the current user’s game.
     #[derive(Message)]
-    pub struct RichPresenceActivityJoinRequest {
+    pub struct ActivityJoinRequestMessage {
         /// Payload for the event fired when a user “Asks to Join” the current user’s game
         pub user: User,
     }
 
     /// Fires when the current user is invited by another user to their game.
     #[derive(Message)]
-    pub struct RichPresenceActivityInvite(pub Arc<ActivityInvite>);
+    pub struct ActivityInviteMessage(pub Arc<ActivityInvite>);
 
     /// Event fired when the overlay state changes.
     #[derive(Message)]
-    pub struct RichPresenceOverlayUpdate {
+    pub struct OverlayUpdateMessage {
         /// Whether the user has the overlay enabled or disabled. If the overlay is disabled, all
         /// the functionality of the SDK will still work. The calls will instead focus the Discord
         /// client and show the modal there instead of in application.
@@ -817,7 +821,7 @@ pub mod rich_presence {
 
     /// Event fired when a relationship with another user changes.
     #[derive(Message)]
-    pub struct RichPresenceRelationshipUpdate(pub Arc<Relationship>);
+    pub struct RelationshipUpdateMessage(pub Arc<Relationship>);
 }
 
 #[cfg(feature = "bot")]
@@ -826,97 +830,97 @@ use bot::*;
 use rich_presence::*;
 
 #[cfg(feature = "bot")]
-create_event_collection_and_handler!(
-    EventCollectionBot,
+create_message_collection_and_handler!(
+    MessageCollectionBot,
     bot,
-    BCommandPermissionsUpdate,
-    BAutoModerationRuleCreate,
-    BAutoModerationRuleUpdate,
-    BAutoModerationRuleDelete,
-    BAutoModerationActionExecution,
+    CommandPermissionsUpdateMessage,
+    AutoModerationRuleCreateMessage,
+    AutoModerationRuleUpdateMessage,
+    AutoModerationRuleDeleteMessage,
+    AutoModerationActionExecutionMessage,
     #[cfg(all(feature = "bot_cache", feature = "bot_cache"))]
-    BCacheRead,
+    CacheReadMessage,
     #[cfg(all(feature = "bot_cache", feature = "bot_cache"))]
-    BShardsReady,
-    BChannelCreate,
-    BCategoryCreate,
-    BCategoryDelete,
-    BChannelDelete,
-    BChannelPinUpdate,
-    BChannelUpdate,
-    BGuildAuditLogEntryCreate,
-    BGuildBanAddition,
-    BGuildBanRemoval,
-    BGuildCreate,
-    BGuildDelete,
-    BGuildEmojisUpdate,
-    BGuildIntegrationsUpdate,
-    BGuildMemberAddition,
-    BGuildMemberRemoval,
-    BGuildMemberUpdate,
-    BGuildMembersChunk,
-    BGuildRoleCreate,
-    BGuildRoleDelete,
-    BGuildRoleUpdate,
-    BGuildStickersUpdate,
-    BGuildUpdate,
-    BInviteCreate,
-    BInviteDelete,
-    BMessage,
-    BMessageDelete,
-    BMessageDeleteBulk,
-    BMessageUpdate,
-    BReactionAdd,
-    BReactionRemove,
-    BReactionRemoveAll,
-    BReactionRemoveEmoji,
-    BPresenceUpdate,
-    BReadyEvent,
-    BResume,
-    BShardStageUpdate,
-    BTypingStart,
-    BUserUpdate,
-    BVoiceServerUpdate,
-    BVoiceStateUpdate,
-    BVoiceChannelStatusUpdate,
-    BWebhookUpdate,
-    BInteractionCreate,
-    BIntegrationCreate,
-    BIntegrationUpdate,
-    BStageInstanceCreate,
-    BStageInstanceUpdate,
-    BStageInstanceDelete,
-    BThreadCreate,
-    BThreadUpdate,
-    BThreadDelete,
-    BThreadListSync,
-    BThreadMemberUpdate,
-    BThreadMembersUpdate,
-    BGuildScheduledEventCreate,
-    BGuildScheduledEventUpdate,
-    BGuildScheduledEventDelete,
-    BGuildScheduledEventUserAdd,
-    BGuildScheduledEventUserRemove,
-    BEntitlementCreate,
-    BEntitlementUpdate,
-    BEntitlementDelete,
-    BPollVoteAdd,
-    BPollVoteRemove,
-    BRateLimit,
+    ShardsReadyMessage,
+    ChannelCreateMessage,
+    CategoryCreateMessage,
+    CategoryDeleteMessage,
+    ChannelDeleteMessage,
+    ChannelPinUpdateMessage,
+    ChannelUpdateMessage,
+    GuildAuditLogEntryCreateMessage,
+    GuildBanAdditionMessage,
+    GuildBanRemovalMessage,
+    GuildCreateMessage,
+    GuildDeleteMessage,
+    GuildEmojisUpdateMessage,
+    GuildIntegrationsUpdateMessage,
+    GuildMemberAdditionMessage,
+    GuildMemberRemovalMessage,
+    GuildMemberUpdateMessage,
+    GuildMembersChunkMessage,
+    GuildRoleCreateMessage,
+    GuildRoleDeleteMessage,
+    GuildRoleUpdateMessage,
+    GuildStickersUpdateMessage,
+    GuildUpdateMessage,
+    InviteCreateMessage,
+    InviteDeleteMessage,
+    DiscordMessage,
+    DiscordMessageDeleteMessage,
+    DiscordMessageDeleteBulkMessage,
+    DiscordMessageUpdateMessage,
+    ReactionAddMessage,
+    ReactionRemoveMessage,
+    ReactionRemoveAllMessage,
+    ReactionRemoveEmojiMessage,
+    PresenceUpdateMessage,
+    BotReadyMessage,
+    ResumeMessage,
+    ShardStageUpdateMessage,
+    TypingStartMessage,
+    UserUpdateMessage,
+    VoiceServerUpdateMessage,
+    VoiceStateUpdateMessage,
+    VoiceChannelStatusUpdateMessage,
+    WebhookUpdateMessage,
+    InteractionCreateMessage,
+    IntegrationCreateMessage,
+    IntegrationUpdateMessage,
+    StageInstanceCreateMessage,
+    StageInstanceUpdateMessage,
+    StageInstanceDeleteMessage,
+    ThreadCreateMessage,
+    ThreadUpdateMessage,
+    ThreadDeleteMessage,
+    ThreadListSyncMessage,
+    ThreadMemberUpdateMessage,
+    ThreadMembersUpdateMessage,
+    GuildScheduledEventCreateMessage,
+    GuildScheduledEventUpdateMessage,
+    GuildScheduledEventDeleteMessage,
+    GuildScheduledEventUserAddMessage,
+    GuildScheduledEventUserRemoveMessage,
+    EntitlementCreateMessage,
+    EntitlementUpdateMessage,
+    EntitlementDeleteMessage,
+    PollVoteAddMessage,
+    PollVoteRemoveMessage,
+    RateLimitMessage,
 );
 
 #[cfg(feature = "rich_presence")]
-create_event_collection_and_handler!(
-    EventCollectionRichPresence,
+create_message_collection_and_handler!(
+    MessageCollectionRichPresence,
     rich_presence,
-    RichPresenceError,
-    RichPresenceReady,
-    RichPresenceDisconnected,
-    RichPresenceCurrentUserUpdate,
-    RichPresenceActivityJoin,
-    RichPresenceActivitySpectate,
-    RichPresenceActivityJoinRequest,
-    RichPresenceActivityInvite,
-    RichPresenceOverlayUpdate,
-    RichPresenceRelationshipUpdate
+    ErrorMessage,
+    RpReadyMessage,
+    DisconnectedMessage,
+    CurrentUserUpdateMessage,
+    ActivityJoinMessage,
+    ActivitySpectateMessage,
+    ActivityJoinRequestMessage,
+    ActivityInviteMessage,
+    OverlayUpdateMessage,
+    RelationshipUpdateMessage
 );

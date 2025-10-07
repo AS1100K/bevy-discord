@@ -4,7 +4,7 @@
 use bevy::log::tracing_subscriber::fmt::Subscriber;
 use bevy::prelude::*;
 use bevy_discord::config::DiscordRichPresenceConfig;
-use bevy_discord::events::rich_presence::RichPresenceReady;
+use bevy_discord::messages::rich_presence::RpReadyMessage;
 use bevy_discord::res::DiscordRichPresenceRes;
 use bevy_discord::{DiscordRichPresencePlugin, DiscordSet};
 use discord_sdk::OffsetDateTime;
@@ -33,7 +33,7 @@ fn main() {
 }
 
 fn rich_presence_ready(
-    mut events: MessageReader<RichPresenceReady>,
+    mut events: MessageReader<RpReadyMessage>,
     rich_presence: Res<DiscordRichPresenceRes>,
 ) {
     for event in events.read() {
