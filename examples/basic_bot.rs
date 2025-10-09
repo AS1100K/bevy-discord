@@ -2,10 +2,10 @@
 // cargo run --example basic_bot --features full
 
 use bevy::prelude::*;
-use bevy_discord::config::DiscordBotConfig;
-use bevy_discord::events::bot::BMessage;
-use bevy_discord::serenity::all::*;
 use bevy_discord::DiscordBotPlugin;
+use bevy_discord::config::DiscordBotConfig;
+use bevy_discord::messages::bot::DiscordMessage;
+use bevy_discord::serenity::all::*;
 use serde_json::json;
 
 fn main() {
@@ -24,12 +24,12 @@ fn main() {
             ..Default::default()
         })
         .add_plugins(DiscordBotPlugin::new(config))
-        .add_systems(Update, handle_messages)
+        .add_systems(Update, handle_discord_message)
         .run();
 }
 
-fn handle_messages(
-    mut messages: EventReader<BMessage>,
+fn handle_discord_message(
+    mut messages: MessageReader<DiscordMessage>,
     http: Option<Res<bevy_discord::res::DiscordHttpResource>>,
 ) {
     for message in messages.read() {

@@ -36,13 +36,13 @@ use bevy_app::{App, Plugin, Startup, Update};
 use bevy_ecs::prelude::*;
 use serenity::all::*;
 
-use crate::events::{bot::*, send_events_bot, EventCollectionBot};
+use crate::messages::{MessageCollectionBot, bot::*, send_events_bot};
 use event_handlers::*;
 
+use crate::DiscordSystems;
 use crate::bot::handle::Handle;
 use crate::channel::ChannelRes;
 use crate::runtime::tokio_runtime;
-use crate::DiscordSet;
 
 pub(crate) mod event_handlers;
 mod handle;
@@ -102,97 +102,98 @@ impl DiscordBotPlugin {
 
 impl Plugin for DiscordBotPlugin {
     fn build(&self, app: &mut App) {
-        let (tx, rx) = flume::unbounded::<EventCollectionBot>();
+        let (tx, rx) = flume::unbounded::<MessageCollectionBot>();
         let channel_res = ChannelRes { tx, rx };
         app.insert_resource(channel_res);
 
         #[cfg(feature = "bot_cache")]
-        app.add_event::<BCacheRead>().add_event::<BShardsReady>();
+        app.add_message::<CacheReadMessage>()
+            .add_message::<ShardsReadyMessage>();
 
         app.insert_resource(self.0.clone())
-            .add_event::<BReadyEvent>()
-            .add_event::<BCommandPermissionsUpdate>()
-            .add_event::<BAutoModerationRuleCreate>()
-            .add_event::<BAutoModerationRuleUpdate>()
-            .add_event::<BAutoModerationRuleDelete>()
-            .add_event::<BAutoModerationActionExecution>()
-            .add_event::<BChannelCreate>()
-            .add_event::<BCategoryCreate>()
-            .add_event::<BCategoryDelete>()
-            .add_event::<BChannelDelete>()
-            .add_event::<BChannelPinUpdate>()
-            .add_event::<BChannelUpdate>()
-            .add_event::<BGuildAuditLogEntryCreate>()
-            .add_event::<BGuildBanAddition>()
-            .add_event::<BGuildBanRemoval>()
-            .add_event::<BGuildCreate>()
-            .add_event::<BGuildDelete>()
-            .add_event::<BGuildEmojisUpdate>()
-            .add_event::<BGuildIntegrationsUpdate>()
-            .add_event::<BGuildMemberAddition>()
-            .add_event::<BGuildMemberRemoval>()
-            .add_event::<BGuildMemberUpdate>()
-            .add_event::<BGuildMembersChunk>()
-            .add_event::<BGuildRoleCreate>()
-            .add_event::<BGuildRoleDelete>()
-            .add_event::<BGuildRoleUpdate>()
-            .add_event::<BGuildStickersUpdate>()
-            .add_event::<BGuildUpdate>()
-            .add_event::<BInviteCreate>()
-            .add_event::<BInviteDelete>()
-            .add_event::<BMessage>()
-            .add_event::<BMessageDelete>()
-            .add_event::<BMessageDeleteBulk>()
-            .add_event::<BMessageUpdate>()
-            .add_event::<BReactionAdd>()
-            .add_event::<BReactionRemove>()
-            .add_event::<BReactionRemoveAll>()
-            .add_event::<BReactionRemoveEmoji>()
-            .add_event::<BPresenceUpdate>()
-            .add_event::<BResume>()
-            .add_event::<BShardStageUpdate>()
-            .add_event::<BTypingStart>()
-            .add_event::<BUserUpdate>()
-            .add_event::<BVoiceServerUpdate>()
-            .add_event::<BVoiceStateUpdate>()
-            .add_event::<BVoiceChannelStatusUpdate>()
-            .add_event::<BWebhookUpdate>()
-            .add_event::<BInteractionCreate>()
-            .add_event::<BIntegrationCreate>()
-            .add_event::<BIntegrationUpdate>()
-            .add_event::<BStageInstanceCreate>()
-            .add_event::<BStageInstanceUpdate>()
-            .add_event::<BStageInstanceDelete>()
-            .add_event::<BThreadCreate>()
-            .add_event::<BThreadUpdate>()
-            .add_event::<BThreadDelete>()
-            .add_event::<BThreadListSync>()
-            .add_event::<BThreadMemberUpdate>()
-            .add_event::<BThreadMembersUpdate>()
-            .add_event::<BGuildScheduledEventCreate>()
-            .add_event::<BGuildScheduledEventUpdate>()
-            .add_event::<BGuildScheduledEventDelete>()
-            .add_event::<BGuildScheduledEventUserAdd>()
-            .add_event::<BGuildScheduledEventUserRemove>()
-            .add_event::<BEntitlementCreate>()
-            .add_event::<BEntitlementUpdate>()
-            .add_event::<BEntitlementDelete>()
-            .add_event::<BPollVoteAdd>()
-            .add_event::<BPollVoteRemove>()
-            .add_event::<BRateLimit>()
-            .add_systems(Startup, setup_bot.in_set(DiscordSet))
+            .add_message::<BotReadyMessage>()
+            .add_message::<CommandPermissionsUpdateMessage>()
+            .add_message::<AutoModerationRuleCreateMessage>()
+            .add_message::<AutoModerationRuleUpdateMessage>()
+            .add_message::<AutoModerationRuleDeleteMessage>()
+            .add_message::<AutoModerationActionExecutionMessage>()
+            .add_message::<ChannelCreateMessage>()
+            .add_message::<CategoryCreateMessage>()
+            .add_message::<CategoryDeleteMessage>()
+            .add_message::<ChannelDeleteMessage>()
+            .add_message::<ChannelPinUpdateMessage>()
+            .add_message::<ChannelUpdateMessage>()
+            .add_message::<GuildAuditLogEntryCreateMessage>()
+            .add_message::<GuildBanAdditionMessage>()
+            .add_message::<GuildBanRemovalMessage>()
+            .add_message::<GuildCreateMessage>()
+            .add_message::<GuildDeleteMessage>()
+            .add_message::<GuildEmojisUpdateMessage>()
+            .add_message::<GuildIntegrationsUpdateMessage>()
+            .add_message::<GuildMemberAdditionMessage>()
+            .add_message::<GuildMemberRemovalMessage>()
+            .add_message::<GuildMemberUpdateMessage>()
+            .add_message::<GuildMembersChunkMessage>()
+            .add_message::<GuildRoleCreateMessage>()
+            .add_message::<GuildRoleDeleteMessage>()
+            .add_message::<GuildRoleUpdateMessage>()
+            .add_message::<GuildStickersUpdateMessage>()
+            .add_message::<GuildUpdateMessage>()
+            .add_message::<InviteCreateMessage>()
+            .add_message::<InviteDeleteMessage>()
+            .add_message::<DiscordMessage>()
+            .add_message::<DiscordMessageDeleteMessage>()
+            .add_message::<DiscordMessageDeleteBulkMessage>()
+            .add_message::<DiscordMessageUpdateMessage>()
+            .add_message::<ReactionAddMessage>()
+            .add_message::<ReactionRemoveMessage>()
+            .add_message::<ReactionRemoveAllMessage>()
+            .add_message::<ReactionRemoveEmojiMessage>()
+            .add_message::<PresenceUpdateMessage>()
+            .add_message::<ResumeMessage>()
+            .add_message::<ShardStageUpdateMessage>()
+            .add_message::<TypingStartMessage>()
+            .add_message::<UserUpdateMessage>()
+            .add_message::<VoiceServerUpdateMessage>()
+            .add_message::<VoiceStateUpdateMessage>()
+            .add_message::<VoiceChannelStatusUpdateMessage>()
+            .add_message::<WebhookUpdateMessage>()
+            .add_message::<InteractionCreateMessage>()
+            .add_message::<IntegrationCreateMessage>()
+            .add_message::<IntegrationUpdateMessage>()
+            .add_message::<StageInstanceCreateMessage>()
+            .add_message::<StageInstanceUpdateMessage>()
+            .add_message::<StageInstanceDeleteMessage>()
+            .add_message::<ThreadCreateMessage>()
+            .add_message::<ThreadUpdateMessage>()
+            .add_message::<ThreadDeleteMessage>()
+            .add_message::<ThreadListSyncMessage>()
+            .add_message::<ThreadMemberUpdateMessage>()
+            .add_message::<ThreadMembersUpdateMessage>()
+            .add_message::<GuildScheduledEventCreateMessage>()
+            .add_message::<GuildScheduledEventUpdateMessage>()
+            .add_message::<GuildScheduledEventDeleteMessage>()
+            .add_message::<GuildScheduledEventUserAddMessage>()
+            .add_message::<GuildScheduledEventUserRemoveMessage>()
+            .add_message::<EntitlementCreateMessage>()
+            .add_message::<EntitlementUpdateMessage>()
+            .add_message::<EntitlementDeleteMessage>()
+            .add_message::<PollVoteAddMessage>()
+            .add_message::<PollVoteRemoveMessage>()
+            .add_message::<RateLimitMessage>()
+            .add_systems(Startup, setup_bot.in_set(DiscordSystems))
             .add_systems(
                 Update,
-                (handle_b_ready_event, send_events_bot)
+                (handle_b_ready_message, send_events_bot)
                     .chain()
-                    .in_set(DiscordSet),
+                    .in_set(DiscordSystems),
             );
     }
 }
 
 fn setup_bot(
     discord_bot_config: Res<crate::config::DiscordBotConfig>,
-    channel_res: Res<ChannelRes<EventCollectionBot>>,
+    channel_res: Res<ChannelRes<MessageCollectionBot>>,
 ) {
     let tx = channel_res.tx.clone();
 

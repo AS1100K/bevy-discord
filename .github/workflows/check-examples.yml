@@ -24,6 +24,6 @@ jobs:
       - name: Install Stable toolchain
         run: rustup install stable
       - name: Install Dependencies
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
       - name: Cargo Check ${{ matrix.example }}
         run: cargo check --example ${{ matrix.example }} --features full

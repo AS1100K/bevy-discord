@@ -4,76 +4,92 @@ use flume::Sender;
 use serenity::all::*;
 use tracing::error;
 
-use crate::common::send_event;
+use crate::common::send_message;
 
-use crate::events::{bot::*, EventCollectionBot};
+use crate::messages::{MessageCollectionBot, bot::*};
 
 pub(super) struct Handle {
-    pub tx: Sender<EventCollectionBot>,
+    pub tx: Sender<MessageCollectionBot>,
 }
 
 #[async_trait]
 impl EventHandler for Handle {
     async fn command_permissions_update(&self, ctx: Context, permission: CommandPermissions) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BCommandPermissionsUpdate { ctx, permission }
+            MessageCollectionBot,
+            CommandPermissionsUpdateMessage { ctx, permission }
         );
     }
 
     async fn auto_moderation_rule_create(&self, ctx: Context, rule: Rule) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BAutoModerationRuleCreate { ctx, rule }
+            MessageCollectionBot,
+            AutoModerationRuleCreateMessage { ctx, rule }
         );
     }
 
     async fn auto_moderation_rule_update(&self, ctx: Context, rule: Rule) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BAutoModerationRuleUpdate { ctx, rule }
+            MessageCollectionBot,
+            AutoModerationRuleUpdateMessage { ctx, rule }
         );
     }
 
     async fn auto_moderation_rule_delete(&self, ctx: Context, rule: Rule) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BAutoModerationRuleDelete { ctx, rule }
+            MessageCollectionBot,
+            AutoModerationRuleDeleteMessage { ctx, rule }
         );
     }
 
     async fn auto_moderation_action_execution(&self, ctx: Context, execution: ActionExecution) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BAutoModerationActionExecution { ctx, execution }
+            MessageCollectionBot,
+            AutoModerationActionExecutionMessage { ctx, execution }
         );
     }
 
     #[cfg(feature = "bot_cache")]
     async fn cache_ready(&self, ctx: Context, guilds: Vec<GuildId>) {
-        send_event!(self, EventCollectionBot, BCacheRead { ctx, guilds });
+        send_message!(self, MessageCollectionBot, CacheReadMessage { ctx, guilds });
     }
 
     #[cfg(feature = "bot_cache")]
     async fn shards_ready(&self, ctx: Context, total_shards: u32) {
-        send_event!(self, EventCollectionBot, BShardsReady { ctx, total_shards });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            ShardsReadyMessage { ctx, total_shards }
+        );
     }
 
     async fn channel_create(&self, ctx: Context, channel: GuildChannel) {
-        send_event!(self, EventCollectionBot, BChannelCreate { ctx, channel });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            ChannelCreateMessage { ctx, channel }
+        );
     }
 
     async fn category_create(&self, ctx: Context, category: GuildChannel) {
-        send_event!(self, EventCollectionBot, BCategoryCreate { ctx, category });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            CategoryCreateMessage { ctx, category }
+        );
     }
 
     async fn category_delete(&self, ctx: Context, category: GuildChannel) {
-        send_event!(self, EventCollectionBot, BCategoryDelete { ctx, category });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            CategoryDeleteMessage { ctx, category }
+        );
     }
 
     async fn channel_delete(
@@ -82,10 +98,10 @@ impl EventHandler for Handle {
         channel: GuildChannel,
         messages: Option<Vec<Message>>,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BChannelDelete {
+            MessageCollectionBot,
+            ChannelDeleteMessage {
                 ctx,
                 channel,
                 messages
@@ -94,11 +110,19 @@ impl EventHandler for Handle {
     }
 
     async fn channel_pins_update(&self, ctx: Context, pin: ChannelPinsUpdateEvent) {
-        send_event!(self, EventCollectionBot, BChannelPinUpdate { ctx, pin });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            ChannelPinUpdateMessage { ctx, pin }
+        );
     }
 
     async fn channel_update(&self, ctx: Context, old: Option<GuildChannel>, new: GuildChannel) {
-        send_event!(self, EventCollectionBot, BChannelUpdate { ctx, old, new });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            ChannelUpdateMessage { ctx, old, new }
+        );
     }
 
     async fn guild_audit_log_entry_create(
@@ -107,10 +131,10 @@ impl EventHandler for Handle {
         entry: AuditLogEntry,
         guild_id: GuildId,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildAuditLogEntryCreate {
+            MessageCollectionBot,
+            GuildAuditLogEntryCreateMessage {
                 ctx,
                 entry,
                 guild_id
@@ -119,10 +143,10 @@ impl EventHandler for Handle {
     }
 
     async fn guild_ban_addition(&self, ctx: Context, guild_id: GuildId, banned_user: User) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildBanAddition {
+            MessageCollectionBot,
+            GuildBanAdditionMessage {
                 ctx,
                 guild_id,
                 banned_user
@@ -131,10 +155,10 @@ impl EventHandler for Handle {
     }
 
     async fn guild_ban_removal(&self, ctx: Context, guild_id: GuildId, unbanned_user: User) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildBanRemoval {
+            MessageCollectionBot,
+            GuildBanRemovalMessage {
                 ctx,
                 guild_id,
                 unbanned_user
@@ -143,18 +167,18 @@ impl EventHandler for Handle {
     }
 
     async fn guild_create(&self, ctx: Context, guild: Guild, is_new: Option<bool>) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildCreate { ctx, guild, is_new }
+            MessageCollectionBot,
+            GuildCreateMessage { ctx, guild, is_new }
         );
     }
 
     async fn guild_delete(&self, ctx: Context, incomplete: UnavailableGuild, full: Option<Guild>) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildDelete {
+            MessageCollectionBot,
+            GuildDeleteMessage {
                 ctx,
                 incomplete,
                 full
@@ -168,10 +192,10 @@ impl EventHandler for Handle {
         guild_id: GuildId,
         current_state: HashMap<EmojiId, Emoji>,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildEmojisUpdate {
+            MessageCollectionBot,
+            GuildEmojisUpdateMessage {
                 ctx,
                 guild_id,
                 current_state
@@ -180,18 +204,18 @@ impl EventHandler for Handle {
     }
 
     async fn guild_integrations_update(&self, ctx: Context, guild_id: GuildId) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildIntegrationsUpdate { ctx, guild_id }
+            MessageCollectionBot,
+            GuildIntegrationsUpdateMessage { ctx, guild_id }
         );
     }
 
     async fn guild_member_addition(&self, ctx: Context, new_member: Member) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildMemberAddition { ctx, new_member }
+            MessageCollectionBot,
+            GuildMemberAdditionMessage { ctx, new_member }
         );
     }
 
@@ -202,10 +226,10 @@ impl EventHandler for Handle {
         user: User,
         member_data_if_available: Option<Member>,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildMemberRemoval {
+            MessageCollectionBot,
+            GuildMemberRemovalMessage {
                 ctx,
                 guild_id,
                 user,
@@ -221,10 +245,10 @@ impl EventHandler for Handle {
         new: Option<Member>,
         event: GuildMemberUpdateEvent,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildMemberUpdate {
+            MessageCollectionBot,
+            GuildMemberUpdateMessage {
                 ctx,
                 old_if_available,
                 new,
@@ -234,11 +258,19 @@ impl EventHandler for Handle {
     }
 
     async fn guild_members_chunk(&self, ctx: Context, chunk: GuildMembersChunkEvent) {
-        send_event!(self, EventCollectionBot, BGuildMembersChunk { ctx, chunk });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            GuildMembersChunkMessage { ctx, chunk }
+        );
     }
 
     async fn guild_role_create(&self, ctx: Context, new: Role) {
-        send_event!(self, EventCollectionBot, BGuildRoleCreate { ctx, new });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            GuildRoleCreateMessage { ctx, new }
+        );
     }
 
     async fn guild_role_delete(
@@ -248,10 +280,10 @@ impl EventHandler for Handle {
         removed_role_id: RoleId,
         removed_role_data_if_available: Option<Role>,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildRoleDelete {
+            MessageCollectionBot,
+            GuildRoleDeleteMessage {
                 ctx,
                 guild_id,
                 removed_role_id,
@@ -266,10 +298,10 @@ impl EventHandler for Handle {
         old_data_if_available: Option<Role>,
         new: Role,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildRoleUpdate {
+            MessageCollectionBot,
+            GuildRoleUpdateMessage {
                 ctx,
                 old_data_if_available,
                 new
@@ -283,10 +315,10 @@ impl EventHandler for Handle {
         guild_id: GuildId,
         current_state: HashMap<StickerId, Sticker>,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildStickersUpdate {
+            MessageCollectionBot,
+            GuildStickersUpdateMessage {
                 ctx,
                 guild_id,
                 current_state
@@ -300,10 +332,10 @@ impl EventHandler for Handle {
         old_data_if_available: Option<Guild>,
         new_data: PartialGuild,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildUpdate {
+            MessageCollectionBot,
+            GuildUpdateMessage {
                 ctx,
                 old_data_if_available,
                 new_data
@@ -312,15 +344,27 @@ impl EventHandler for Handle {
     }
 
     async fn invite_create(&self, ctx: Context, data: InviteCreateEvent) {
-        send_event!(self, EventCollectionBot, BInviteCreate { ctx, data });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            InviteCreateMessage { ctx, data }
+        );
     }
 
     async fn invite_delete(&self, ctx: Context, data: InviteDeleteEvent) {
-        send_event!(self, EventCollectionBot, BInviteDelete { ctx, data });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            InviteDeleteMessage { ctx, data }
+        );
     }
 
     async fn message(&self, ctx: Context, new_message: Message) {
-        send_event!(self, EventCollectionBot, BMessage { ctx, new_message });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            DiscordMessage { ctx, new_message }
+        );
     }
 
     async fn message_delete(
@@ -330,10 +374,10 @@ impl EventHandler for Handle {
         deleted_message_id: MessageId,
         guild_id: Option<GuildId>,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BMessageDelete {
+            MessageCollectionBot,
+            DiscordMessageDeleteMessage {
                 ctx,
                 channel_id,
                 deleted_message_id,
@@ -349,10 +393,10 @@ impl EventHandler for Handle {
         multiple_deleted_messages_ids: Vec<MessageId>,
         guild_id: Option<GuildId>,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BMessageDeleteBulk {
+            MessageCollectionBot,
+            DiscordMessageDeleteBulkMessage {
                 ctx,
                 channel_id,
                 multiple_deleted_messages_ids,
@@ -368,10 +412,10 @@ impl EventHandler for Handle {
         new: Option<Message>,
         event: MessageUpdateEvent,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BMessageUpdate {
+            MessageCollectionBot,
+            DiscordMessageUpdateMessage {
                 ctx,
                 old_if_available,
                 new,
@@ -381,14 +425,18 @@ impl EventHandler for Handle {
     }
 
     async fn reaction_add(&self, ctx: Context, add_reaction: Reaction) {
-        send_event!(self, EventCollectionBot, BReactionAdd { ctx, add_reaction });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            ReactionAddMessage { ctx, add_reaction }
+        );
     }
 
     async fn reaction_remove(&self, ctx: Context, removed_reaction: Reaction) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BReactionRemove {
+            MessageCollectionBot,
+            ReactionRemoveMessage {
                 ctx,
                 removed_reaction
             }
@@ -401,10 +449,10 @@ impl EventHandler for Handle {
         channel_id: ChannelId,
         removed_from_message_id: MessageId,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BReactionRemoveAll {
+            MessageCollectionBot,
+            ReactionRemoveAllMessage {
                 ctx,
                 channel_id,
                 removed_from_message_id
@@ -413,10 +461,10 @@ impl EventHandler for Handle {
     }
 
     async fn reaction_remove_emoji(&self, ctx: Context, removed_reactions: Reaction) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BReactionRemoveEmoji {
+            MessageCollectionBot,
+            ReactionRemoveEmojiMessage {
                 ctx,
                 removed_reactions
             }
@@ -424,14 +472,18 @@ impl EventHandler for Handle {
     }
 
     async fn presence_update(&self, ctx: Context, new_data: Presence) {
-        send_event!(self, EventCollectionBot, BPresenceUpdate { ctx, new_data });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            PresenceUpdateMessage { ctx, new_data }
+        );
     }
 
     async fn ready(&self, ctx: Context, data_about_bot: Ready) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BReadyEvent {
+            MessageCollectionBot,
+            BotReadyMessage {
                 ctx,
                 data_about_bot
             }
@@ -439,30 +491,46 @@ impl EventHandler for Handle {
     }
 
     async fn resume(&self, ctx: Context, event: ResumedEvent) {
-        send_event!(self, EventCollectionBot, BResume { ctx, event });
+        send_message!(self, MessageCollectionBot, ResumeMessage { ctx, event });
     }
 
     async fn shard_stage_update(&self, ctx: Context, event: ShardStageUpdateEvent) {
-        send_event!(self, EventCollectionBot, BShardStageUpdate { ctx, event });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            ShardStageUpdateMessage { ctx, event }
+        );
     }
 
     async fn typing_start(&self, ctx: Context, event: TypingStartEvent) {
-        send_event!(self, EventCollectionBot, BTypingStart { ctx, event });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            TypingStartMessage { ctx, event }
+        );
     }
 
     async fn user_update(&self, ctx: Context, old_data: Option<CurrentUser>, new: CurrentUser) {
-        send_event!(self, EventCollectionBot, BUserUpdate { ctx, old_data, new });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            UserUpdateMessage { ctx, old_data, new }
+        );
     }
 
     async fn voice_server_update(&self, ctx: Context, event: VoiceServerUpdateEvent) {
-        send_event!(self, EventCollectionBot, BVoiceServerUpdate { ctx, event });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            VoiceServerUpdateMessage { ctx, event }
+        );
     }
 
     async fn voice_state_update(&self, ctx: Context, old: Option<VoiceState>, new: VoiceState) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BVoiceStateUpdate { ctx, old, new }
+            MessageCollectionBot,
+            VoiceStateUpdateMessage { ctx, old, new }
         );
     }
 
@@ -474,10 +542,10 @@ impl EventHandler for Handle {
         id: ChannelId,
         guild_id: GuildId,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BVoiceChannelStatusUpdate {
+            MessageCollectionBot,
+            VoiceChannelStatusUpdateMessage {
                 ctx,
                 old,
                 status,
@@ -493,10 +561,10 @@ impl EventHandler for Handle {
         guild_id: GuildId,
         belongs_to_channel_id: ChannelId,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BWebhookUpdate {
+            MessageCollectionBot,
+            WebhookUpdateMessage {
                 ctx,
                 guild_id,
                 belongs_to_channel_id
@@ -505,34 +573,34 @@ impl EventHandler for Handle {
     }
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BInteractionCreate { ctx, interaction }
+            MessageCollectionBot,
+            InteractionCreateMessage { ctx, interaction }
         );
     }
 
     async fn integration_create(&self, ctx: Context, integration: Integration) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BIntegrationCreate { ctx, integration }
+            MessageCollectionBot,
+            IntegrationCreateMessage { ctx, integration }
         );
     }
 
     async fn integration_update(&self, ctx: Context, integration: Integration) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BIntegrationUpdate { ctx, integration }
+            MessageCollectionBot,
+            IntegrationUpdateMessage { ctx, integration }
         );
     }
 
     async fn stage_instance_create(&self, ctx: Context, stage_instance: StageInstance) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BStageInstanceCreate {
+            MessageCollectionBot,
+            StageInstanceCreateMessage {
                 ctx,
                 stage_instance
             }
@@ -540,10 +608,10 @@ impl EventHandler for Handle {
     }
 
     async fn stage_instance_update(&self, ctx: Context, stage_instance: StageInstance) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BStageInstanceUpdate {
+            MessageCollectionBot,
+            StageInstanceUpdateMessage {
                 ctx,
                 stage_instance
             }
@@ -551,10 +619,10 @@ impl EventHandler for Handle {
     }
 
     async fn stage_instance_delete(&self, ctx: Context, stage_instance: StageInstance) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BStageInstanceDelete {
+            MessageCollectionBot,
+            StageInstanceDeleteMessage {
                 ctx,
                 stage_instance
             }
@@ -562,11 +630,19 @@ impl EventHandler for Handle {
     }
 
     async fn thread_create(&self, ctx: Context, thread: GuildChannel) {
-        send_event!(self, EventCollectionBot, BThreadCreate { ctx, thread });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            ThreadCreateMessage { ctx, thread }
+        );
     }
 
     async fn thread_update(&self, ctx: Context, old: Option<GuildChannel>, new: GuildChannel) {
-        send_event!(self, EventCollectionBot, BThreadUpdate { ctx, old, new });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            ThreadUpdateMessage { ctx, old, new }
+        );
     }
 
     async fn thread_delete(
@@ -575,10 +651,10 @@ impl EventHandler for Handle {
         thread: PartialGuildChannel,
         full_thread_data: Option<GuildChannel>,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BThreadDelete {
+            MessageCollectionBot,
+            ThreadDeleteMessage {
                 ctx,
                 thread,
                 full_thread_data
@@ -587,10 +663,10 @@ impl EventHandler for Handle {
     }
 
     async fn thread_list_sync(&self, ctx: Context, thread_list_sync: ThreadListSyncEvent) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BThreadListSync {
+            MessageCollectionBot,
+            ThreadListSyncMessage {
                 ctx,
                 thread_list_sync
             }
@@ -598,10 +674,10 @@ impl EventHandler for Handle {
     }
 
     async fn thread_member_update(&self, ctx: Context, thread_member: ThreadMember) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BThreadMemberUpdate { ctx, thread_member }
+            MessageCollectionBot,
+            ThreadMemberUpdateMessage { ctx, thread_member }
         );
     }
 
@@ -610,10 +686,10 @@ impl EventHandler for Handle {
         ctx: Context,
         thread_members_update: ThreadMembersUpdateEvent,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BThreadMembersUpdate {
+            MessageCollectionBot,
+            ThreadMembersUpdateMessage {
                 ctx,
                 thread_members_update
             }
@@ -621,26 +697,26 @@ impl EventHandler for Handle {
     }
 
     async fn guild_scheduled_event_create(&self, ctx: Context, event: ScheduledEvent) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildScheduledEventCreate { ctx, event }
+            MessageCollectionBot,
+            GuildScheduledEventCreateMessage { ctx, event }
         );
     }
 
     async fn guild_scheduled_event_update(&self, ctx: Context, event: ScheduledEvent) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildScheduledEventUpdate { ctx, event }
+            MessageCollectionBot,
+            GuildScheduledEventUpdateMessage { ctx, event }
         );
     }
 
     async fn guild_scheduled_event_delete(&self, ctx: Context, event: ScheduledEvent) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildScheduledEventDelete { ctx, event }
+            MessageCollectionBot,
+            GuildScheduledEventDeleteMessage { ctx, event }
         );
     }
 
@@ -649,10 +725,10 @@ impl EventHandler for Handle {
         ctx: Context,
         subscribed: GuildScheduledEventUserAddEvent,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildScheduledEventUserAdd { ctx, subscribed }
+            MessageCollectionBot,
+            GuildScheduledEventUserAddMessage { ctx, subscribed }
         );
     }
 
@@ -661,46 +737,54 @@ impl EventHandler for Handle {
         ctx: Context,
         unsubscribed: GuildScheduledEventUserRemoveEvent,
     ) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BGuildScheduledEventUserRemove { ctx, unsubscribed }
+            MessageCollectionBot,
+            GuildScheduledEventUserRemoveMessage { ctx, unsubscribed }
         );
     }
 
     async fn entitlement_create(&self, ctx: Context, entitlement: Entitlement) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BEntitlementCreate { ctx, entitlement }
+            MessageCollectionBot,
+            EntitlementCreateMessage { ctx, entitlement }
         );
     }
 
     async fn entitlement_update(&self, ctx: Context, entitlement: Entitlement) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BEntitlementUpdate { ctx, entitlement }
+            MessageCollectionBot,
+            EntitlementUpdateMessage { ctx, entitlement }
         );
     }
 
     async fn entitlement_delete(&self, ctx: Context, entitlement: Entitlement) {
-        send_event!(
+        send_message!(
             self,
-            EventCollectionBot,
-            BEntitlementDelete { ctx, entitlement }
+            MessageCollectionBot,
+            EntitlementDeleteMessage { ctx, entitlement }
         );
     }
 
     async fn poll_vote_add(&self, ctx: Context, event: MessagePollVoteAddEvent) {
-        send_event!(self, EventCollectionBot, BPollVoteAdd { ctx, event });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            PollVoteAddMessage { ctx, event }
+        );
     }
 
     async fn poll_vote_remove(&self, ctx: Context, event: MessagePollVoteRemoveEvent) {
-        send_event!(self, EventCollectionBot, BPollVoteRemove { ctx, event });
+        send_message!(
+            self,
+            MessageCollectionBot,
+            PollVoteRemoveMessage { ctx, event }
+        );
     }
 
     async fn ratelimit(&self, data: RatelimitInfo) {
-        send_event!(self, EventCollectionBot, BRateLimit { data });
+        send_message!(self, MessageCollectionBot, RateLimitMessage { data });
     }
 }

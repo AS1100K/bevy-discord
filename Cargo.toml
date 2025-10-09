@@ -1,9 +1,9 @@
 [package]
 name = "bevy-discord"
 description = "A bevy plugin for sending and receiving discord messages."
-version = "0.6.0"
-edition = "2021"
-authors = ["Aditya Kumar <theadityakumardeveloper@gmail.com>"]
+version = "0.7.0"
+edition = "2024"
+authors = ["Aditya Kumar <git@adityais.dev>"]
 readme = "README.md"
 repository = "https://github.com/AS1100K/bevy-discord"
 publish = true
@@ -19,8 +19,8 @@ rich_presence = ["dep:discord-sdk", "dep:async-trait"]
 rich_presence_local_testing = ["discord-sdk/local-testing"]
 
 [dependencies]
-bevy_app = { version = "0.16", default-features = false }
-bevy_ecs = { version = "0.16", default-features = false }
+bevy_app = { version = "0.17", default-features = false }
+bevy_ecs = { version = "0.17", default-features = false }
 flume = "0.11"
 serenity = { version = "0.12", features = [
     "gateway",
@@ -34,7 +34,7 @@ async-trait = { version = "0.1", optional = true }
 pastey = "0.1"
 
 [dev-dependencies]
-bevy = "0.16"
+bevy = "0.17"
 serde_json = "1"
 
 [package.metadata.cargo-feature-combinations]

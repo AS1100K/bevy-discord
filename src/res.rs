@@ -33,6 +33,7 @@ use std::sync::Arc;
 #[cfg_attr(docsrs, doc(cfg(feature = "http")))]
 #[derive(Resource)]
 pub struct DiscordHttpResource {
+    /// Arc-wrapped Serenity HTTP client for Discord API operations.
     pub http: Arc<serenity::all::Http>,
 }
 
@@ -89,6 +90,7 @@ impl DiscordHttpResource {
 #[cfg_attr(docsrs, doc(cfg(feature = "rich_presence")))]
 #[derive(Resource)]
 pub struct DiscordRichPresenceRes {
+    /// Arc-wrapped Discord SDK client for Rich Presence operations.
     pub discord: Arc<discord_sdk::Discord>,
 }
 

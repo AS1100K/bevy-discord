@@ -35,7 +35,7 @@ pub mod runtime;
 pub(crate) mod channel;
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 #[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
-pub mod events;
+pub mod messages;
 
 #[cfg(feature = "http")]
 #[cfg_attr(docsrs, doc(cfg(feature = "http")))]
@@ -47,4 +47,4 @@ pub use discord_sdk;
 
 /// Bevy [`SystemSet`] that contains all system of this plugin.
 #[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
-pub struct DiscordSet;
+pub struct DiscordSystems;
