@@ -23,7 +23,7 @@ pub mod bot {
     ///
     /// Once, dispatched it automatically inserts [DiscordHttpResource](crate::res::DiscordHttpResource)
     /// to the bevy app.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct BotReadyMessage {
         pub ctx: Context,
         pub data_about_bot: Ready,
@@ -32,7 +32,7 @@ pub mod bot {
     /// Dispatched when the permissions of an application command was updated.
     ///
     /// Provides said permission’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct CommandPermissionsUpdateMessage {
         pub ctx: Context,
         pub permission: CommandPermissions,
@@ -41,7 +41,7 @@ pub mod bot {
     /// Dispatched when an auto moderation rule was created.
     ///
     /// Provides said rule’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct AutoModerationRuleCreateMessage {
         pub ctx: Context,
         pub rule: Rule,
@@ -50,7 +50,7 @@ pub mod bot {
     /// Dispatched when an auto moderation rule was updated.
     ///
     /// Provides said rule’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct AutoModerationRuleUpdateMessage {
         pub ctx: Context,
         pub rule: Rule,
@@ -59,7 +59,7 @@ pub mod bot {
     /// Dispatched when an auto moderation rule was deleted.
     ///
     /// Provides said rule’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct AutoModerationRuleDeleteMessage {
         pub ctx: Context,
         pub rule: Rule,
@@ -68,7 +68,7 @@ pub mod bot {
     /// Dispatched when an auto moderation rule was triggered and an action was executed.
     ///
     /// Provides said action execution’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct AutoModerationActionExecutionMessage {
         pub ctx: Context,
         pub execution: ActionExecution,
@@ -82,7 +82,7 @@ pub mod bot {
     /// Provides the cached guilds’ ids.
     #[cfg(feature = "bot_cache")]
     #[cfg_attr(docsrs, doc(cfg(feature = "bot_cache")))]
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct CacheReadMessage {
         pub ctx: Context,
         pub guilds: Vec<GuildId>,
@@ -91,7 +91,7 @@ pub mod bot {
     /// Dispatched when every shard has received a Ready event
     #[cfg(feature = "bot_cache")]
     #[cfg_attr(docsrs, doc(cfg(feature = "bot_cache")))]
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ShardsReadyMessage {
         pub ctx: Context,
         pub total_shards: u32,
@@ -100,7 +100,7 @@ pub mod bot {
     /// Dispatched when a channel is created.
     ///
     /// Provides said channel’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ChannelCreateMessage {
         pub ctx: Context,
         pub channel: GuildChannel,
@@ -109,7 +109,7 @@ pub mod bot {
     /// Dispatched when a category is created.
     ///
     /// Provides said category’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct CategoryCreateMessage {
         pub ctx: Context,
         pub category: GuildChannel,
@@ -118,7 +118,7 @@ pub mod bot {
     /// Dispatched when a category is deleted.
     ///
     /// Provides said category’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct CategoryDeleteMessage {
         pub ctx: Context,
         pub category: GuildChannel,
@@ -127,7 +127,7 @@ pub mod bot {
     /// Dispatched when a channel is deleted.
     ///
     /// Provides said channel’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ChannelDeleteMessage {
         pub ctx: Context,
         pub channel: GuildChannel,
@@ -137,7 +137,7 @@ pub mod bot {
     /// Dispatched when a pin is added, deleted.
     ///
     /// Provides said pin’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ChannelPinUpdateMessage {
         pub ctx: Context,
         pub pin: ChannelPinsUpdateEvent,
@@ -146,7 +146,7 @@ pub mod bot {
     /// Dispatched when a channel is updated.
     ///
     /// The old channel data is only provided when the `bot_cache` feature is enabled.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ChannelUpdateMessage {
         pub ctx: Context,
         pub old: Option<GuildChannel>,
@@ -156,7 +156,7 @@ pub mod bot {
     /// Dispatched when a new audit log entry is created.
     ///
     /// Provides said entry’s data and the id of the guild where it was created.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildAuditLogEntryCreateMessage {
         pub ctx: Context,
         pub entry: AuditLogEntry,
@@ -166,7 +166,7 @@ pub mod bot {
     /// Dispatched when a user is banned from a guild.
     ///
     /// Provides the guild’s id and the banned user’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildBanAdditionMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
@@ -176,7 +176,7 @@ pub mod bot {
     /// Dispatched when a user’s ban is lifted from a guild.
     ///
     /// Provides the guild’s id and the lifted user’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildBanRemovalMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
@@ -186,7 +186,7 @@ pub mod bot {
     /// Dispatched when a guild is created; or an existing guild’s data is sent to us.
     ///
     /// Provides the guild’s data and whether the guild is new (only when `bot_cache` feature is enabled).
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildCreateMessage {
         pub ctx: Context,
         pub guild: Guild,
@@ -201,7 +201,7 @@ pub mod bot {
     /// The [`UnavailableGuild::unavailable`] flag in the partial data determines the status of the guild. If the flag
     /// is false, the bot was removed from the guild, either by being kicked or banned. If the
     /// flag is true, the guild went offline.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildDeleteMessage {
         pub ctx: Context,
         pub incomplete: UnavailableGuild,
@@ -211,7 +211,7 @@ pub mod bot {
     /// Dispatched when the emojis are updated.
     ///
     /// Provides the guild’s id and the new state of the emojis in the guild.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildEmojisUpdateMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
@@ -221,7 +221,7 @@ pub mod bot {
     /// Dispatched when a guild’s integration is added, updated or removed.
     ///
     /// Provides the guild’s id.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildIntegrationsUpdateMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
@@ -233,7 +233,7 @@ pub mod bot {
     ///
     /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
     /// on the bot application page.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildMemberAdditionMessage {
         pub ctx: Context,
         pub new_member: Member,
@@ -246,7 +246,7 @@ pub mod bot {
     ///
     /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
     /// on the bot application page.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildMemberRemovalMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
@@ -261,7 +261,7 @@ pub mod bot {
     ///
     /// Note: This event will not trigger unless the “guild members” privileged intent is enabled
     /// on the bot application page.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildMemberUpdateMessage {
         pub ctx: Context,
         pub old_if_available: Option<Member>,
@@ -272,7 +272,7 @@ pub mod bot {
     /// Dispatched when the data for offline members was requested.
     ///
     /// Provides the guild’s id and the data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildMembersChunkMessage {
         pub ctx: Context,
         pub chunk: GuildMembersChunkEvent,
@@ -281,7 +281,7 @@ pub mod bot {
     /// Dispatched when a role is created.
     ///
     /// Provides the guild’s id and the new role’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildRoleCreateMessage {
         pub ctx: Context,
         pub new: Role,
@@ -290,7 +290,7 @@ pub mod bot {
     /// Dispatched when a role is deleted.
     /// Provides the guild’s id, the role’s id and its data (if `bot_cache` feature is enabled
     /// and the data is available).
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildRoleDeleteMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
@@ -302,7 +302,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id, the role’s old (if `bot_cache` feature is enabled and the data
     /// is available) and new data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildRoleUpdateMessage {
         pub ctx: Context,
         pub old_data_if_available: Option<Role>,
@@ -312,7 +312,7 @@ pub mod bot {
     /// Dispatched when the stickers are updated.
     ///
     /// Provides the guild’s id and the new state of the stickers in the guild.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildStickersUpdateMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
@@ -323,7 +323,7 @@ pub mod bot {
     ///
     /// Provides the guild’s old data (if `bot_cache` feature is enabled and the data is
     /// available) and the new data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildUpdateMessage {
         pub ctx: Context,
         pub old_data_if_available: Option<Guild>,
@@ -333,7 +333,7 @@ pub mod bot {
     /// Dispatched when a invite is created.
     ///
     /// Provides data about the invite.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct InviteCreateMessage {
         pub ctx: Context,
         pub data: InviteCreateEvent,
@@ -342,7 +342,7 @@ pub mod bot {
     /// Dispatched when a invite is deleted.
     ///
     /// Provides data about the invite.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct InviteDeleteMessage {
         pub ctx: Context,
         pub data: InviteDeleteEvent,
@@ -352,7 +352,7 @@ pub mod bot {
     ///
     /// Provides the message’s data.
     // TODO: Is the name good??
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct DiscordMessage {
         pub ctx: Context,
         pub new_message: SMessage,
@@ -362,7 +362,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id, the channel’s id and the message’s id.
     // TODO: Is the name good??
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct DiscordMessageDeleteMessage {
         pub ctx: Context,
         pub channel_id: ChannelId,
@@ -374,7 +374,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id, channel’s id and the deleted messages’ ids.
     // TODO: Is the name good??
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct DiscordMessageDeleteBulkMessage {
         pub ctx: Context,
         pub channel_id: ChannelId,
@@ -387,7 +387,7 @@ pub mod bot {
     /// Provides the message update data, as well as the actual old and new message if `bot_cache`
     /// feature is enabled and the data is available.
     // TODO: Is the name good??
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct DiscordMessageUpdateMessage {
         pub ctx: Context,
         pub old_if_available: Option<SMessage>,
@@ -398,7 +398,7 @@ pub mod bot {
     /// Dispatched when a new reaction is attached to a message.
     ///
     /// Provides the reaction’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ReactionAddMessage {
         pub ctx: Context,
         pub add_reaction: Reaction,
@@ -407,7 +407,7 @@ pub mod bot {
     /// Dispatched when a reaction is detached from a message.
     ///
     /// Provides the reaction’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ReactionRemoveMessage {
         pub ctx: Context,
         pub removed_reaction: Reaction,
@@ -416,7 +416,7 @@ pub mod bot {
     /// Dispatched when all reactions of a message are detached from a message.
     ///
     /// Provides the channel’s id and the message’s id.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ReactionRemoveAllMessage {
         pub ctx: Context,
         pub channel_id: ChannelId,
@@ -426,7 +426,7 @@ pub mod bot {
     /// Dispatched when all reactions of a message are detached from a message.
     ///
     /// Provides the channel’s id and the message’s id.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ReactionRemoveEmojiMessage {
         pub ctx: Context,
         pub removed_reactions: Reaction,
@@ -438,14 +438,14 @@ pub mod bot {
     ///
     /// Note: This event will not trigger unless the “guild presences” privileged intent is enabled
     /// on the bot application page.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct PresenceUpdateMessage {
         pub ctx: Context,
         pub new_data: Presence,
     }
 
     /// Dispatched upon reconnection.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ResumeMessage {
         pub ctx: Context,
         pub event: ResumedEvent,
@@ -454,14 +454,14 @@ pub mod bot {
     /// Dispatched when a shard’s connection stage is updated
     ///
     /// Provides the context of the shard and the event information about the update.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ShardStageUpdateMessage {
         pub ctx: Context,
         pub event: ShardStageUpdateEvent,
     }
 
     /// Dispatched when a user starts typing.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct TypingStartMessage {
         pub ctx: Context,
         pub event: TypingStartEvent,
@@ -470,7 +470,7 @@ pub mod bot {
     /// Dispatched when the bot’s data is updated.
     ///
     /// Provides the old (if `bot_cache` feature is enabled and the data is available) and new data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct UserUpdateMessage {
         pub ctx: Context,
         pub old_data: Option<CurrentUser>,
@@ -480,7 +480,7 @@ pub mod bot {
     /// Dispatched when a guild’s voice server was updated (or changed to another one).
     ///
     /// Provides the voice server’s data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct VoiceServerUpdateMessage {
         pub ctx: Context,
         pub event: VoiceServerUpdateEvent,
@@ -490,7 +490,7 @@ pub mod bot {
     ///
     /// Provides the guild’s id (if available) and the old state (if `bot_cache` feature is enabled
     /// and [`GatewayIntents::GUILDS`] is enabled) and the new state of the guild’s voice channels.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct VoiceStateUpdateMessage {
         pub ctx: Context,
         pub old: Option<VoiceState>,
@@ -500,7 +500,7 @@ pub mod bot {
     /// Dispatched when a voice channel’s status is updated.
     ///
     /// Provides the status, channel’s id and the guild’s id.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct VoiceChannelStatusUpdateMessage {
         pub ctx: Context,
         pub old: Option<String>,
@@ -512,7 +512,7 @@ pub mod bot {
     /// Dispatched when a guild’s webhook is updated.
     ///
     /// Provides the guild’s id and the channel’s id the webhook belongs in.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct WebhookUpdateMessage {
         pub ctx: Context,
         pub guild_id: GuildId,
@@ -523,7 +523,7 @@ pub mod bot {
     /// clicked).
     ///
     /// Provides the created interaction.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct InteractionCreateMessage {
         pub ctx: Context,
         pub interaction: Interaction,
@@ -532,7 +532,7 @@ pub mod bot {
     /// Dispatched when a guild integration is created.
     ///
     /// Provides the created integration.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct IntegrationCreateMessage {
         pub ctx: Context,
         pub integration: Integration,
@@ -541,7 +541,7 @@ pub mod bot {
     /// Dispatched when a guild integration is updated.
     ///
     /// Provides the updated integration.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct IntegrationUpdateMessage {
         pub ctx: Context,
         pub integration: Integration,
@@ -550,7 +550,7 @@ pub mod bot {
     /// Dispatched when a stage instance is created.
     ///
     /// Provides the created stage instance.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct StageInstanceCreateMessage {
         pub ctx: Context,
         pub stage_instance: StageInstance,
@@ -559,7 +559,7 @@ pub mod bot {
     /// Dispatched when a stage instance is updated.
     ///
     /// Provides the updated stage instance.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct StageInstanceUpdateMessage {
         pub ctx: Context,
         pub stage_instance: StageInstance,
@@ -568,7 +568,7 @@ pub mod bot {
     /// Dispatched when a stage instance is deleted.
     ///
     /// Provides the deleted stage instance.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct StageInstanceDeleteMessage {
         pub ctx: Context,
         pub stage_instance: StageInstance,
@@ -577,7 +577,7 @@ pub mod bot {
     /// Dispatched when a thread is created or the current user is added to a private thread.
     ///
     /// Provides the thread.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ThreadCreateMessage {
         pub ctx: Context,
         pub thread: GuildChannel,
@@ -587,7 +587,7 @@ pub mod bot {
     ///
     /// Provides the updated thread and the old thread data, provided the thread was cached prior
     /// to dispatch.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ThreadUpdateMessage {
         pub ctx: Context,
         pub old: Option<GuildChannel>,
@@ -598,7 +598,7 @@ pub mod bot {
     ///
     /// Provides the partial data about the deleted thread and, if it was present in the cache
     /// before its deletion, its full data.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ThreadDeleteMessage {
         pub ctx: Context,
         pub thread: PartialGuildChannel,
@@ -609,7 +609,7 @@ pub mod bot {
     ///
     /// Provides the threads the current user can access, the thread members, the guild Id,
     /// and the channel Ids of the parent channels being synced.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ThreadListSyncMessage {
         pub ctx: Context,
         pub thread_list_sync: ThreadListSyncEvent,
@@ -618,7 +618,7 @@ pub mod bot {
     /// Dispatched when the [`ThreadMember`] for the current user is updated.
     ///
     /// Provides the updated thread member.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ThreadMemberUpdateMessage {
         pub ctx: Context,
         pub thread_member: ThreadMember,
@@ -630,7 +630,7 @@ pub mod bot {
     ///
     /// Provides the added/removed members, the approximate member count of members in the thread,
     /// the thread Id and its guild Id.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ThreadMembersUpdateMessage {
         pub ctx: Context,
         pub thread_members_update: ThreadMembersUpdateEvent,
@@ -639,7 +639,7 @@ pub mod bot {
     /// Dispatched when a scheduled event is created.
     ///
     /// Provides data about the scheduled event.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildScheduledEventCreateMessage {
         pub ctx: Context,
         pub event: ScheduledEvent,
@@ -648,7 +648,7 @@ pub mod bot {
     /// Dispatched when a scheduled event is updated.
     ///
     /// Provides data about the scheduled event.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildScheduledEventUpdateMessage {
         pub ctx: Context,
         pub event: ScheduledEvent,
@@ -657,7 +657,7 @@ pub mod bot {
     /// Dispatched when a scheduled event is deleted.
     ///
     /// Provides data about the scheduled event.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildScheduledEventDeleteMessage {
         pub ctx: Context,
         pub event: ScheduledEvent,
@@ -666,7 +666,7 @@ pub mod bot {
     /// Dispatched when a guild member has subscribed to a scheduled event.
     ///
     /// Provides data about the subscription.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildScheduledEventUserAddMessage {
         pub ctx: Context,
         pub subscribed: GuildScheduledEventUserAddEvent,
@@ -675,7 +675,7 @@ pub mod bot {
     /// Dispatched when a guild member has unsubscribed from a scheduled event.
     ///
     /// Provides data about the cancelled subscription.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct GuildScheduledEventUserRemoveMessage {
         pub ctx: Context,
         pub unsubscribed: GuildScheduledEventUserRemoveEvent,
@@ -684,7 +684,7 @@ pub mod bot {
     /// Dispatched when a user subscribes to a SKU.
     ///
     /// Provides data about the subscription.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct EntitlementCreateMessage {
         pub ctx: Context,
         pub entitlement: Entitlement,
@@ -695,7 +695,7 @@ pub mod bot {
     ///
     /// Provides data abut the updated subscription. If the entitlement is renewed, the
     /// `[Entitlement::ends_at`] field will have changed.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct EntitlementUpdateMessage {
         pub ctx: Context,
         pub entitlement: Entitlement,
@@ -706,7 +706,7 @@ pub mod bot {
     /// when they expire.
     ///
     /// Provides data about the subscription. Specifically, the Entitlement::deleted field will be set.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct EntitlementDeleteMessage {
         pub ctx: Context,
         pub entitlement: Entitlement,
@@ -715,21 +715,21 @@ pub mod bot {
     /// Dispatched when a user votes on a message poll.
     ///
     /// This will be dispatched multiple times if multiple answers are selected.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct PollVoteAddMessage {
         pub ctx: Context,
         pub event: MessagePollVoteAddEvent,
     }
 
     /// Dispatched when a user removes a previous vote on a poll.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct PollVoteRemoveMessage {
         pub ctx: Context,
         pub event: MessagePollVoteRemoveEvent,
     }
 
     /// Dispatched when an HTTP rate limit is hit
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct RateLimitMessage {
         pub data: RatelimitInfo,
     }
@@ -751,12 +751,12 @@ pub mod rich_presence {
     /// Fires when we’ve done something naughty and Discord is telling us to stop.
     ///
     /// The [Event] will always be of type [Event::Error]
-    #[derive(Message)]
+    #[derive(Message, Debug)]
     pub struct ErrorMessage(pub Event);
 
     /// Sent by Discord upon receipt of our Handshake message, the user is the current user logged
     /// in to the Discord we connected to.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct RpReadyMessage {
         /// The protocol version, we only support v1, which is fine since that is (currently) the only version
         pub version: u32,
@@ -769,43 +769,43 @@ pub mod rich_presence {
     /// Fired when the connection has been interrupted between us and Discord, this is a synthesized
     /// event as there are can be numerous reasons on the client side for this to happen, in
     /// addition to Discord itself being closed, etc.
-    #[derive(Message)]
+    #[derive(Message, Debug)]
     pub struct DisconnectedMessage {
         pub reason: Error,
     }
 
     /// Fired when any details on the current logged in user are changed.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct CurrentUserUpdateMessage {
         /// The user that is logged into the Discord application we connected to
         pub user: User,
     }
 
     /// Sent by Discord when the local user has requested to join a game, and the remote user has accepted their request.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ActivityJoinMessage {
         pub secret: String,
     }
 
     /// Sent by Discord when the local user has chosen to spectate another user’s game session.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ActivitySpectateMessage {
         pub secret: String,
     }
 
     /// Fires when a user asks to join the current user’s game.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ActivityJoinRequestMessage {
         /// Payload for the event fired when a user “Asks to Join” the current user’s game
         pub user: User,
     }
 
     /// Fires when the current user is invited by another user to their game.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct ActivityInviteMessage(pub Arc<ActivityInvite>);
 
     /// Event fired when the overlay state changes.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct OverlayUpdateMessage {
         /// Whether the user has the overlay enabled or disabled. If the overlay is disabled, all
         /// the functionality of the SDK will still work. The calls will instead focus the Discord
@@ -816,7 +816,7 @@ pub mod rich_presence {
     }
 
     /// Event fired when a relationship with another user changes.
-    #[derive(Message)]
+    #[derive(Message, Debug, Clone)]
     pub struct RelationshipUpdateMessage(pub Arc<Relationship>);
 }
 

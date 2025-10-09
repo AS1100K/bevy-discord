@@ -27,6 +27,7 @@ use std::sync::Arc;
 /// - [How can users discover and play my activity](https://support-dev.discord.com/hc/en-us/articles/21204493235991-How-Can-Users-Discover-and-Play-My-Activity)
 ///
 /// and make sure you have enabled sharing your activities with others.
+#[derive(Debug, Clone)]
 pub struct DiscordRichPresencePlugin(crate::config::DiscordRichPresenceConfig);
 
 impl DiscordRichPresencePlugin {

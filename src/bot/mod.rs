@@ -87,6 +87,7 @@ mod handle;
 /// This plugin requires a valid Discord bot token and appropriate gateway intents
 /// to function correctly. Make sure to configure the necessary intents based on
 /// your bot's requirements.
+#[derive(Debug, Clone)]
 pub struct DiscordBotPlugin(crate::config::DiscordBotConfig);
 
 impl DiscordBotPlugin {

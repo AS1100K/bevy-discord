@@ -20,7 +20,7 @@ use serenity::all::*;
 /// - Activity status
 #[cfg(feature = "bot")]
 #[cfg_attr(docsrs, doc(cfg(feature = "bot")))]
-#[derive(Default, Resource, Clone)]
+#[derive(Default, Resource, Clone, Debug)]
 pub struct DiscordBotConfig {
     pub(crate) token: String,
     pub(crate) gateway_intents: GatewayIntents,
@@ -53,6 +53,15 @@ impl DiscordBotConfig {
 pub struct DiscordRichPresenceConfig {
     pub(crate) app: discord_sdk::AppId,
     pub(crate) subscriptions: discord_sdk::Subscriptions,
+}
+
+impl std::fmt::Debug for DiscordRichPresenceConfig {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("DiscordRichPresenceConfig")
+            .field("app", &self.app)
+            .field("subscriptions", &self.subscriptions.bits())
+            .finish()
+    }
 }
 
 #[cfg(feature = "rich_presence")]
