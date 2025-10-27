@@ -90,7 +90,6 @@ macro_rules! send_message_tuple {
 
 // TODO: Should we use `allow(unused_imports)` as not all the macros are used with
 // multiple feature combinations
-#[allow(unused_imports)]
 pub(crate) use {
     create_message_collection_and_handler, initialize_field_with_doc, override_field_with_doc,
     send_message, send_message_tuple,

@@ -1,3 +1,4 @@
+#![allow(unused_macros)]
 #![doc = include_str!("../README.md")]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
@@ -12,8 +13,8 @@ pub use bot::DiscordBotPlugin;
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 #[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
 pub mod config;
-#[cfg(any(feature = "bot", feature = "rich_presence"))]
-#[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
+#[cfg(any(feature = "http", feature = "rich_presence"))]
+#[cfg_attr(docsrs, doc(cfg(any(feature = "http", feature = "rich_presence"))))]
 pub mod res;
 
 mod common;

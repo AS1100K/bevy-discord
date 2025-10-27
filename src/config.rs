@@ -6,10 +6,11 @@
 //! - [`DiscordBotConfig`]: Configuration for the Discord bot (available with `bot` feature)
 //! - [`DiscordRichPresenceConfig`]: Configuration for Rich Presence integration (available with `rich_presence` feature)
 
-use crate::common::{initialize_field_with_doc, override_field_with_doc};
+use crate::common::initialize_field_with_doc;
 use bevy_ecs::prelude::*;
+
 #[cfg(feature = "bot")]
-use serenity::all::*;
+use {crate::common::override_field_with_doc, serenity::all::*};
 
 /// Configuration settings for the Discord bot.
 ///
