@@ -1,5 +1,7 @@
 // examples/basic_bot.rs
 // cargo run --example basic_bot --features full
+//
+// REMINDER: Make sure to update the code in README.md
 
 use bevy::prelude::*;
 use bevy_discord::DiscordBotPlugin;

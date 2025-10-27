@@ -1,5 +1,7 @@
 // examples/rich_presence.rs
 // cargo run --example rich_presence --features full
+//
+// REMINDER: Make sure to update the code in README.md
 
 use bevy::log::tracing_subscriber::fmt::Subscriber;
 use bevy::prelude::*;
