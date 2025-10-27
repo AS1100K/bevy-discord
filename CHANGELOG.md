@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2025-10-28
+
+### Added
+
+- Derive `Debug`, and `Clone` for plugins, config, messages, and resource types
+- Specify features which makes the type available in docs.rs [#33](https://github.com/AS1100K/bevy-discord/pull/33)
+
+### Changed
+
+- Upgrade rust edition to 2024
+- Upgrade bevy to 0.17 [#37](https://github.com/AS1100K/bevy-discord/pull/37)
+- Moved `bevy_discord::events::*` to `bevy_discord::messages::*`
+- Renamed all bevy events from `bevy_discord::events::bot::B<EVENT_NAME>` to `bevy_discord::messages::bot::<EVENT_NAME>Message`
+- Renamed all bevy events from `bevy_discord::events::rich_presence::RichPresence<EVENT_NAME>`
+to `bevy_discord::messages::rich_presence::<EVENT_NAME>Message`
+- Renamed `DiscordSet` to `DiscordSystems`
+
 ## [0.6.0] - 2025-05-12
 ### Added
 - Discord Rich Presence i.e. `DiscordRichPresencePlugin`, `bevy_discord::config::DiscordRichPresenceConfig`, `bevy_discord::events::rich_presence`
