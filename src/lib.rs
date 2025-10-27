@@ -12,6 +12,8 @@ pub use bot::DiscordBotPlugin;
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
 #[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
 pub mod config;
+#[cfg(any(feature = "bot", feature = "rich_presence"))]
+#[cfg_attr(docsrs, doc(cfg(any(feature = "bot", feature = "rich_presence"))))]
 pub mod res;
 
 mod common;

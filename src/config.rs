@@ -55,6 +55,7 @@ pub struct DiscordRichPresenceConfig {
     pub(crate) subscriptions: discord_sdk::Subscriptions,
 }
 
+#[cfg(feature = "rich_presence")]
 impl std::fmt::Debug for DiscordRichPresenceConfig {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("DiscordRichPresenceConfig")
