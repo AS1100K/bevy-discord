@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.0] - 2025-10-28
 
+This is a major release with a lot of breaking changes, please refer to the
+[migration guide](https://adityais.dev/blog/bevy-discord-0-17-migration-guide)
+
 ### Added
 
 - Derive `Debug`, and `Clone` for plugins, config, messages, and resource types

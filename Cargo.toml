@@ -10,6 +10,9 @@ publish = true
 license = "MIT"
 keywords = ["bevy", "plugin", "discord"]
 
+[badges]
+maintenance = { status = "passively-maintained" }
+
 [features]
 full = ["bot", "http", "rich_presence"]
 bot = ["tokio/sync", "http"]
