@@ -34,7 +34,7 @@ tracing = "0.1"
 tokio = { version = "1", features = ["rt-multi-thread", "rt"] }
 discord-sdk = { version = "0.4", optional = true }
 async-trait = { version = "0.1", optional = true }
-pastey = "0.1"
+pastey = "0.2"
 
 [dev-dependencies]
 bevy = "0.17"
