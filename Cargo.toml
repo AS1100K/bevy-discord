@@ -22,8 +22,8 @@ rich_presence = ["dep:discord-sdk", "dep:async-trait"]
 rich_presence_local_testing = ["discord-sdk/local-testing"]
 
 [dependencies]
-bevy_app = { version = "0.17", default-features = false }
-bevy_ecs = { version = "0.17", default-features = false }
+bevy_app = { version = "0.18", default-features = false }
+bevy_ecs = { version = "0.18", default-features = false }
 flume = "0.11"
 serenity = { version = "0.12", features = [
     "gateway",
@@ -34,10 +34,10 @@ tracing = "0.1"
 tokio = { version = "1", features = ["rt-multi-thread", "rt"] }
 discord-sdk = { version = "0.4", optional = true }
 async-trait = { version = "0.1", optional = true }
-pastey = "0.1"
+pastey = "0.2"
 
 [dev-dependencies]
-bevy = "0.17"
+bevy = "0.18"
 serde_json = "1"
 
 [package.metadata.cargo-feature-combinations]
