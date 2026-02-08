@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Upgrade bevy to 0.17 [#42](https://github.com/AS1100K/bevy-discord/pull/42)
+- Upgrade bevy to 0.18 [#42](https://github.com/AS1100K/bevy-discord/pull/42)
 - Upgrade flume to 0.12 [#42](https://github.com/AS1100K/bevy-discord/pull/42)
 - Upgrade pastey to 0.2 [#42](https://github.com/AS1100K/bevy-discord/pull/42)
 
