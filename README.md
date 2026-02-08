@@ -207,9 +207,7 @@ Below is a chart which versions of this crate are compatible with which bevy ver
 | `0.5.x` | `0.15.x`     |
 | `0.6.x` | `0.16.x`     |
 | `0.7.x` | `0.17.x`     |
-
-_Refer to [Migration Guide](https://adityais.dev/blog/bevy-discord-0-17-migration-guide/)
-for migrating from 0.6 to 0.7_
+| `0.8.x` | `0.18.x`     |
 
 ## Contributing
 
