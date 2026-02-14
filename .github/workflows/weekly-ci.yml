@@ -1,0 +1,87 @@
+name: Weekly CI
+
+on:
+  schedule:
+    # Run every Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  cargo_combination_check:
+    name: Cargo Combination Check (${{ matrix.toolchain }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain: [beta, nightly]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Install ${{ matrix.toolchain }} toolchain
+        run: rustup install ${{ matrix.toolchain }}
+      - name: Set default toolchain
+        run: rustup default ${{ matrix.toolchain }}
+      - name: Install Dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
+      - name: Install cargo-feature-combinations
+        run: cargo install cargo-feature-combinations
+      - name: Run cargo fc check
+        run: cargo fc check
+
+  clippy_check:
+    name: Clippy (${{ matrix.toolchain }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        toolchain: [beta, nightly]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Install ${{ matrix.toolchain }} toolchain
+        run: rustup install ${{ matrix.toolchain }}
+      - name: Set default toolchain
+        run: rustup default ${{ matrix.toolchain }}
+      - name: Install Dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
+      - name: Run clippy
+        run: cargo clippy --features full
+
+  format:
+    name: Format (${{ matrix.toolchain }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        toolchain: [beta, nightly]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Install ${{ matrix.toolchain }} toolchain
+        run: rustup install ${{ matrix.toolchain }}
+      - name: Set default toolchain
+        run: rustup default ${{ matrix.toolchain }}
+      - name: Run cargo fmt
+        run: cargo fmt --all -- --check
+
+  full_feature_check:
+    name: Full Feature Example Check (${{ matrix.toolchain }})
+    strategy:
+      matrix:
+        toolchain: [beta, nightly]
+        example: [basic_bot, reactions, slash_commands, rich_presence]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Install ${{ matrix.toolchain }} toolchain
+        run: rustup install ${{ matrix.toolchain }}
+      - name: Set default toolchain
+        run: rustup default ${{ matrix.toolchain }}
+      - name: Install Dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
+      - name: Cargo Check ${{ matrix.example }}
+        run: cargo check --example ${{ matrix.example }} --features full
