@@ -22,7 +22,7 @@ jobs:
     name: Full Feature Example Check (${{ matrix.toolchain }})
     strategy:
       matrix:
-        toolchain: ${{ github.event_name == 'schedule' && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
+        toolchain: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
         example: [basic_bot, reactions, slash_commands, rich_presence]
     runs-on: ubuntu-latest
     timeout-minutes: 30

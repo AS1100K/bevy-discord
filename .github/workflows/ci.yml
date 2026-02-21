@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        toolchain: ${{ github.event_name == 'schedule' && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
+        toolchain: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -65,7 +65,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        toolchain: ${{ github.event_name == 'schedule' && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
+        toolchain: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -87,7 +87,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        toolchain: ${{ github.event_name == 'schedule' && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
+        toolchain: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
