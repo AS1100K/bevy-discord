@@ -14,12 +14,21 @@ keywords = ["bevy", "plugin", "discord"]
 maintenance = { status = "passively-maintained" }
 
 [features]
-full = ["bot", "http", "rich_presence"]
-bot = ["tokio/sync", "http"]
+full = ["bot", "http", "rich_presence", "tokio_runtime"]
+bot = ["dep:tokio", "tokio/rt", "tokio/sync", "http"]
 http = ["dep:serenity"]
 bot_cache = ["serenity/cache"]
-rich_presence = ["dep:discord-sdk", "dep:async-trait"]
+rich_presence = ["dep:discord-sdk", "dep:async-trait", "tokio_runtime"]
 rich_presence_local_testing = ["discord-sdk/local-testing"]
+## Enables creation of a managed static Tokio runtime within the library.
+##
+## - Required by `rich_presence` (discord-sdk depends on Tokio).
+## - Optional for `bot`: when omitted the library will use
+##   [`tokio::runtime::Handle::current()`] and therefore expects the caller to
+##   provide an active Tokio runtime (e.g. via `#[tokio::main]`).
+## - Also useful for running ad-hoc async code from Bevy systems via
+##   [`crate::runtime::tokio_runtime()`].
+tokio_runtime = ["dep:tokio", "tokio/rt-multi-thread"]
 
 [dependencies]
 bevy_app = { version = "0.18", default-features = false }
@@ -31,7 +40,7 @@ serenity = { version = "0.12", features = [
     "model",
 ], optional = true }
 tracing = "0.1"
-tokio = { version = "1", features = ["rt-multi-thread", "rt"] }
+tokio = { version = "1", optional = true }
 discord-sdk = { version = "0.4", optional = true }
 async-trait = { version = "0.1", optional = true }
 pastey = "0.2"
