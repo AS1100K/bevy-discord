@@ -42,6 +42,7 @@ use event_handlers::*;
 use crate::DiscordSystems;
 use crate::bot::handle::Handle;
 use crate::channel::ChannelRes;
+#[cfg(feature = "tokio_runtime")]
 use crate::runtime::tokio_runtime;
 
 pub(crate) mod event_handlers;
@@ -216,7 +217,7 @@ fn setup_bot(
 
     let discord_bot_config_clone = discord_bot_config.clone();
 
-    tokio_runtime().spawn(async move {
+    let future = async move {
         let mut client = client_builder
             .await
             .expect("Unable to build discord Client");
@@ -232,5 +233,11 @@ fn setup_bot(
                 .await
                 .expect("Unable to run the discord Client with multiple shards.")
         }
-    });
+    };
+
+    #[cfg(feature = "tokio_runtime")]
+    tokio_runtime().spawn(future);
+
+    #[cfg(not(feature = "tokio_runtime"))]
+    tokio::runtime::Handle::current().spawn(future);
 }
