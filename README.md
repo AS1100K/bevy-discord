@@ -208,6 +208,7 @@ Below is a chart which versions of this crate are compatible with which bevy ver
 | `0.6.x` | `0.16.x`     |
 | `0.7.x` | `0.17.x`     |
 | `0.8.x` | `0.18.x`     |
+| `0.9.x` | `0.19.x`     |
 
 ## Contributing
 
