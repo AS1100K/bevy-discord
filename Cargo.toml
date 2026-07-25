@@ -41,8 +41,7 @@ bevy = "0.19"
 serde_json = "1"
 
 [package.metadata.cargo-feature-combinations]
-skip_feature_sets = [["bot", "docsrs"]]
-denylist = ["default", "full", "bot_cache", "rich_presence_local_testing"]
+exclude_features = ["full", "bot_cache", "rich_presence_local_testing"]
 
 [package.metadata.docs.rs]
 all-features = true
