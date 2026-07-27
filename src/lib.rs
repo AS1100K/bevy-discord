@@ -31,7 +31,14 @@ mod rich_presence;
 #[cfg_attr(docsrs, doc(cfg(feature = "rich_presence")))]
 pub use rich_presence::DiscordRichPresencePlugin;
 
-/// Tokio runtime, use this if you want to use async code inside bevy systems
+/// Runtime utilities for running async code from Bevy systems.
+///
+/// When the `tokio_runtime` feature is enabled this module exposes
+/// [`runtime::tokio_runtime()`] which returns a lazily-initialised,
+/// library-managed [`tokio::runtime::Runtime`].  If you already have your own
+/// Tokio runtime (e.g. via `#[tokio::main]`) you can omit the
+/// `tokio_runtime` feature and use
+/// [`tokio::runtime::Handle::current()`] directly instead.
 pub mod runtime;
 
 #[cfg(any(feature = "bot", feature = "rich_presence"))]
