@@ -8,6 +8,13 @@ on:
       - "**.toml"
   pull_request:
     branches: [main]
+  schedule:
+    # Run every Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 env:
   CARGO_TERM_COLOR: always
@@ -32,13 +39,18 @@ jobs:
   #       run: cargo test --tests --features full
 
   cargo_combination_check:
-    name: Cargo Combination Check
+    name: Cargo Combination Check (${{ matrix.toolchain }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Install stable toolchain
-        run: rustup install stable
+      - name: Install ${{ matrix.toolchain }} toolchain
+        run: rustup install ${{ matrix.toolchain }}
+      - name: Set default toolchain
+        run: rustup default ${{ matrix.toolchain }}
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
       - name: Install cargo-feature-combinations
@@ -48,14 +60,21 @@ jobs:
 
   # Run cargo clippy
   clippy_check:
-    name: Clippy
+    name: Clippy (${{ matrix.toolchain }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      matrix:
+        toolchain: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Install stable toolchain
-        run: rustup install stable
+      - name: Install ${{ matrix.toolchain }} toolchain
+        run: rustup install ${{ matrix.toolchain }}
+      - name: Set default toolchain
+        run: rustup default ${{ matrix.toolchain }}
+      - name: Install clippy component
+        run: rustup component add clippy --toolchain ${{ matrix.toolchain }}
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
       - name: Run clippy
@@ -63,13 +82,20 @@ jobs:
 
   # Run cargo fmt --all -- --check
   format:
-    name: Format
+    name: Format (${{ matrix.toolchain }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      matrix:
+        toolchain: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && fromJSON('["stable", "beta", "nightly"]') || fromJSON('["stable"]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Install stable toolchain
-        run: rustup install stable
+      - name: Install ${{ matrix.toolchain }} toolchain
+        run: rustup install ${{ matrix.toolchain }}
+      - name: Set default toolchain
+        run: rustup default ${{ matrix.toolchain }}
+      - name: Install rustfmt component
+        run: rustup component add rustfmt --toolchain ${{ matrix.toolchain }}
       - name: Run cargo fmt
         run: cargo fmt --all -- --check
